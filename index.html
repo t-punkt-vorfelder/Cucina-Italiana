@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="La Cucina"/>
+  <title>La Cucina 🫒</title>
+
+  <!--
+    Fonts: bunny.net — privacy-first, GDPR-konform, kein Tracking, kein Google.
+    Libre Baskerville: OFL-Lizenz (open source)
+    Source Sans 3:     OFL-Lizenz (open source)
+    React + Babel:     MIT-Lizenz via cdnjs.cloudflare.com (kein Tracking)
+  -->
+
+  <link rel="preconnect" href="https://fonts.bunny.net"/>
+  <link href="https://fonts.bunny.net/css?family=libre-baskerville:400,400i,700|source-sans-3:300,400,500,600" rel="stylesheet"/>
+
+  <style>
+/* ── CSS-Variablen für Hell/Dunkel ── */
+:root {
+  --bg:        #ffffff;
+  --bg2:       #f7f6f2;
+  --bg3:       #f0ede6;
+  --text:      #111111;
+  --text2:     #555550;
+  --text3:     #999990;
+  --border:    #e0ddd6;
+  --border2:   #ccc9c0;
+  --accent:    #3a6e2a;
+  --accent2:   #e07030;
+  --star:      #d4900a;
+  --red:       #c03020;
+  --card-bg:   #ffffff;
+  --tab-active:#111111;
+  --tab-bg:    #f7f6f2;
+  --shadow:    0 1px 12px rgba(0,0,0,.07);
+  --shadow2:   0 4px 24px rgba(0,0,0,.10);
+}
+[data-theme="dark"] {
+  --bg:        #0e0e0e;
+  --bg2:       #161616;
+  --bg3:       #1e1e1e;
+  --text:      #f0ead8;
+  --text2:     #a8a090;
+  --text3:     #606050;
+  --border:    #2a2a22;
+  --border2:   #383830;
+  --accent:    #8fc93a;
+  --accent2:   #e07840;
+  --star:      #e0b030;
+  --red:       #d04030;
+  --card-bg:   #161616;
+  --tab-active:#f0ead8;
+  --tab-bg:    #1a1a14;
+  --shadow:    0 1px 12px rgba(0,0,0,.35);
+  --shadow2:   0 4px 24px rgba(0,0,0,.50);
+}
+
+/* ── Reset ── */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
+body{display:flex;justify-content:center;font-family:'Source Sans 3',system-ui,sans-serif;}
+#root{width:100%;max-width:430px;min-height:100vh;background:var(--bg);position:relative;}
+::-webkit-scrollbar{width:0;}
+
+/* ── Typography ── */
+.serif{font-family:'Libre Baskerville',Georgia,serif;}
+.serif-italic{font-family:'Libre Baskerville',Georgia,serif;font-style:italic;}
+.label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);font-weight:600;}
+
+/* ── Animations ── */
+.fade{animation:fadeUp .38s cubic-bezier(.16,1,.3,1) both;}
+.slide{animation:slideIn .32s cubic-bezier(.16,1,.3,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideIn{from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:translateX(0);}}
+
+/* ── Buttons ── */
+button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Source Sans 3',sans-serif;font-weight:500;transition:all .16s;border-radius:10px;}
+.btn:active{transform:scale(.96);opacity:.82;}
+.btn-primary{background:var(--text);color:var(--bg);padding:14px 20px;font-size:15px;font-weight:600;width:100%;border-radius:12px;}
+.btn-outline{border:1.5px solid var(--border2);color:var(--text2);padding:9px 16px;font-size:13px;}
+.btn-icon{width:40px;height:40px;border-radius:9px;border:1.5px solid var(--border);color:var(--text2);font-size:17px;display:flex;align-items:center;justify-content:center;}
+.btn-icon:hover{border-color:var(--border2);}
+
+/* ── Form Inputs ── */
+input,textarea,select{
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;
+  color:var(--text);font-family:'Source Sans 3',sans-serif;font-size:14px;
+  padding:11px 14px;width:100%;outline:none;transition:border-color .2s;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--text);}
+select option{background:var(--bg2);}
+::placeholder{color:var(--text3);}
+
+/* ── Stepper ── */
+.stepper{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;overflow:hidden;}
+.st-btn{width:44px;height:46px;font-size:22px;font-weight:300;color:var(--accent);display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.st-btn:active{background:var(--border);}
+.st-val{flex:1;text-align:center;font-size:22px;font-weight:700;font-family:'Libre Baskerville',serif;color:var(--text);}
+
+/* ── Cards ── */
+.card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer;}
+.card:hover{box-shadow:var(--shadow2);}
+.card:active{transform:scale(.985);}
+
+/* ── Tags ── */
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(--border);color:var(--text3);letter-spacing:.5px;}
+
+/* ── Divider ── */
+hr{border:none;border-top:1.5px solid var(--border);margin:20px 0;}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(14px);
+  background:var(--text);color:var(--bg);padding:10px 22px;border-radius:20px;
+  font-size:13px;font-weight:600;z-index:200;opacity:0;transition:all .28s;
+  pointer-events:none;white-space:nowrap;box-shadow:var(--shadow2);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  animation:fadeUp .2s ease;}
+.modal{background:var(--bg);border:1.5px solid var(--border);border-radius:18px;
+  padding:28px;max-width:320px;width:100%;box-shadow:var(--shadow2);}
+
+/* ── Tab Bar ── */
+.tabbar{display:flex;background:var(--tab-bg);border-top:1.5px solid var(--border);
+  position:sticky;bottom:0;z-index:50;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 4px 12px;font-size:10px;font-weight:600;letter-spacing:.5px;
+  color:var(--text3);transition:color .2s;border:none;background:none;cursor:pointer;}
+.tab.active{color:var(--tab-active);}
+.tab-icon{font-size:20px;line-height:1;}
+
+/* ── Safe areas ── */
+.pt-safe{padding-top:max(44px,env(safe-area-inset-top,44px));}
+.pb-safe{padding-bottom:max(32px,env(safe-area-inset-bottom,32px));}
+
+/* ── Star ── */
+.star{font-size:20px;line-height:1;transition:transform .2s;}
+.star:active{transform:scale(1.4);}
+
+/* ── Cook progress bar ── */
+.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.16,1,.3,1);}
+
+/* ── Light/Dark toggle ── */
+.theme-toggle{width:52px;height:28px;border-radius:14px;border:1.5px solid var(--border2);
+  background:var(--bg3);position:relative;cursor:pointer;transition:background .3s;}
+.theme-knob{position:absolute;top:3px;width:20px;height:20px;border-radius:10px;
+  background:var(--text);transition:all .3s;left:3px;}
+[data-theme="dark"] .theme-knob{left:25px;}
+
+/* ── Empty state ── */
+.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:12px;color:var(--text3);}
+.empty-icon{font-size:48px;opacity:.4;}
+  </style>
+
+</head>
+<body>
+<div id="root"></div>
+
+<!-- React 18 MIT-Lizenz, cdnjs (Cloudflare) – kein Tracking -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"
+  integrity="sha512-8Q6Y9XnTbOE+JNvjBQwJ2H8S+UV4uIBAP2o4V/xFn4NQMN9JFsRGssB20rouOEFBwDf3oRQoJWFRbZvhksBg=="
+  crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"
+  integrity="sha512-MOCpqoRoisCTwJ8vQQiciZv0qcpROCidek3GTFS6KTk2+y7munJIlKCVkFCYY+p3ErQ7RSfN60SE5LTCFSjkQ=="
+  crossorigin="anonymous"></script>
+
+<!-- Babel MIT-Lizenz, cdnjs -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"
+  crossorigin="anonymous"></script>
+
+<script type="text/babel">
+const {useState, useEffect, useRef} = React;
+
+/* ══════════════════════════════════════════════
+   REZEPTDATEN
+══════════════════════════════════════════════ */
+const DEFAULT_RECIPES = [
+  {
+    id:1, fav:false,
+    title:"Warmer Tomaten-Kichererbsen-Salat",
+    subtitle:"mit Mozzarella",
+    emoji:"🥗",
+    time:"15 Min", basePortions:2,
+    difficulty:"Einfach", meal:"Abendessen", diet:"Vegetarisch",
+    accent:"#5a8a30",
+    description:"Saftige Tomaten, cremiger Mozzarella und knackige Kichererbsen – vereint mit bestem Olivenöl. Mediterran, unkompliziert, unwiderstehlich.",
+    ingredients:[
+      {group:"Salat", items:[
+        {a:1,   u:"Dose",    n:"Kichererbsen (400 g), abgetropft"},
+        {a:300, u:"g",       n:"Cherrytomaten, halbiert"},
+        {a:1,   u:"",        n:"Zucchini, in dünne Scheiben"},
+        {a:125, u:"g",       n:"Mozzarella, gezupft"},
+        {a:1,   u:"Handvoll",n:"frisches Basilikum"},
+        {a:2,   u:"",        n:"Knoblauchzehen, fein gehackt"},
+      ]},
+      {group:"Dressing", items:[
+        {a:4, u:"EL", n:"Olivenöl extra vergine"},
+        {a:1, u:"EL", n:"Zitronensaft"},
+        {a:1, u:"TL", n:"getrockneter Oregano"},
+        {a:0, u:"",   n:"Salz & schwarzer Pfeffer"},
+        {a:0, u:"",   n:"Optional: Chiliflocken"},
+      ]},
+    ],
+    steps:[
+      {title:"Kichererbsen anrösten",   desc:"Eine Pfanne bei mittlerer Hitze erhitzen. 2 EL Olivenöl hineingeben, Kichererbsen und Knoblauch ca. 5 Minuten knusprig anbraten. Mit Salz, Pfeffer und Oregano würzen."},
+      {title:"Zucchini grillen",        desc:"Zucchinischeiben in die gleiche Pfanne geben und 2–3 Minuten pro Seite braten, bis sie goldbraun sind. Beiseitestellen."},
+      {title:"Dressing anrühren",       desc:"Olivenöl, Zitronensaft, Salz, Pfeffer und ggf. Chiliflocken in einer kleinen Schüssel verrühren."},
+      {title:"Alles kombinieren",       desc:"Kichererbsen, Zucchini und Cherrytomaten auf Tellern anrichten. Mozzarella darüber zupfen, Basilikumblätter verteilen."},
+      {title:"Dressing drübergießen",   desc:"Das Olivenöl-Dressing großzügig darübergießen – sofort genießen!"},
+    ],
+    nutrition:{kcal:"480",kh:"32g",ew:"22g",fett:"28g",bs:"9g"},
+    tip:"Schwarze Oliven oder sonnengetrocknete Tomaten machen es noch aromatischer. Ohne Mozzarella bis zu 2 Tage im Kühlschrank haltbar.",
+  },
+  {
+    id:2, fav:false,
+    title:"Mediterranes Ofengemüse mit Lachsfilet",
+    subtitle:"& Vollkornnudeln",
+    emoji:"🐟",
+    time:"40 Min", basePortions:4,
+    difficulty:"Mittel", meal:"Abendessen", diet:"Familie",
+    accent:"#b05820",
+    description:"Zartes Lachsfilet auf aromatischem Ofengemüse – bunt, nahrhaft und perfekt für die ganze Familie. Der Ofen macht die meiste Arbeit.",
+    ingredients:[
+      {group:"Gemüse & Lachs", items:[
+        {a:4,   u:"Stück", n:"Lachsfilets (à 150 g)"},
+        {a:2,   u:"",      n:"Paprika (rot & gelb), in Streifen"},
+        {a:2,   u:"",      n:"Zucchini, in Halbmonde"},
+        {a:250, u:"g",     n:"Cherrytomaten, ganz"},
+        {a:1,   u:"",      n:"rote Zwiebel, in Spalten"},
+        {a:5,   u:"EL",    n:"Olivenöl extra vergine"},
+        {a:3,   u:"",      n:"Knoblauchzehen, fein gehackt"},
+        {a:0.5, u:"",      n:"Zitrone, Saft"},
+        {a:1,   u:"TL",    n:"Oregano"},
+        {a:1,   u:"TL",    n:"Thymian"},
+        {a:0,   u:"",      n:"Salz & Pfeffer"},
+      ]},
+      {group:"Nudeln", items:[
+        {a:320, u:"g",  n:"Vollkornnudeln (Penne)"},
+        {a:1,   u:"EL", n:"Olivenöl extra vergine"},
+        {a:0,   u:"",   n:"Frisches Basilikum"},
+        {a:0,   u:"",   n:"Parmesan (optional)"},
+      ]},
+    ],
+    steps:[
+      {title:"Ofen vorheizen",     desc:"Backofen auf 200 °C Ober-/Unterhitze vorheizen. Backblech mit Backpapier auslegen."},
+      {title:"Gemüse marinieren",  desc:"Paprika, Zucchini, Cherrytomaten und Zwiebel auf dem Blech verteilen. Mit Olivenöl, Knoblauch, Oregano, Thymian, Salz und Pfeffer vermengen. 20 Min rösten."},
+      {title:"Lachs vorbereiten",  desc:"Lachsfilets mit Olivenöl, Zitronensaft, Salz und Pfeffer einreiben."},
+      {title:"Lachs dazulegen",    desc:"Nach 20 Min die Lachsfilets auf das Gemüse legen und weitere 12–15 Min backen, bis der Lachs gar ist."},
+      {title:"Nudeln kochen",      desc:"Vollkornnudeln al dente kochen, abgießen und mit 1 EL Olivenöl schwenken."},
+      {title:"Anrichten",          desc:"Nudeln auf Teller verteilen, Ofengemüse und Lachs darauflegen, mit Basilikum und Parmesan garnieren."},
+    ],
+    nutrition:{kcal:"550",kh:"45g",ew:"38g",fett:"22g",bs:"8g"},
+    tip:"Lachs unbedingt auf Gräten prüfen – besonders wenn Kinder mitessen! Alternativ: Hähnchenbrust (5 Min länger backen).",
+  },
+  {
+    id:3, fav:true,
+    title:"Mediterrane Ofenpizza",
+    subtitle:"auf Fladenbrot",
+    emoji:"🍕",
+    time:"35 Min", basePortions:4,
+    difficulty:"Einfach", meal:"Abendessen", diet:"Vegetarisch · Kinder ♥",
+    accent:"#9a7010",
+    description:"Knusprige Fladenbrote, selbst gemachte Tomatensauce, buntes Gemüse und zerlaufener Mozzarella. Kinder lieben es, den Belag selbst aufzulegen!",
+    ingredients:[
+      {group:"Belag", items:[
+        {a:4,   u:"Stück",    n:"Fladenbrote (Pide oder Naan)"},
+        {a:2,   u:"",         n:"Paprika (rot & gelb), in Streifen"},
+        {a:1,   u:"",         n:"Zucchini, in dünne Scheiben"},
+        {a:200, u:"g",        n:"Cherrytomaten, halbiert"},
+        {a:1,   u:"",         n:"rote Zwiebel, in Ringe"},
+        {a:250, u:"g",        n:"Mozzarella, in Scheiben"},
+        {a:50,  u:"g",        n:"schwarze Oliven (optional)"},
+        {a:1,   u:"Handvoll", n:"frisches Basilikum"},
+      ]},
+      {group:"Tomatensauce", items:[
+        {a:1, u:"Dose", n:"gehackte Tomaten (400 g)"},
+        {a:2, u:"",     n:"Knoblauchzehen, fein gehackt"},
+        {a:1, u:"TL",   n:"Oregano"},
+        {a:1, u:"TL",   n:"Zucker"},
+        {a:5, u:"EL",   n:"Olivenöl extra vergine"},
+        {a:0, u:"",     n:"Salz & Pfeffer"},
+      ]},
+    ],
+    steps:[
+      {title:"Ofen vorheizen",      desc:"Backofen auf 220 °C Ober-/Unterhitze vorheizen."},
+      {title:"Sauce kochen",        desc:"2 EL Olivenöl erhitzen, Knoblauch andünsten. Tomaten, Oregano, Zucker, Salz und Pfeffer dazugeben, 8 Min einkochen lassen."},
+      {title:"Gemüse vorbereiten",  desc:"Paprika, Zucchini und Zwiebel mit 2 EL Olivenöl, Salz und Pfeffer vermengen."},
+      {title:"Belegen",             desc:"Tomatensauce auf die Fladenbrote streichen, Gemüse und Cherrytomaten verteilen, Mozzarella darauflegen."},
+      {title:"Backen",              desc:"12–15 Min backen, bis der Käse goldbraun blubbert."},
+      {title:"Fertigstellen",       desc:"Mit 1 EL Olivenöl beträufeln, Basilikum darüber – sofort servieren!"},
+    ],
+    nutrition:{kcal:"520",kh:"52g",ew:"20g",fett:"24g",bs:"6g"},
+    tip:"Kinder den Belag selbst auflegen lassen – das macht riesigen Spaß! Mit Feta statt Mozzarella schmeckt es noch würziger.",
+  },
+];
+
+const PALETTE = [
+  "#5a8a30","#b05820","#9a7010","#20608a","#7a3090","#8a2020"
+];
+
+/* ══════════════════════════════════════════════
+   HELPER FUNCTIONS
+══════════════════════════════════════════════ */
+function scaleAmt(a, s) {
+  if (!a || a === 0) return null;
+  const v = a * s;
+  if (v <= 0.2) return "⅛";
+  if (v <= 0.35) return "¼";
+  if (v <= 0.6) return "½";
+  if (v <= 0.85) return "¾";
+  if (v <= 1.15) return "1";
+  if (v <= 1.65) return "1½";
+  if (v <= 2.15) return "2";
+  if (v <= 2.65) return "2½";
+  if (v <= 10) return (Math.round(v * 2) / 2).toString().replace(".5","½").replace(".0","");
+  return Math.round(v).toString();
+}
+
+function fmtIng(item, sc) {
+  const s = scaleAmt(item.a, sc);
+  if (!s) return item.n;
+  return [s, item.u, item.n].filter(Boolean).join(" ");
+}
+
+function buildShareText(r, adults, children) {
+  const sc = (adults + children * 0.5) / r.basePortions;
+  let t = `🫒 ${r.title}${r.subtitle ? " " + r.subtitle : ""}\n`;
+  t += `⏱ ${r.time}  ·  👥 ${adults} Erw.${children > 0 ? ` + ${children} Kinder` : ""}\n`;
+  t += `\nZUTATEN:\n`;
+  r.ingredients.forEach(g => {
+    t += `\n${g.group}:\n`;
+    g.items.forEach(i => { t += `· ${fmtIng(i, sc)}\n`; });
+  });
+  t += `\nZUBEREITUNG:\n`;
+  r.steps.forEach((s, i) => { t += `\n${i+1}. ${s.title}\n${s.desc}\n`; });
+  if (r.tip) t += `\n💡 Tipp: ${r.tip}`;
+  return t;
+}
+
+/* ══════════════════════════════════════════════
+   SMALL COMPONENTS
+══════════════════════════════════════════════ */
+
+function Stepper({label, sub, val, set, min=0, max=20}) {
+  return (
+    <div style={{flex:1}}>
+      <div style={{fontSize:11,color:"var(--text3)",marginBottom:7,fontWeight:600,textAlign:"center",letterSpacing:1}}>{label}</div>
+      <div className="stepper">
+        <button className="st-btn btn" onClick={()=>set(Math.max(min,val-1))}>−</button>
+        <div className="st-val">{val}</div>
+        <button className="st-btn btn" onClick={()=>set(Math.min(max,val+1))}>+</button>
+      </div>
+      {sub && <div style={{fontSize:10,color:"var(--text3)",marginTop:5,textAlign:"center"}}>{sub}</div>}
+    </div>
+  );
+}
+
+function ThemeToggle({dark, toggle}) {
+  return (
+    <div className="theme-toggle" onClick={toggle} title={dark?"Hell-Modus":"Dunkel-Modus"}>
+      <div className="theme-knob"/>
+    </div>
+  );
+}
+
+function StarBtn({on, toggle}) {
+  return (
+    <button className="star btn" onClick={e=>{e.stopPropagation();toggle();}}
+      style={{fontSize:22,color:on?"var(--star)":"var(--border2)"}}>
+      {on ? "★" : "☆"}
+    </button>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   TAB BAR
+══════════════════════════════════════════════ */
+const TABS = [
+  {id:"fav",   icon:"★",  label:"Favoriten"},
+  {id:"fru",   icon:"🌅", label:"Frühstück"},
+  {id:"mit",   icon:"☀️", label:"Mittagessen"},
+  {id:"alle",  icon:"🍽", label:"Alle"},
+];
+
+function TabBar({active, set}) {
+  return (
+    <div className="tabbar pb-safe">
+      {TABS.map(t=>(
+        <button key={t.id} className={`tab${active===t.id?" active":""}`} onClick={()=>set(t.id)}>
+          <span className="tab-icon">{t.icon}</span>
+          <span>{t.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   HOME VIEW
+══════════════════════════════════════════════ */
+function Home({recipes, tab, setTab, onOpen, onAdd, onToggleFav, dark, toggleDark}) {
+
+  const filtered = recipes.filter(r => {
+    if (tab === "fav") return r.fav;
+    if (tab === "fru") return r.meal === "Frühstück";
+    if (tab === "mit") return r.meal === "Mittagessen";
+    return true;
+  });
+
+  return (
+    <div className="fade" style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
+      {/* Header */}
+      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 22px"}}>
+        <div style={{paddingTop:24,paddingBottom:20,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+          <div>
+            <div className="label" style={{marginBottom:8}}>La Cucina · Mediterran</div>
+            <div className="serif" style={{fontSize:38,fontWeight:700,lineHeight:1.05,color:"var(--text)"}}>
+              Meine<br/>
+              <span className="serif-italic" style={{color:"var(--accent)"}}>Rezepte</span>
+            </div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:8,paddingBottom:4}}>
+            <ThemeToggle dark={dark} toggle={toggleDark}/>
+            <div style={{fontSize:12,color:"var(--text3)"}}>{recipes.length}&nbsp;Rezepte</div>
+          </div>
+        </div>
+      </div>
+
+      {/* List */}
+      <div style={{flex:1,padding:"18px 16px",display:"flex",flexDirection:"column",gap:14,paddingBottom:90}}>
+        {filtered.length === 0 && (
+          <div className="empty">
+            <div className="empty-icon">
+              {tab==="fav"?"★":tab==="fru"?"🌅":tab==="mit"?"☀️":"🍽"}
+            </div>
+            <div className="serif-italic" style={{fontSize:20,color:"var(--text3)"}}>
+              {tab==="fav"?"Noch keine Favoriten":"Keine Rezepte hier"}
+            </div>
+            <div style={{fontSize:13,color:"var(--text3)",textAlign:"center",lineHeight:1.6}}>
+              {tab==="fav"
+                ? "Tippe auf ☆ in einem Rezept,\num es hier zu speichern."
+                : "Füge neue Rezepte über den Button unten hinzu."}
+            </div>
+          </div>
+        )}
+        {filtered.map((r, i) => (
+          <div key={r.id} className="card fade" style={{animationDelay:`${i*.06}s`}} onClick={()=>onOpen(r)}>
+            {/* Accent strip */}
+            <div style={{height:3,background:r.accent}}/>
+            <div style={{padding:"20px 20px 16px"}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
+                <div style={{fontSize:38,lineHeight:1}}>{r.emoji}</div>
+                <StarBtn on={r.fav} toggle={()=>onToggleFav(r.id)}/>
+              </div>
+              <div className="serif" style={{fontSize:20,fontWeight:700,lineHeight:1.2,color:"var(--text)"}}>{r.title}</div>
+              {r.subtitle && (
+                <div className="serif-italic" style={{fontSize:14,color:"var(--text2)",marginTop:2}}>{r.subtitle}</div>
+              )}
+              <div style={{marginTop:10,fontSize:13,color:"var(--text2)",lineHeight:1.6,display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden"}}>
+                {r.description}
+              </div>
+              <div style={{marginTop:14,display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}}>
+                {[["⏱",r.time],["👥",r.basePortions+" Port."],["✓",r.difficulty]].map(([ic,v])=>(
+                  <div key={v} style={{fontSize:12,color:"var(--text3)",display:"flex",alignItems:"center",gap:3}}>
+                    <span>{ic}</span><span>{v}</span>
+                  </div>
+                ))}
+                {r.fav && <span style={{fontSize:11,color:"var(--star)",fontWeight:700,marginLeft:"auto"}}>★ Favorit</span>}
+              </div>
+            </div>
+            <div style={{padding:"11px 20px",borderTop:"1.5px solid var(--border)",background:"var(--bg2)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{fontSize:11,color:"var(--text3)",fontWeight:600,letterSpacing:.5}}>{r.diet}</span>
+              <span style={{fontSize:13,color:r.accent,fontWeight:700,display:"flex",alignItems:"center",gap:4}}>Öffnen →</span>
+            </div>
+          </div>
+        ))}
+
+        {/* Add button */}
+        <button className="btn btn-primary" onClick={onAdd}
+          style={{marginTop:4,border:"1.5px dashed var(--border2)",background:"transparent",color:"var(--text2)",fontSize:14}}>
+          + Neues Rezept hinzufügen
+        </button>
+      </div>
+
+      <TabBar active={tab} set={setTab}/>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   DETAIL VIEW
+══════════════════════════════════════════════ */
+function Detail({recipe, onBack, onCook, onDelete, onToggleFav, toast}) {
+  const [adults, setAdults] = useState(Math.max(1, Math.ceil(recipe.basePortions/2)));
+  const [children, setChildren] = useState(recipe.basePortions >= 4 ? 2 : 0);
+  const [delModal, setDelModal] = useState(false);
+  const total = adults + children * 0.5;
+  const sc = total / recipe.basePortions;
+
+  const share = async () => {
+    const text = buildShareText(recipe, adults, children);
+    if (navigator.share) {
+      try { await navigator.share({title: recipe.title, text}); return; } catch {}
+    }
+    try { await navigator.clipboard.writeText(text); toast("Rezept kopiert!"); }
+    catch { toast("Teilen nicht verfügbar"); }
+  };
+
+  return (
+    <div className="slide">
+      {/* Top bar */}
+      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 20px"}}>
+        <div style={{paddingTop:14,paddingBottom:16,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <button className="btn btn-outline" onClick={onBack} style={{gap:5,fontSize:13,padding:"8px 14px"}}>
+            ← Zurück
+          </button>
+          <div style={{display:"flex",gap:8}}>
+            <StarBtn on={recipe.fav} toggle={()=>onToggleFav(recipe.id)}/>
+            <button className="btn btn-icon" onClick={share} title="Teilen">🔗</button>
+            <button className="btn btn-icon" onClick={()=>setDelModal(true)}
+              style={{color:"var(--red)",borderColor:"rgba(192,48,32,.2)"}} title="Löschen">🗑</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <div style={{borderBottom:"1.5px solid var(--border)",borderLeft:`4px solid ${recipe.accent}`,marginLeft:0,paddingLeft:0}}>
+        <div style={{padding:"24px 22px 22px",borderLeft:`4px solid ${recipe.accent}`}}>
+          <div style={{fontSize:54,marginBottom:14,lineHeight:1}}>{recipe.emoji}</div>
+          <div className="serif" style={{fontSize:30,fontWeight:700,lineHeight:1.15,color:"var(--text)"}}>{recipe.title}</div>
+          {recipe.subtitle && (
+            <div className="serif-italic" style={{fontSize:16,color:"var(--text2)",marginTop:4}}>{recipe.subtitle}</div>
+          )}
+          <div style={{marginTop:12,fontSize:14,color:"var(--text2)",lineHeight:1.75}}>{recipe.description}</div>
+          <div style={{marginTop:16,display:"flex",flexWrap:"wrap",gap:7}}>
+            {[["⏱",recipe.time],["✓",recipe.difficulty],["🍽",recipe.meal],["🌿",recipe.diet]].map(([ic,v])=>(
+              <span key={v} className="pill">{ic} {v}</span>
+            ))}
+            {recipe.fav && <span className="pill" style={{color:"var(--star)",borderColor:"rgba(212,144,10,.3)"}}>★ Favorit</span>}
+          </div>
+        </div>
+      </div>
+
+      {/* Delete modal */}
+      {delModal && (
+        <div className="modal-bg">
+          <div className="modal">
+            <div className="serif" style={{fontSize:22,marginBottom:10}}>Rezept löschen?</div>
+            <div style={{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:24}}>
+              „{recipe.title}" wird dauerhaft entfernt.
+            </div>
+            <div style={{display:"flex",gap:10}}>
+              <button className="btn btn-outline" onClick={()=>setDelModal(false)} style={{flex:1,padding:"13px"}}>Abbrechen</button>
+              <button className="btn" onClick={onDelete}
+                style={{flex:1,padding:"13px",background:"var(--red)",color:"#fff",borderRadius:10,fontWeight:600,fontSize:14}}>
+                Löschen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div style={{paddingBottom:120}}>
+        {/* ── Portionen ── */}
+        <div style={{margin:"22px 20px 0",background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:14,padding:"18px 18px 16px"}}>
+          <div className="label" style={{marginBottom:14}}>👥 Für wie viele wird gekocht?</div>
+          <div style={{display:"flex",gap:14,marginBottom:16}}>
+            <Stepper label="Erwachsene" sub="je 1 Portion" val={adults} set={setAdults} min={0}/>
+            <Stepper label="Kinder" sub="je ½ Portion" val={children} set={setChildren} min={0}/>
+          </div>
+          <div style={{background:"var(--bg3)",border:"1.5px solid var(--border)",borderRadius:10,padding:"11px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div>
+              <div style={{fontSize:12,color:"var(--text3)",marginBottom:1}}>Gesamtportionen</div>
+              <div style={{fontSize:11,color:"var(--text3)"}}>
+                {adults>0?`${adults} Erw.`:""}{adults>0&&children>0?" + ":""}{children>0?`${children} Kinder`:""}
+              </div>
+            </div>
+            <div className="serif" style={{fontSize:28,fontWeight:700,color:recipe.accent}}>
+              {total%1===0?total:total.toFixed(1)}
+            </div>
+          </div>
+          {Math.abs(sc-1)>0.06&&(
+            <div style={{marginTop:7,fontSize:11,color:"var(--text3)",textAlign:"center"}}>
+              Zutatenmengen angepasst · Faktor ×{Math.round(sc*100)/100}
+            </div>
+          )}
+        </div>
+
+        {/* ── Zutaten ── */}
+        <div style={{padding:"24px 20px 0"}}>
+          <div className="label" style={{marginBottom:14}}>🛒 Zutaten</div>
+          {recipe.ingredients.map((g,gi)=>(
+            <div key={gi} style={{marginBottom:22}}>
+              <div style={{fontSize:11,color:"var(--text3)",letterSpacing:1.5,textTransform:"uppercase",marginBottom:10,fontWeight:600,borderBottom:"1.5px solid var(--border)",paddingBottom:6}}>{g.group}</div>
+              {g.items.map((item,ii)=>(
+                <div key={ii} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"9px 0",borderBottom:"1px solid var(--border)"}}>
+                  <div style={{width:4,height:4,borderRadius:"50%",background:recipe.accent,marginTop:9,flexShrink:0}}/>
+                  <div style={{flex:1,fontSize:14,color:"var(--text)",lineHeight:1.45}}>
+                    {item.a>0 && (
+                      <span className="serif" style={{fontSize:17,fontWeight:700,color:recipe.accent,marginRight:4}}>
+                        {scaleAmt(item.a,sc)}{item.u?" "+item.u:""}
+                      </span>
+                    )}
+                    <span style={{color:item.a>0?"var(--text2)":"var(--text3)"}}>{item.n}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* ── Nährwerte ── */}
+        <div style={{padding:"0 20px"}}>
+          <hr/>
+          <div className="label" style={{marginBottom:14}}>🥗 Nährwerte pro Portion</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+            {[["Kalorien",recipe.nutrition.kcal+" kcal"],["Kohlenhydrate",recipe.nutrition.kh],["Eiweiß",recipe.nutrition.ew],["Fett",recipe.nutrition.fett],["Ballaststoffe",recipe.nutrition.bs]].map(([k,v])=>(
+              <div key={k} style={{background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:11,padding:"12px 14px"}}>
+                <div style={{fontSize:10,color:"var(--text3)",marginBottom:4,fontWeight:600,letterSpacing:1,textTransform:"uppercase"}}>{k}</div>
+                <div className="serif" style={{fontSize:20,fontWeight:700,color:recipe.accent}}>{v}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Tipp ── */}
+        {recipe.tip && (
+          <div style={{padding:"20px 20px 0"}}>
+            <div style={{background:"var(--bg2)",borderLeft:`3px solid ${recipe.accent}`,borderRadius:"0 12px 12px 0",padding:"14px 16px"}}>
+              <div className="label" style={{marginBottom:6,color:recipe.accent}}>💡 Tipp</div>
+              <div style={{fontSize:13,color:"var(--text2)",lineHeight:1.75}}>{recipe.tip}</div>
+            </div>
+          </div>
+        )}
+
+        {/* ── CTA ── */}
+        <div style={{padding:"24px 20px 0"}}>
+          <button className="btn btn-primary" onClick={()=>onCook(adults,children)}
+            style={{background:recipe.accent,fontSize:15,borderRadius:13}}>
+            👨‍🍳 Jetzt kochen — {adults} Erw.{children>0?` + ${children} Kinder`:""}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   COOK VIEW
+══════════════════════════════════════════════ */
+function Cook({recipe, adults, children, onBack}) {
+  const [step, setStep] = useState(0);
+  const sc = (adults + children*0.5) / recipe.basePortions;
+  const total = recipe.steps.length;
+
+  return (
+    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",background:"var(--bg)"}}>
+      {/* Header */}
+      <div className="pt-safe" style={{background:"var(--bg2)",borderBottom:"1.5px solid var(--border)"}}>
+        <div style={{padding:"14px 20px 18px"}}>
+          <button className="btn btn-outline" onClick={onBack} style={{marginBottom:16,fontSize:13,padding:"8px 14px"}}>
+            ← Rezept
+          </button>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+            <div style={{flex:1,paddingRight:12}}>
+              <div className="label" style={{marginBottom:4}}>Koch-Modus</div>
+              <div className="serif" style={{fontSize:19,fontWeight:700,color:"var(--text)",lineHeight:1.2}}>{recipe.title}</div>
+              <div style={{fontSize:12,color:"var(--text3)",marginTop:3}}>
+                👥 {adults} Erw.{children>0?` + ${children} Kinder`:""}
+              </div>
+            </div>
+            <div className="serif" style={{fontSize:40,fontWeight:700,color:recipe.accent,lineHeight:1,whiteSpace:"nowrap"}}>
+              {step+1}<span style={{fontSize:16,color:"var(--text3)",fontWeight:400}}>/{total}</span>
+            </div>
+          </div>
+          {/* Progress */}
+          <div className="prog-bar" style={{marginTop:14}}>
+            <div className="prog-fill" style={{width:`${((step+1)/total)*100}%`,background:recipe.accent}}/>
+          </div>
+          {/* Dots */}
+          <div style={{display:"flex",gap:4,marginTop:10,justifyContent:"center"}}>
+            {recipe.steps.map((_,i)=>(
+              <div key={i} onClick={()=>setStep(i)} style={{width:i===step?20:7,height:7,borderRadius:4,background:i<=step?recipe.accent:"var(--border)",transition:"all .3s",cursor:"pointer"}}/>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Step content */}
+      <div key={step} className="fade" style={{flex:1,padding:"32px 22px 16px"}}>
+        {/* Step number */}
+        <div style={{width:54,height:54,borderRadius:14,border:`2px solid ${recipe.accent}`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:20}}>
+          <span className="serif" style={{fontSize:26,fontWeight:700,color:recipe.accent}}>{step+1}</span>
+        </div>
+        <div className="serif" style={{fontSize:28,fontWeight:700,color:"var(--text)",marginBottom:16,lineHeight:1.2}}>
+          {recipe.steps[step].title}
+        </div>
+        <div style={{fontSize:16,color:"var(--text2)",lineHeight:1.9}}>
+          {recipe.steps[step].desc}
+        </div>
+
+        {/* On step 1: show all scaled ingredients */}
+        {step===0 && (
+          <div style={{marginTop:30,background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:14,padding:16}}>
+            <div className="label" style={{marginBottom:12}}>Alle Zutaten für diese Portion</div>
+            {recipe.ingredients.flatMap(g=>g.items.filter(i=>i.a>0).map((item,ii)=>(
+              <div key={ii} style={{fontSize:13,color:"var(--text2)",padding:"5px 0",borderBottom:"1px solid var(--border)50",display:"flex",gap:8}}>
+                <span className="serif" style={{color:recipe.accent,fontWeight:700,fontSize:15,whiteSpace:"nowrap"}}>
+                  {scaleAmt(item.a,sc)}{item.u?" "+item.u:""}
+                </span>
+                <span>{item.n}</span>
+              </div>
+            )))}
+          </div>
+        )}
+      </div>
+
+      {/* Navigation */}
+      <div style={{padding:"16px 20px"}} className="pb-safe">
+        <div style={{display:"flex",gap:10}}>
+          <button className="btn btn-outline" onClick={()=>setStep(s=>Math.max(0,s-1))}
+            disabled={step===0} style={{flex:1,padding:"14px",opacity:step===0?.3:1}}>
+            ← Zurück
+          </button>
+          {step<total-1
+            ? <button className="btn" onClick={()=>setStep(s=>s+1)}
+                style={{flex:2,padding:"14px",background:recipe.accent,color:"#fff",borderRadius:11,fontWeight:700,fontSize:15}}>
+                Weiter →
+              </button>
+            : <button className="btn" onClick={onBack}
+                style={{flex:2,padding:"14px",background:"var(--accent)",color:"#fff",borderRadius:11,fontWeight:700,fontSize:15}}>
+                🎉 Guten Appetit!
+              </button>
+          }
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ADD VIEW
+══════════════════════════════════════════════ */
+function Add({onBack, onSave}) {
+  const [f, setF] = useState({
+    title:"",subtitle:"",emoji:"🍽",time:"",portions:"2",
+    difficulty:"Einfach",meal:"Abendessen",diet:"",
+    description:"",ingRaw:"",stepsRaw:"",tip:"",accentIdx:0,
+  });
+  const [saved, setSaved] = useState(false);
+  const s = (k,v) => setF(x=>({...x,[k]:v}));
+
+  const save = () => {
+    if (!f.title.trim()) return;
+    onSave({
+      id: Date.now(), fav: false,
+      title: f.title.trim(), subtitle: f.subtitle.trim(),
+      emoji: f.emoji||"🍽", time: f.time,
+      basePortions: parseInt(f.portions)||2,
+      difficulty: f.difficulty, meal: f.meal, diet: f.diet,
+      description: f.description,
+      accent: PALETTE[f.accentIdx],
+      ingredients: f.ingRaw ? [{group:"Zutaten", items: f.ingRaw.split("\n").filter(Boolean).map(l=>{
+        const m = l.match(/^([\d½¼¾⅛,.]+)\s*([a-zA-ZäöüÄÖÜß]+)?\s+(.+)$/);
+        if (m) return {a:parseFloat(m[1].replace(",",".").replace("½",".5").replace("¼",".25")), u:(m[2]||"").trim(), n:m[3].trim()};
+        return {a:0, u:"", n:l.trim()};
+      })}] : [],
+      steps: f.stepsRaw ? f.stepsRaw.split("\n").filter(Boolean).map((t,i)=>({title:`Schritt ${i+1}`, desc:t})) : [],
+      nutrition: {kcal:"–",kh:"–",ew:"–",fett:"–",bs:"–"},
+      tip: f.tip,
+    });
+    setSaved(true);
+    setTimeout(()=>{setSaved(false);onBack();},1000);
+  };
+
+  const inp = {background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:10,color:"var(--text)",fontFamily:"'Source Sans 3',sans-serif",fontSize:14,padding:"11px 14px",width:"100%",outline:"none"};
+  const lbl = {fontSize:10,color:"var(--text3)",letterSpacing:2,textTransform:"uppercase",marginBottom:7,fontWeight:600,display:"block"};
+
+  return (
+    <div className="slide">
+      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 20px 20px"}}>
+        <div style={{paddingTop:20}}>
+          <button className="btn btn-outline" onClick={onBack} style={{marginBottom:18,fontSize:13,padding:"8px 14px"}}>← Zurück</button>
+          <div className="serif" style={{fontSize:34,fontWeight:700,lineHeight:1.1}}>
+            Neues Rezept<br/>
+            <span className="serif-italic" style={{color:"var(--accent)"}}>hinzufügen</span>
+          </div>
+        </div>
+      </div>
+
+      <div style={{padding:"24px 20px 100px",display:"flex",flexDirection:"column",gap:18}}>
+        <div><label style={lbl}>Rezeptname *</label><input style={inp} value={f.title} onChange={e=>s("title",e.target.value)} placeholder="z. B. Griechischer Salat"/></div>
+        <div><label style={lbl}>Untertitel</label><input style={inp} value={f.subtitle} onChange={e=>s("subtitle",e.target.value)} placeholder="z. B. mit Feta & Oliven"/></div>
+
+        <div style={{display:"flex",gap:10}}>
+          <div style={{flex:1}}><label style={lbl}>Emoji</label><input style={{...inp,textAlign:"center",fontSize:26}} value={f.emoji} onChange={e=>s("emoji",e.target.value)}/></div>
+          <div style={{flex:2}}><label style={lbl}>Zeit</label><input style={inp} value={f.time} onChange={e=>s("time",e.target.value)} placeholder="30 Min"/></div>
+          <div style={{flex:1}}><label style={lbl}>Port.</label><input style={inp} value={f.portions} onChange={e=>s("portions",e.target.value)} type="number" min="1"/></div>
+        </div>
+
+        <div style={{display:"flex",gap:10}}>
+          <div style={{flex:1}}>
+            <label style={lbl}>Schwierigkeit</label>
+            <select style={inp} value={f.difficulty} onChange={e=>s("difficulty",e.target.value)}>
+              {["Einfach","Mittel","Anspruchsvoll"].map(o=><option key={o}>{o}</option>)}
+            </select>
+          </div>
+          <div style={{flex:1}}>
+            <label style={lbl}>Mahlzeit</label>
+            <select style={inp} value={f.meal} onChange={e=>s("meal",e.target.value)}>
+              {["Frühstück","Mittagessen","Abendessen","Snack"].map(o=><option key={o}>{o}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div><label style={lbl}>Diät / Zielgruppe</label><input style={inp} value={f.diet} onChange={e=>s("diet",e.target.value)} placeholder="z. B. Vegetarisch, Familie, Kinder"/></div>
+        <div><label style={lbl}>Beschreibung</label><textarea style={{...inp,resize:"vertical"}} value={f.description} onChange={e=>s("description",e.target.value)} rows={3} placeholder="Kurze Beschreibung..."/></div>
+
+        <div>
+          <label style={lbl}>Zutaten (eine pro Zeile)</label>
+          <div style={{fontSize:11,color:"var(--text3)",marginBottom:7,lineHeight:1.5}}>Format: Menge Einheit Name<br/>z. B. „300 g Tomaten" oder „3 EL Olivenöl"</div>
+          <textarea style={{...inp,resize:"vertical",fontFamily:"monospace",fontSize:13}} value={f.ingRaw} onChange={e=>s("ingRaw",e.target.value)} rows={6} placeholder={"300 g Cherrytomaten\n3 EL Olivenöl\n1 TL Oregano\nSalz & Pfeffer"}/>
+        </div>
+
+        <div>
+          <label style={lbl}>Zubereitungsschritte (ein Schritt pro Zeile)</label>
+          <textarea style={{...inp,resize:"vertical",fontFamily:"monospace",fontSize:13}} value={f.stepsRaw} onChange={e=>s("stepsRaw",e.target.value)} rows={5} placeholder={"Ofen auf 200°C vorheizen.\nGemüse schneiden und marinieren.\nAuf Blech verteilen und 20 Min backen."}/>
+        </div>
+
+        <div><label style={lbl}>Tipp (optional)</label><textarea style={{...inp,resize:"vertical"}} value={f.tip} onChange={e=>s("tip",e.target.value)} rows={2} placeholder="Variation, Aufbewahrung..."/></div>
+
+        <div>
+          <label style={lbl}>Akzentfarbe der Karte</label>
+          <div style={{display:"flex",gap:10,flexWrap:"wrap",marginTop:4}}>
+            {PALETTE.map((col,i)=>(
+              <div key={col} onClick={()=>s("accentIdx",i)} style={{
+                width:40,height:40,borderRadius:10,background:col,cursor:"pointer",
+                border:f.accentIdx===i?"3px solid var(--text)":"2.5px solid transparent",
+                display:"flex",alignItems:"center",justifyContent:"center",transition:"border .15s",
+              }}>
+                {f.accentIdx===i && <span style={{color:"#fff",fontSize:16,fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,.4)"}}>✓</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <button className="btn btn-primary" onClick={save}
+          style={{background:saved?"var(--accent)":"var(--text)",transition:"background .3s",marginTop:4}}>
+          {saved ? "✓ Gespeichert!" : "Rezept speichern"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ROOT APP
+══════════════════════════════════════════════ */
+function App() {
+  const [recipes, setRecipes] = useState(DEFAULT_RECIPES);
+  const [view, setView] = useState("home");
+  const [selected, setSelected] = useState(null);
+  const [cookPortions, setCookPortions] = useState({adults:2,children:0});
+  const [tab, setTab] = useState("alle");
+  const [dark, setDark] = useState(false);
+  const [toastState, setToastState] = useState({msg:"",show:false});
+
+  // Load from localStorage
+  useEffect(()=>{
+    try {
+      const saved = localStorage.getItem("lacucina_v4");
+      if (saved) {const p=JSON.parse(saved);if(p?.length)setRecipes(p);}
+      const th = localStorage.getItem("lacucina_theme");
+      if (th==="dark") setDark(true);
+    } catch {}
+  },[]);
+
+  // Apply dark mode
+  useEffect(()=>{
+    document.documentElement.setAttribute("data-theme",dark?"dark":"light");
+    try{localStorage.setItem("lacucina_theme",dark?"dark":"light");}catch{}
+  },[dark]);
+
+  const persist = (r) => {
+    try{localStorage.setItem("lacucina_v4",JSON.stringify(r));}catch{}
+    setRecipes(r);
+  };
+
+  const showToast = (msg) => {
+    setToastState({msg,show:true});
+    setTimeout(()=>setToastState(t=>({...t,show:false})),2500);
+  };
+
+  const go = (v) => { setView(v); window.scrollTo(0,0); };
+
+  const openRecipe = (r) => { setSelected(r); go("detail"); };
+  const startCook = (adults,children) => { setCookPortions({adults,children}); go("cook"); };
+  const deleteRecipe = () => { persist(recipes.filter(r=>r.id!==selected.id)); go("home"); };
+  const addRecipe = (r) => { persist([...recipes,r]); go("home"); };
+  const toggleFav = (id) => {
+    const updated = recipes.map(r=>r.id===id?{...r,fav:!r.fav}:r);
+    persist(updated);
+    if (selected?.id===id) setSelected(s=>({...s,fav:!s.fav}));
+  };
+
+  // Sync selected recipe with recipes state
+  const currentRecipe = selected ? recipes.find(r=>r.id===selected.id)||selected : null;
+
+  return (
+    <div>
+      <div className={`toast${toastState.show?" show":""}`}>{toastState.msg}</div>
+
+      {view==="home" && (
+        <Home
+          recipes={recipes} tab={tab} setTab={setTab}
+          onOpen={openRecipe} onAdd={()=>go("add")}
+          onToggleFav={toggleFav}
+          dark={dark} toggleDark={()=>setDark(d=>!d)}
+        />
+      )}
+      {view==="detail" && currentRecipe && (
+        <Detail
+          recipe={currentRecipe}
+          onBack={()=>go("home")}
+          onCook={startCook}
+          onDelete={deleteRecipe}
+          onToggleFav={toggleFav}
+          toast={showToast}
+        />
+      )}
+      {view==="cook" && currentRecipe && (
+        <Cook
+          recipe={currentRecipe}
+          adults={cookPortions.adults}
+          children={cookPortions.children}
+          onBack={()=>go("detail")}
+        />
+      )}
+      {view==="add" && (
+        <Add onBack={()=>go("home")} onSave={addRecipe}/>
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+</body>
+</html>
