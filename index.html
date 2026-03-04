@@ -8,103 +8,409 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
   <meta name="apple-mobile-web-app-title" content="La Cucina"/>
   <title>La Cucina 🫒</title>
-
-  <!--
-    Fonts: bunny.net — DSGVO-konform, kein Tracking, open source (OFL)
-    Libre Baskerville + Source Sans 3
-    React + Babel: MIT-Lizenz via cdnjs.cloudflare.com
-  -->
-
+  <!-- Fonts: bunny.net — DSGVO-konform, kein Tracking, OFL open source -->
   <link rel="preconnect" href="https://fonts.bunny.net"/>
   <link href="https://fonts.bunny.net/css?family=libre-baskerville:400,400i,700|source-sans-3:300,400,500,600" rel="stylesheet"/>
-
   <style>
-:root {
-  --bg:#ffffff; --bg2:#f7f6f2; --bg3:#f0ede6;
-  --text:#111111; --text2:#555550; --text3:#999990;
-  --border:#e0ddd6; --border2:#ccc9c0;
-  --accent:#3a6e2a; --accent2:#e07030;
-  --star:#d4900a; --red:#c03020;
-  --card-bg:#ffffff; --tab-bg:#f7f6f2;
-  --shadow:0 1px 12px rgba(0,0,0,.07);
-  --shadow2:0 4px 24px rgba(0,0,0,.10);
-}
-[data-theme="dark"] {
-  --bg:#0e0e0e; --bg2:#161616; --bg3:#1e1e1e;
-  --text:#f0ead8; --text2:#a8a090; --text3:#606050;
-  --border:#2a2a22; --border2:#383830;
-  --accent:#8fc93a; --accent2:#e07840;
-  --star:#e0b030; --red:#d04030;
-  --card-bg:#161616; --tab-bg:#1a1a14;
-  --shadow:0 1px 12px rgba(0,0,0,.35);
-  --shadow2:0 4px 24px rgba(0,0,0,.50);
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);transition:background .3s,color .3s;}
-body{display:flex;justify-content:center;font-family:'Source Sans 3',system-ui,sans-serif;}
-#root{width:100%;max-width:430px;min-height:100vh;background:var(--bg);}
-::-webkit-scrollbar{width:0;}
-.serif{font-family:'Libre Baskerville',Georgia,serif;}
-.serif-i{font-family:'Libre Baskerville',Georgia,serif;font-style:italic;}
-.lbl{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);font-weight:600;}
-.fade{animation:fadeUp .38s cubic-bezier(.16,1,.3,1) both;}
-.slide{animation:slideIn .32s cubic-bezier(.16,1,.3,1) both;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-@keyframes slideIn{from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:translateX(0);}}
-button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'Source Sans 3',sans-serif;font-weight:500;transition:all .16s;border-radius:10px;}
-.btn:active{transform:scale(.96);opacity:.82;}
-.btn-primary{background:var(--text);color:var(--bg);padding:14px 20px;font-size:15px;font-weight:600;width:100%;border-radius:12px;}
-.btn-outline{border:1.5px solid var(--border2);color:var(--text2);padding:9px 16px;font-size:13px;}
-.btn-icon{width:40px;height:40px;border-radius:9px;border:1.5px solid var(--border);color:var(--text2);font-size:17px;display:flex;align-items:center;justify-content:center;}
-input,textarea,select{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Source Sans 3',sans-serif;font-size:14px;padding:11px 14px;width:100%;outline:none;transition:border-color .2s;}
-input:focus,textarea:focus,select:focus{border-color:var(--text);}
-select option{background:var(--bg2);}
-::placeholder{color:var(--text3);}
-.stepper{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;overflow:hidden;}
-.st-btn{width:44px;height:46px;font-size:22px;font-weight:300;color:var(--accent);display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.st-btn:active{background:var(--border);}
-.st-val{flex:1;text-align:center;font-size:22px;font-weight:700;font-family:'Libre Baskerville',serif;color:var(--text);}
-.card{background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .2s,transform .2s;cursor:pointer;}
-.card:active{transform:scale(.985);}
-.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(--border);color:var(--text3);letter-spacing:.5px;}
-hr{border:none;border-top:1.5px solid var(--border);margin:20px 0;}
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--text);color:var(--bg);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;z-index:200;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:150;display:flex;align-items:center;justify-content:center;padding:24px;}
-.modal{background:var(--bg);border:1.5px solid var(--border);border-radius:18px;padding:28px;max-width:320px;width:100%;}
-.tabbar{display:flex;background:var(--tab-bg);border-top:1.5px solid var(--border);position:sticky;bottom:0;z-index:50;}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 14px;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--text3);transition:color .2s;border:none;background:none;cursor:pointer;}
-.tab.active{color:var(--text);}
-.tab-icon{font-size:20px;line-height:1;}
-.pt-safe{padding-top:max(44px,env(safe-area-inset-top,44px));}
-.pb-safe{padding-bottom:max(32px,env(safe-area-inset-bottom,32px));}
-.theme-toggle{width:52px;height:28px;border-radius:14px;border:1.5px solid var(--border2);background:var(--bg3);position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;}
-.theme-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:10px;background:var(--text);transition:all .3s;}
-[data-theme="dark"] .theme-knob{left:25px;}
-.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
-.prog-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.16,1,.3,1);}
-.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:12px;color:var(--text3);}
-  </style>
+    /* ── Themes ── */
+    :root {
+      --bg:#fff; --bg2:#f7f6f2; --bg3:#eeebe4;
+      --text:#111; --text2:#555; --text3:#999;
+      --border:#e0ddd6; --border2:#c8c5be;
+      --accent:#3a6e2a; --star:#c8900a; --red:#b02818;
+      --shadow:0 2px 14px rgba(0,0,0,.07);
+    }
+    [data-dark] {
+      --bg:#0e0e0e; --bg2:#181818; --bg3:#222;
+      --text:#f0ead8; --text2:#a0987e; --text3:#585040;
+      --border:#2a2a20; --border2:#3a3a2e;
+      --accent:#8fc93a; --star:#d4a820; --red:#c83020;
+      --shadow:0 2px 14px rgba(0,0,0,.4);
+    }
 
+```
+/* ── Base ── */
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html, body { min-height:100vh; background:var(--bg); color:var(--text); font-family:'Source Sans 3',system-ui,sans-serif; }
+body { display:flex; justify-content:center; }
+#app { width:100%; max-width:430px; min-height:100vh; background:var(--bg); position:relative; overflow-x:hidden; }
+::-webkit-scrollbar { width:0; }
+img, svg { display:block; }
+button { cursor:pointer; border:none; background:none; color:inherit; font-family:inherit; font-size:inherit; }
+
+/* ── Typography ── */
+.f-serif { font-family:'Libre Baskerville',Georgia,serif; }
+.f-italic { font-family:'Libre Baskerville',Georgia,serif; font-style:italic; }
+.f-label { font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--text3); font-weight:600; }
+
+/* ── Layout helpers ── */
+.pt-safe { padding-top: max(44px, env(safe-area-inset-top, 44px)); }
+.pb-safe { padding-bottom: max(32px, env(safe-area-inset-bottom, 32px)); }
+.flex { display:flex; }
+.col { flex-direction:column; }
+.gap8 { gap:8px; }
+.gap12 { gap:12px; }
+.gap14 { gap:14px; }
+
+/* ── Views ── */
+.view { display:none; min-height:100vh; flex-direction:column; }
+.view.active { display:flex; animation:fadeUp .35s cubic-bezier(.16,1,.3,1); }
+.view.slide-in { animation:slideIn .3s cubic-bezier(.16,1,.3,1); }
+@keyframes fadeUp  { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideIn { from { opacity:0; transform:translateX(16px); } to { opacity:1; transform:translateX(0); } }
+
+/* ── Header ── */
+.page-header {
+  background:var(--bg); border-bottom:1.5px solid var(--border);
+  padding:0 22px;
+}
+.page-header-inner {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  padding:24px 0 20px;
+}
+
+/* ── Theme toggle ── */
+.theme-toggle {
+  width:50px; height:27px; border-radius:14px;
+  border:1.5px solid var(--border2); background:var(--bg3);
+  position:relative; cursor:pointer; flex-shrink:0;
+  transition:background .3s;
+}
+.theme-knob {
+  position:absolute; top:3px; left:3px; width:19px; height:19px;
+  border-radius:50%; background:var(--text); transition:left .3s;
+}
+[data-dark] .theme-knob { left:24px; }
+
+/* ── Tab bar ── */
+.tabbar {
+  display:flex; background:var(--bg2); border-top:1.5px solid var(--border);
+  position:sticky; bottom:0; z-index:40;
+}
+.tab-btn {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding:10px 4px 14px; font-size:10px; font-weight:600; letter-spacing:.5px;
+  color:var(--text3); transition:color .2s; border:none; background:none; cursor:pointer;
+}
+.tab-btn.active { color:var(--text); }
+.tab-btn .tab-icon { font-size:19px; line-height:1.2; }
+
+/* ── Cards ── */
+.card {
+  background:var(--bg); border:1.5px solid var(--border);
+  border-radius:16px; overflow:hidden;
+  transition:box-shadow .2s; cursor:pointer;
+}
+.card:active { opacity:.88; }
+.card-accent { height:3px; }
+.card-body { padding:20px 20px 16px; }
+.card-footer {
+  padding:11px 20px; border-top:1.5px solid var(--border);
+  background:var(--bg2); display:flex; justify-content:space-between; align-items:center;
+}
+
+/* ── Buttons ── */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-family:'Source Sans 3',sans-serif; font-weight:500;
+  transition:opacity .15s, transform .15s; border-radius:11px; cursor:pointer;
+}
+.btn:active { transform:scale(.96); opacity:.8; }
+.btn-primary {
+  background:var(--text); color:var(--bg); width:100%;
+  padding:14px; font-size:15px; font-weight:600; border:none;
+}
+.btn-outline {
+  border:1.5px solid var(--border2); color:var(--text2);
+  padding:8px 15px; font-size:13px; background:none;
+}
+.btn-icon {
+  width:40px; height:40px; border-radius:9px;
+  border:1.5px solid var(--border); color:var(--text2);
+  font-size:17px; background:none; display:inline-flex;
+  align-items:center; justify-content:center;
+}
+.btn-dashed {
+  border:1.5px dashed var(--border2); color:var(--text2);
+  background:none; width:100%; padding:14px; font-size:14px; border-radius:12px;
+}
+.star-btn { font-size:22px; background:none; border:none; transition:transform .15s; }
+.star-btn:active { transform:scale(1.3); }
+
+/* ── Pill tags ── */
+.pill {
+  display:inline-flex; align-items:center; padding:3px 10px;
+  border-radius:20px; font-size:10px; font-weight:600;
+  border:1.5px solid var(--border); color:var(--text3); letter-spacing:.4px;
+}
+
+/* ── Stepper ── */
+.stepper-wrap { flex:1; }
+.stepper-lbl { font-size:11px; color:var(--text3); font-weight:600; text-align:center; letter-spacing:1px; margin-bottom:7px; }
+.stepper-sub { font-size:10px; color:var(--text3); text-align:center; margin-top:5px; }
+.stepper {
+  display:flex; align-items:center;
+  background:var(--bg2); border:1.5px solid var(--border); border-radius:11px; overflow:hidden;
+}
+.st-btn {
+  width:44px; height:46px; font-size:24px; font-weight:300;
+  color:var(--accent); display:flex; align-items:center; justify-content:center;
+  border:none; background:none; cursor:pointer; transition:background .15s;
+}
+.st-btn:active { background:var(--border); }
+.st-val {
+  flex:1; text-align:center; font-size:22px; font-weight:700;
+  font-family:'Libre Baskerville',serif; color:var(--text);
+}
+
+/* ── Inputs ── */
+input, textarea, select {
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:10px; color:var(--text); font-family:'Source Sans 3',sans-serif;
+  font-size:14px; padding:11px 14px; width:100%; outline:none;
+  transition:border-color .2s;
+}
+input:focus, textarea:focus, select:focus { border-color:var(--text); }
+select option { background:var(--bg2); }
+::placeholder { color:var(--text3); }
+
+/* ── Modal ── */
+.modal-bg {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.55); z-index:100;
+  align-items:center; justify-content:center; padding:24px;
+}
+.modal-bg.open { display:flex; animation:fadeUp .2s ease; }
+.modal {
+  background:var(--bg); border:1.5px solid var(--border);
+  border-radius:18px; padding:28px; max-width:320px; width:100%;
+}
+
+/* ── Toast ── */
+#toast {
+  position:fixed; bottom:88px; left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--text); color:var(--bg);
+  padding:10px 22px; border-radius:20px; font-size:13px; font-weight:600;
+  z-index:200; opacity:0; transition:all .28s; pointer-events:none; white-space:nowrap;
+}
+#toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ── Divider ── */
+.divider { border:none; border-top:1.5px solid var(--border); margin:20px 0; }
+
+/* ── Progress bar ── */
+.prog-track { height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+.prog-fill  { height:100%; border-radius:2px; transition:width .4s cubic-bezier(.16,1,.3,1); }
+
+/* ── Step dots ── */
+.step-dots { display:flex; gap:5px; justify-content:center; margin-top:10px; }
+.step-dot  { height:7px; border-radius:4px; cursor:pointer; transition:all .3s; }
+
+/* ── Nutrition grid ── */
+.nutr-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.nutr-cell {
+  background:var(--bg2); border:1.5px solid var(--border);
+  border-radius:11px; padding:12px 14px;
+}
+
+/* ── Empty state ── */
+.empty {
+  display:flex; flex-direction:column; align-items:center;
+  padding:60px 24px; gap:12px; color:var(--text3); text-align:center;
+}
+.empty-icon { font-size:48px; opacity:.3; }
+
+/* ── Misc ── */
+.tip-block {
+  background:var(--bg2); padding:14px 16px;
+  border-radius:0 12px 12px 0;
+}
+.row { display:flex; align-items:center; }
+hr.spacer { border:none; margin:0; }
+```
+
+  </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="app">
 
-<!-- React 18 · MIT-Lizenz · cdnjs (Cloudflare) · kein Tracking -->
+  <!-- ════════════════════════════════════
+       VIEW: HOME
+  ════════════════════════════════════ -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <div id="view-home" class="view active">
+    <!-- Header -->
+    <div class="page-header pt-safe">
+      <div class="page-header-inner">
+        <div>
+          <div class="f-label" style="margin-bottom:8px">La Cucina · Mediterran</div>
+          <div class="f-serif" style="font-size:36px;font-weight:700;line-height:1.05">
+            Meine<br/><span class="f-italic" id="home-title-accent" style="color:var(--accent)">Rezepte</span>
+          </div>
+        </div>
+        <div class="flex col" style="align-items:flex-end;gap:8px;padding-bottom:4px">
+          <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+            <div class="theme-knob" id="theme-knob"></div>
+          </div>
+          <div style="font-size:12px;color:var(--text3)" id="recipe-count"></div>
+        </div>
+      </div>
+    </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+```
+<!-- Recipe list -->
+<div id="recipe-list" style="flex:1;padding:18px 16px 20px;display:flex;flex-direction:column;gap:14px"></div>
 
-<!-- Babel · MIT-Lizenz · cdnjs -->
+<!-- Tab bar -->
+<div class="tabbar pb-safe" id="tabbar">
+  <button class="tab-btn" id="tab-fav" onclick="setTab('fav')"><span class="tab-icon">★</span><span>Favoriten</span></button>
+  <button class="tab-btn" id="tab-fru" onclick="setTab('fru')"><span class="tab-icon">🌅</span><span>Frühstück</span></button>
+  <button class="tab-btn" id="tab-mit" onclick="setTab('mit')"><span class="tab-icon">☀️</span><span>Mittagessen</span></button>
+  <button class="tab-btn active" id="tab-alle" onclick="setTab('alle')"><span class="tab-icon">🍽</span><span>Alle</span></button>
+</div>
+```
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  </div>
 
-<script type="text/babel">
-const {useState, useEffect} = React;
+  <!-- ════════════════════════════════════
+       VIEW: DETAIL
+  ════════════════════════════════════ -->
 
-/* ── Rezeptdaten ── */
+  <div id="view-detail" class="view col">
+    <!-- Top bar -->
+    <div class="pt-safe" style="background:var(--bg);border-bottom:1.5px solid var(--border);padding:0 20px">
+      <div style="padding:14px 0 16px;display:flex;justify-content:space-between;align-items:center">
+        <button class="btn btn-outline" onclick="goHome()">← Zurück</button>
+        <div class="flex gap8" style="align-items:center">
+          <button class="star-btn" id="detail-fav-btn" onclick="toggleFavDetail()">☆</button>
+          <button class="btn-icon" onclick="shareRecipe()" title="Teilen">🔗</button>
+          <button class="btn-icon" id="del-btn" onclick="openDelModal()" style="color:var(--red);border-color:rgba(180,40,24,.2)">🗑</button>
+        </div>
+      </div>
+    </div>
+    <!-- Hero -->
+    <div id="detail-hero" style="padding:24px 22px 22px;border-bottom:1.5px solid var(--border)"></div>
+    <!-- Scrollable content -->
+    <div id="detail-content" style="padding-bottom:120px;overflow-y:auto"></div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       VIEW: COOK
+  ════════════════════════════════════ -->
+
+  <div id="view-cook" class="view col">
+    <div class="pt-safe" id="cook-header" style="border-bottom:1.5px solid var(--border)"></div>
+    <div id="cook-step" style="flex:1;padding:32px 22px 16px;overflow-y:auto"></div>
+    <div style="padding:16px 20px" class="pb-safe">
+      <div class="flex gap12">
+        <button class="btn btn-outline" id="cook-prev" onclick="cookNav(-1)" style="flex:1;padding:14px">← Zurück</button>
+        <button class="btn btn-primary" id="cook-next" onclick="cookNav(1)" style="flex:2;border-radius:11px"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+       VIEW: ADD
+  ════════════════════════════════════ -->
+
+  <div id="view-add" class="view col">
+    <div class="pt-safe" style="background:var(--bg);border-bottom:1.5px solid var(--border);padding:0 20px 20px">
+      <div style="padding-top:20px">
+        <button class="btn btn-outline" onclick="goHome()" style="margin-bottom:18px">← Zurück</button>
+        <div class="f-serif" style="font-size:34px;font-weight:700;line-height:1.1">
+          Neues Rezept<br/><span class="f-italic" style="color:var(--accent)">hinzufügen</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:24px 20px 100px;display:flex;flex-direction:column;gap:18px;overflow-y:auto">
+
+```
+  <div><div class="f-label" style="margin-bottom:7px">Rezeptname *</div>
+    <input type="text" id="add-title" placeholder="z. B. Griechischer Salat"/></div>
+
+  <div><div class="f-label" style="margin-bottom:7px">Untertitel</div>
+    <input type="text" id="add-subtitle" placeholder="z. B. mit Feta & Oliven"/></div>
+
+  <div class="flex gap12">
+    <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Emoji</div>
+      <input type="text" id="add-emoji" value="🍽" style="text-align:center;font-size:24px"/></div>
+    <div style="flex:2"><div class="f-label" style="margin-bottom:7px">Zeit</div>
+      <input type="text" id="add-time" placeholder="30 Min"/></div>
+    <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Port.</div>
+      <input type="number" id="add-portions" value="2" min="1"/></div>
+  </div>
+
+  <div class="flex gap12">
+    <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Schwierigkeit</div>
+      <select id="add-difficulty">
+        <option>Einfach</option><option>Mittel</option><option>Anspruchsvoll</option>
+      </select></div>
+    <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Mahlzeit</div>
+      <select id="add-meal">
+        <option>Frühstück</option><option>Mittagessen</option>
+        <option selected>Abendessen</option><option>Snack</option>
+      </select></div>
+  </div>
+
+  <div><div class="f-label" style="margin-bottom:7px">Diät / Zielgruppe</div>
+    <input type="text" id="add-diet" placeholder="z. B. Vegetarisch, Familie"/></div>
+
+  <div><div class="f-label" style="margin-bottom:7px">Beschreibung</div>
+    <textarea id="add-desc" rows="3" placeholder="Kurze Beschreibung..."></textarea></div>
+
+  <div>
+    <div class="f-label" style="margin-bottom:4px">Zutaten (eine pro Zeile)</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Format: Menge Einheit Name · z. B. „300 g Tomaten"</div>
+    <textarea id="add-ing" rows="6" style="font-family:monospace;font-size:13px"
+      placeholder="300 g Cherrytomaten&#10;3 EL Olivenöl&#10;1 TL Oregano&#10;Salz &amp; Pfeffer"></textarea>
+  </div>
+
+  <div>
+    <div class="f-label" style="margin-bottom:4px">Zubereitungsschritte (ein Schritt pro Zeile)</div>
+    <textarea id="add-steps" rows="5" style="font-family:monospace;font-size:13px"
+      placeholder="Ofen auf 200°C vorheizen.&#10;Gemüse schneiden.&#10;Auf Blech 20 Min backen."></textarea>
+  </div>
+
+  <div><div class="f-label" style="margin-bottom:7px">Tipp (optional)</div>
+    <textarea id="add-tip" rows="2" placeholder="Variation, Aufbewahrung..."></textarea></div>
+
+  <div>
+    <div class="f-label" style="margin-bottom:10px">Akzentfarbe</div>
+    <div id="palette-picker" class="flex gap12" style="flex-wrap:wrap"></div>
+  </div>
+
+  <button class="btn btn-primary" id="save-btn" onclick="saveRecipe()" style="border-radius:12px;margin-top:4px">
+    Rezept speichern
+  </button>
+</div>
+```
+
+  </div>
+
+  <!-- Delete modal -->
+
+  <div class="modal-bg" id="del-modal">
+    <div class="modal">
+      <div class="f-serif" style="font-size:22px;margin-bottom:10px">Rezept löschen?</div>
+      <div style="font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:24px" id="del-msg"></div>
+      <div class="flex gap12">
+        <button class="btn btn-outline" onclick="closeDelModal()" style="flex:1;padding:13px">Abbrechen</button>
+        <button class="btn btn-primary" onclick="confirmDelete()"
+          style="flex:1;padding:13px;background:var(--red);border-radius:10px">Löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+
+  <div id="toast"></div>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
 const DEFAULT_RECIPES = [
   {
     id:1, fav:false,
@@ -136,7 +442,7 @@ const DEFAULT_RECIPES = [
       {title:"Alles kombinieren",desc:"Kichererbsen, Zucchini und Cherrytomaten auf Tellern anrichten. Mozzarella darüber zupfen, Basilikumblätter verteilen."},
       {title:"Dressing drübergießen",desc:"Das Olivenöl-Dressing großzügig darübergießen – sofort genießen!"},
     ],
-    nutrition:{kcal:"480",kh:"32g",ew:"22g",fett:"28g",bs:"9g"},
+    nutrition:{kcal:"480 kcal",kh:"32 g",ew:"22 g",fett:"28 g",bs:"9 g"},
     tip:"Schwarze Oliven oder sonnengetrocknete Tomaten machen es noch aromatischer. Ohne Mozzarella bis zu 2 Tage im Kühlschrank haltbar.",
   },
   {
@@ -170,12 +476,12 @@ const DEFAULT_RECIPES = [
       {title:"Ofen vorheizen",desc:"Backofen auf 200 °C Ober-/Unterhitze vorheizen. Backblech mit Backpapier auslegen."},
       {title:"Gemüse marinieren",desc:"Paprika, Zucchini, Cherrytomaten und Zwiebel auf dem Blech verteilen. Mit Olivenöl, Knoblauch, Oregano, Thymian, Salz und Pfeffer vermengen. 20 Min rösten."},
       {title:"Lachs vorbereiten",desc:"Lachsfilets mit Olivenöl, Zitronensaft, Salz und Pfeffer einreiben."},
-      {title:"Lachs dazulegen",desc:"Nach 20 Min die Lachsfilets auf das Gemüse legen und weitere 12–15 Min backen, bis der Lachs gar ist."},
+      {title:"Lachs dazulegen",desc:"Nach 20 Min die Lachsfilets auf das Gemüse legen und weitere 12–15 Min backen."},
       {title:"Nudeln kochen",desc:"Vollkornnudeln al dente kochen, abgießen und mit 1 EL Olivenöl schwenken."},
       {title:"Anrichten",desc:"Nudeln auf Teller verteilen, Ofengemüse und Lachs darauflegen, mit Basilikum und Parmesan garnieren."},
     ],
-    nutrition:{kcal:"550",kh:"45g",ew:"38g",fett:"22g",bs:"8g"},
-    tip:"Lachs unbedingt auf Gräten prüfen – besonders wenn Kinder mitessen! Alternativ: Hähnchenbrust (5 Min länger backen).",
+    nutrition:{kcal:"550 kcal",kh:"45 g",ew:"38 g",fett:"22 g",bs:"8 g"},
+    tip:"Lachs auf Gräten prüfen – besonders wenn Kinder mitessen! Alternativ: Hähnchenbrust (5 Min länger backen).",
   },
   {
     id:3, fav:true,
@@ -211,463 +517,575 @@ const DEFAULT_RECIPES = [
       {title:"Backen",desc:"12–15 Min backen, bis der Käse goldbraun blubbert."},
       {title:"Fertigstellen",desc:"Mit 1 EL Olivenöl beträufeln, Basilikum darüber – sofort servieren!"},
     ],
-    nutrition:{kcal:"520",kh:"52g",ew:"20g",fett:"24g",bs:"6g"},
+    nutrition:{kcal:"520 kcal",kh:"52 g",ew:"20 g",fett:"24 g",bs:"6 g"},
     tip:"Kinder den Belag selbst auflegen lassen – das macht riesigen Spaß! Mit Feta statt Mozzarella schmeckt es noch würziger.",
   },
 ];
 
 const PALETTE = ["#5a8a30","#b05820","#9a7010","#20608a","#7a3090","#8a2020"];
 
-/* ── Helpers ── */
-function scaleAmt(a,s){
-  if(!a||a===0)return null;
-  const v=a*s;
-  if(v<=0.2)return"⅛";if(v<=0.35)return"¼";if(v<=0.6)return"½";
-  if(v<=0.85)return"¾";if(v<=1.15)return"1";if(v<=1.65)return"1½";
-  if(v<=10)return(Math.round(v*2)/2).toString().replace(".5","½").replace(".0","");
-  return Math.round(v).toString();
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let recipes = [];
+let currentTab = "alle";
+let selectedId = null;
+let cookStep = 0;
+let cookAdults = 2;
+let cookChildren = 0;
+let detailAdults = 2;
+let detailChildren = 0;
+let addAccentIdx = 0;
+let isDark = false;
+
+/* ══════════════════════════════════════
+   PERSISTENCE
+══════════════════════════════════════ */
+function loadData() {
+  try {
+    const d = localStorage.getItem("lacucina_v5");
+    if (d) { const p = JSON.parse(d); if (p && p.length) { recipes = p; return; } }
+  } catch(e) {}
+  recipes = JSON.parse(JSON.stringify(DEFAULT_RECIPES));
 }
-function fmtIng(item,sc){
-  const s=scaleAmt(item.a,sc);
-  if(!s)return item.n;
-  return[s,item.u,item.n].filter(Boolean).join(" ");
+function saveData() {
+  try { localStorage.setItem("lacucina_v5", JSON.stringify(recipes)); } catch(e) {}
 }
-function buildShare(r,adults,children){
-  const sc=(adults+children*0.5)/r.basePortions;
-  let t=`🫒 ${r.title}${r.subtitle?" "+r.subtitle:""}\n⏱ ${r.time}  ·  👥 ${adults} Erw.${children>0?` + ${children} Kinder`:""}\n\nZUTATEN:\n`;
-  r.ingredients.forEach(g=>{t+=`\n${g.group}:\n`;g.items.forEach(i=>{t+=`· ${fmtIng(i,sc)}\n`;});});
-  t+=`\nZUBEREITUNG:\n`;
-  r.steps.forEach((s,i)=>{t+=`\n${i+1}. ${s.title}\n${s.desc}\n`;});
-  if(r.tip)t+=`\n💡 ${r.tip}`;
-  return t;
+function loadTheme() {
+  try { isDark = localStorage.getItem("lacucina_theme") === "dark"; } catch(e) {}
+  applyTheme();
+}
+function applyTheme() {
+  if (isDark) document.documentElement.setAttribute("data-dark","");
+  else document.documentElement.removeAttribute("data-dark");
+}
+function toggleTheme() {
+  isDark = !isDark;
+  applyTheme();
+  try { localStorage.setItem("lacucina_theme", isDark ? "dark" : "light"); } catch(e) {}
 }
 
-/* ── Stepper ── */
-function Stepper({label,sub,val,set,min=0,max=20}){
-  return(
-    <div style={{flex:1}}>
-      <div style={{fontSize:11,color:"var(--text3)",marginBottom:7,fontWeight:600,textAlign:"center",letterSpacing:1}}>{label}</div>
-      <div className="stepper">
-        <button className="st-btn btn" onClick={()=>set(Math.max(min,val-1))}>−</button>
-        <div className="st-val">{val}</div>
-        <button className="st-btn btn" onClick={()=>set(Math.min(max,val+1))}>+</button>
-      </div>
-      {sub&&<div style={{fontSize:10,color:"var(--text3)",marginTop:5,textAlign:"center"}}>{sub}</div>}
-    </div>
-  );
+/* ══════════════════════════════════════
+   HELPERS
+══════════════════════════════════════ */
+function scaleAmt(a, s) {
+  if (!a || a === 0) return null;
+  const v = a * s;
+  if (v <= 0.2) return "⅛";
+  if (v <= 0.35) return "¼";
+  if (v <= 0.6) return "½";
+  if (v <= 0.85) return "¾";
+  if (v <= 1.15) return "1";
+  if (v <= 1.65) return "1½";
+  if (v <= 2.15) return "2";
+  if (v <= 2.65) return "2½";
+  if (v <= 10) {
+    const r = Math.round(v * 2) / 2;
+    return r % 1 === 0 ? String(r) : String(r).replace(".5","½");
+  }
+  return String(Math.round(v));
+}
+function fmtIng(item, sc) {
+  const s = scaleAmt(item.a, sc);
+  if (!s) return item.n;
+  return [s, item.u, item.n].filter(Boolean).join(" ");
+}
+function getRecipe(id) { return recipes.find(r => r.id === id); }
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2400);
+}
+function goTo(viewId, slide) {
+  document.querySelectorAll(".view").forEach(v => {
+    v.classList.remove("active","slide-in");
+  });
+  const v = document.getElementById(viewId);
+  v.classList.add("active");
+  if (slide) v.classList.add("slide-in");
+  window.scrollTo(0,0);
+}
+function e(tag, cls, html, style) {
+  const el = document.createElement(tag);
+  if (cls) el.className = cls;
+  if (html !== undefined) el.innerHTML = html;
+  if (style) el.style.cssText = style;
+  return el;
 }
 
-/* ── Tab Bar ── */
-const TABS=[
-  {id:"fav",icon:"★",label:"Favoriten"},
-  {id:"fru",icon:"🌅",label:"Frühstück"},
-  {id:"mit",icon:"☀️",label:"Mittagessen"},
-  {id:"alle",icon:"🍽",label:"Alle"},
-];
-function TabBar({active,set}){
-  return(
-    <div className="tabbar pb-safe">
-      {TABS.map(t=>(
-        <button key={t.id} className={`tab${active===t.id?" active":""}`} onClick={()=>set(t.id)}>
-          <span className="tab-icon">{t.icon}</span>
-          <span>{t.label}</span>
-        </button>
-      ))}
-    </div>
-  );
+/* ══════════════════════════════════════
+   HOME
+══════════════════════════════════════ */
+function setTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("tab-"+tab).classList.add("active");
+  renderList();
 }
 
-/* ── Home ── */
-function Home({recipes,tab,setTab,onOpen,onAdd,onToggleFav,dark,toggleDark}){
-  const filtered=recipes.filter(r=>{
-    if(tab==="fav")return r.fav;
-    if(tab==="fru")return r.meal==="Frühstück";
-    if(tab==="mit")return r.meal==="Mittagessen";
+function renderList() {
+  const list = document.getElementById("recipe-list");
+  list.innerHTML = "";
+  document.getElementById("recipe-count").textContent = recipes.length + " Rezepte";
+
+  const filtered = recipes.filter(r => {
+    if (currentTab === "fav") return r.fav;
+    if (currentTab === "fru") return r.meal === "Frühstück";
+    if (currentTab === "mit") return r.meal === "Mittagessen";
     return true;
   });
-  return(
-    <div className="fade" style={{minHeight:"100vh",display:"flex",flexDirection:"column"}}>
-      {/* Header */}
-      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 22px"}}>
-        <div style={{paddingTop:24,paddingBottom:20,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
-          <div>
-            <div className="lbl" style={{marginBottom:8}}>La Cucina · Mediterran</div>
-            <div className="serif" style={{fontSize:36,fontWeight:700,lineHeight:1.05,color:"var(--text)"}}>
-              Meine<br/><span className="serif-i" style={{color:"var(--accent)"}}>Rezepte</span>
-            </div>
-          </div>
-          <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:8,paddingBottom:4}}>
-            <div className="theme-toggle" onClick={toggleDark}>
-              <div className="theme-knob"/>
-            </div>
-            <div style={{fontSize:12,color:"var(--text3)"}}>{recipes.length} Rezepte</div>
-          </div>
-        </div>
-      </div>
 
-      {/* List */}
-      <div style={{flex:1,padding:"18px 16px 20px",display:"flex",flexDirection:"column",gap:14}}>
-        {filtered.length===0&&(
-          <div className="empty">
-            <div style={{fontSize:48,opacity:.35}}>{tab==="fav"?"★":tab==="fru"?"🌅":tab==="mit"?"☀️":"🍽"}</div>
-            <div className="serif-i" style={{fontSize:20,color:"var(--text3)"}}>{tab==="fav"?"Noch keine Favoriten":"Keine Rezepte hier"}</div>
-            <div style={{fontSize:13,color:"var(--text3)",textAlign:"center",lineHeight:1.6}}>
-              {tab==="fav"?"Tippe auf ☆ in einem Rezept,\num es hier zu speichern.":"Füge neue Rezepte über den Button unten hinzu."}
-            </div>
-          </div>
-        )}
-        {filtered.map((r,i)=>(
-          <div key={r.id} className="card fade" style={{animationDelay:`${i*.06}s`}} onClick={()=>onOpen(r)}>
-            <div style={{height:3,background:r.accent}}/>
-            <div style={{padding:"20px 20px 16px"}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:12}}>
-                <div style={{fontSize:38,lineHeight:1}}>{r.emoji}</div>
-                <button onClick={e=>{e.stopPropagation();onToggleFav(r.id);}} style={{fontSize:22,color:r.fav?"var(--star)":"var(--border2)",transition:"color .2s,transform .2s"}} onTouchStart={e=>e.currentTarget.style.transform="scale(1.3)"} onTouchEnd={e=>e.currentTarget.style.transform=""}>
-                  {r.fav?"★":"☆"}
-                </button>
-              </div>
-              <div className="serif" style={{fontSize:20,fontWeight:700,lineHeight:1.2,color:"var(--text)"}}>{r.title}</div>
-              {r.subtitle&&<div className="serif-i" style={{fontSize:14,color:"var(--text2)",marginTop:2}}>{r.subtitle}</div>}
-              <div style={{marginTop:10,fontSize:13,color:"var(--text2)",lineHeight:1.6,overflow:"hidden",display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical"}}>
-                {r.description}
-              </div>
-              <div style={{marginTop:14,display:"flex",gap:12,flexWrap:"wrap",alignItems:"center"}}>
-                {[["⏱",r.time],["👥",r.basePortions+" Port."],["✓",r.difficulty]].map(([ic,v])=>(
-                  <div key={v} style={{fontSize:12,color:"var(--text3)",display:"flex",alignItems:"center",gap:3}}>
-                    <span>{ic}</span><span>{v}</span>
-                  </div>
-                ))}
-                {r.fav&&<span style={{fontSize:11,color:"var(--star)",fontWeight:700,marginLeft:"auto"}}>★ Favorit</span>}
-              </div>
-            </div>
-            <div style={{padding:"11px 20px",borderTop:"1.5px solid var(--border)",background:"var(--bg2)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <span style={{fontSize:11,color:"var(--text3)",fontWeight:600,letterSpacing:.5}}>{r.diet}</span>
-              <span style={{fontSize:13,color:r.accent,fontWeight:700}}>Öffnen →</span>
-            </div>
-          </div>
-        ))}
-        <button className="btn btn-primary" onClick={onAdd}
-          style={{marginTop:4,border:"1.5px dashed var(--border2)",background:"transparent",color:"var(--text2)",fontSize:14}}>
-          + Neues Rezept hinzufügen
-        </button>
+  if (filtered.length === 0) {
+    const icons = {fav:"★",fru:"🌅",mit:"☀️",alle:"🍽"};
+    const msgs = {
+      fav:"Noch keine Favoriten\n\nTippe auf ☆ in einem Rezept, um es hier zu speichern.",
+      fru:"Noch keine Frühstücksrezepte.",
+      mit:"Noch keine Mittagsrezepte.",
+      alle:"Noch keine Rezepte vorhanden."
+    };
+    const em = e("div","empty");
+    em.innerHTML = `<div class="empty-icon">${icons[currentTab]}</div>
+      <div class="f-serif" style="font-size:20px;font-style:italic;color:var(--text3)">${currentTab==="fav"?"Noch keine Favoriten":"Keine Rezepte hier"}</div>
+      <div style="font-size:13px;color:var(--text3);line-height:1.6">${currentTab==="fav"?"Tippe auf ☆ in einem Rezept,<br>um es hier zu speichern.":"Füge neue Rezepte über den Button unten hinzu."}</div>`;
+    list.appendChild(em);
+  }
+
+  filtered.forEach((r, i) => {
+    const card = e("div","card");
+    card.style.animationDelay = (i * 0.06) + "s";
+
+    // Accent strip
+    const strip = e("div","card-accent");
+    strip.style.background = r.accent;
+    card.appendChild(strip);
+
+    // Body
+    const body = e("div","card-body");
+    body.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+        <div style="font-size:38px;line-height:1">${r.emoji}</div>
+        <button class="star-btn" onclick="event.stopPropagation();toggleFav(${r.id})"
+          style="color:${r.fav?"var(--star)":"var(--border2)"}">${r.fav?"★":"☆"}</button>
       </div>
-      <TabBar active={tab} set={setTab}/>
-    </div>
-  );
+      <div class="f-serif" style="font-size:20px;font-weight:700;line-height:1.2">${r.title}</div>
+      ${r.subtitle ? `<div class="f-italic" style="font-size:14px;color:var(--text2);margin-top:2px">${r.subtitle}</div>` : ""}
+      <div style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">
+        ${r.description}
+      </div>
+      <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <span style="font-size:12px;color:var(--text3)">⏱ ${r.time}</span>
+        <span style="font-size:12px;color:var(--text3)">👥 ${r.basePortions} Port.</span>
+        <span style="font-size:12px;color:var(--text3)">✓ ${r.difficulty}</span>
+        ${r.fav ? `<span style="font-size:11px;color:var(--star);font-weight:700;margin-left:auto">★ Favorit</span>` : ""}
+      </div>`;
+    card.appendChild(body);
+
+    // Footer
+    const foot = e("div","card-footer");
+    foot.innerHTML = `
+      <span style="font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.4px">${r.diet}</span>
+      <span style="font-size:13px;font-weight:700;color:${r.accent}">Öffnen →</span>`;
+    card.appendChild(foot);
+
+    card.addEventListener("click", () => openDetail(r.id));
+    list.appendChild(card);
+  });
+
+  // Add button
+  const addBtn = e("button","btn btn-dashed","+ Neues Rezept hinzufügen");
+  addBtn.style.marginTop = "4px";
+  addBtn.addEventListener("click", openAdd);
+  list.appendChild(addBtn);
 }
 
-/* ── Detail ── */
-function Detail({recipe,onBack,onCook,onDelete,onToggleFav,toast}){
-  const [adults,setAdults]=useState(Math.max(1,Math.ceil(recipe.basePortions/2)));
-  const [children,setChildren]=useState(recipe.basePortions>=4?2:0);
-  const [delModal,setDelModal]=useState(false);
-  const total=adults+children*0.5;
-  const sc=total/recipe.basePortions;
-
-  const share=async()=>{
-    const text=buildShare(recipe,adults,children);
-    if(navigator.share){try{await navigator.share({title:recipe.title,text});return;}catch{}}
-    try{await navigator.clipboard.writeText(text);toast("Rezept kopiert!");}
-    catch{toast("Teilen nicht verfügbar");}
-  };
-
-  return(
-    <div className="slide">
-      {/* Top bar */}
-      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 20px"}}>
-        <div style={{paddingTop:14,paddingBottom:16,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <button className="btn btn-outline" onClick={onBack} style={{fontSize:13,padding:"8px 14px"}}>← Zurück</button>
-          <div style={{display:"flex",gap:8,alignItems:"center"}}>
-            <button onClick={()=>onToggleFav(recipe.id)} style={{fontSize:22,color:recipe.fav?"var(--star)":"var(--border2)",transition:"color .2s"}}>{recipe.fav?"★":"☆"}</button>
-            <button className="btn btn-icon" onClick={share}>🔗</button>
-            <button className="btn btn-icon" onClick={()=>setDelModal(true)} style={{color:"var(--red)",borderColor:"rgba(192,48,32,.2)"}}>🗑</button>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <div style={{borderLeft:`4px solid ${recipe.accent}`,padding:"24px 22px 22px",borderBottom:"1.5px solid var(--border)"}}>
-        <div style={{fontSize:54,marginBottom:14,lineHeight:1}}>{recipe.emoji}</div>
-        <div className="serif" style={{fontSize:30,fontWeight:700,lineHeight:1.15}}>{recipe.title}</div>
-        {recipe.subtitle&&<div className="serif-i" style={{fontSize:16,color:"var(--text2)",marginTop:4}}>{recipe.subtitle}</div>}
-        <div style={{marginTop:12,fontSize:14,color:"var(--text2)",lineHeight:1.75}}>{recipe.description}</div>
-        <div style={{marginTop:16,display:"flex",flexWrap:"wrap",gap:7}}>
-          {[["⏱",recipe.time],["✓",recipe.difficulty],["🍽",recipe.meal],["🌿",recipe.diet]].map(([ic,v])=>(
-            <span key={v} className="pill">{ic} {v}</span>
-          ))}
-          {recipe.fav&&<span className="pill" style={{color:"var(--star)",borderColor:"rgba(212,144,10,.3)"}}>★ Favorit</span>}
-        </div>
-      </div>
-
-      {delModal&&(
-        <div className="modal-bg">
-          <div className="modal">
-            <div className="serif" style={{fontSize:22,marginBottom:10}}>Rezept löschen?</div>
-            <div style={{fontSize:14,color:"var(--text2)",lineHeight:1.65,marginBottom:24}}>„{recipe.title}" wird dauerhaft entfernt.</div>
-            <div style={{display:"flex",gap:10}}>
-              <button className="btn btn-outline" onClick={()=>setDelModal(false)} style={{flex:1,padding:"13px"}}>Abbrechen</button>
-              <button className="btn" onClick={onDelete} style={{flex:1,padding:"13px",background:"var(--red)",color:"#fff",borderRadius:10,fontWeight:600,fontSize:14}}>Löschen</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div style={{paddingBottom:120}}>
-        {/* Portionen */}
-        <div style={{margin:"22px 20px 0",background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:14,padding:"18px"}}>
-          <div className="lbl" style={{marginBottom:14}}>👥 Für wie viele wird gekocht?</div>
-          <div style={{display:"flex",gap:14,marginBottom:16}}>
-            <Stepper label="Erwachsene" sub="je 1 Portion" val={adults} set={setAdults} min={0}/>
-            <Stepper label="Kinder" sub="je ½ Portion" val={children} set={setChildren} min={0}/>
-          </div>
-          <div style={{background:"var(--bg3)",border:"1.5px solid var(--border)",borderRadius:10,padding:"11px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <div>
-              <div style={{fontSize:12,color:"var(--text3)",marginBottom:1}}>Gesamtportionen</div>
-              <div style={{fontSize:11,color:"var(--text3)"}}>{adults>0?`${adults} Erw.`:""}{adults>0&&children>0?" + ":""}{children>0?`${children} Kinder`:""}</div>
-            </div>
-            <div className="serif" style={{fontSize:28,fontWeight:700,color:recipe.accent}}>{total%1===0?total:total.toFixed(1)}</div>
-          </div>
-          {Math.abs(sc-1)>0.06&&<div style={{marginTop:7,fontSize:11,color:"var(--text3)",textAlign:"center"}}>Mengen angepasst · Faktor ×{Math.round(sc*100)/100}</div>}
-        </div>
-
-        {/* Zutaten */}
-        <div style={{padding:"24px 20px 0"}}>
-          <div className="lbl" style={{marginBottom:14}}>🛒 Zutaten</div>
-          {recipe.ingredients.map((g,gi)=>(
-            <div key={gi} style={{marginBottom:22}}>
-              <div style={{fontSize:11,color:"var(--text3)",letterSpacing:1.5,textTransform:"uppercase",marginBottom:10,fontWeight:600,borderBottom:"1.5px solid var(--border)",paddingBottom:6}}>{g.group}</div>
-              {g.items.map((item,ii)=>(
-                <div key={ii} style={{display:"flex",alignItems:"flex-start",gap:12,padding:"9px 0",borderBottom:"1px solid var(--border)"}}>
-                  <div style={{width:4,height:4,borderRadius:"50%",background:recipe.accent,marginTop:9,flexShrink:0}}/>
-                  <div style={{flex:1,fontSize:14,lineHeight:1.45}}>
-                    {item.a>0&&<span className="serif" style={{fontSize:17,fontWeight:700,color:recipe.accent,marginRight:4}}>{scaleAmt(item.a,sc)}{item.u?" "+item.u:""}</span>}
-                    <span style={{color:item.a>0?"var(--text2)":"var(--text3)"}}>{item.n}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-
-        {/* Nährwerte */}
-        <div style={{padding:"0 20px"}}>
-          <hr/>
-          <div className="lbl" style={{marginBottom:14}}>🥗 Nährwerte pro Portion</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            {[["Kalorien",recipe.nutrition.kcal+" kcal"],["Kohlenhydrate",recipe.nutrition.kh],["Eiweiß",recipe.nutrition.ew],["Fett",recipe.nutrition.fett],["Ballaststoffe",recipe.nutrition.bs]].map(([k,v])=>(
-              <div key={k} style={{background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:11,padding:"12px 14px"}}>
-                <div style={{fontSize:10,color:"var(--text3)",marginBottom:4,fontWeight:600,letterSpacing:1,textTransform:"uppercase"}}>{k}</div>
-                <div className="serif" style={{fontSize:20,fontWeight:700,color:recipe.accent}}>{v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Tipp */}
-        {recipe.tip&&(
-          <div style={{padding:"20px 20px 0"}}>
-            <div style={{background:"var(--bg2)",borderLeft:`3px solid ${recipe.accent}`,padding:"14px 16px",borderRadius:"0 12px 12px 0"}}>
-              <div className="lbl" style={{marginBottom:6,color:recipe.accent}}>💡 Tipp</div>
-              <div style={{fontSize:13,color:"var(--text2)",lineHeight:1.75}}>{recipe.tip}</div>
-            </div>
-          </div>
-        )}
-
-        {/* CTA */}
-        <div style={{padding:"24px 20px 0"}}>
-          <button className="btn btn-primary" onClick={()=>onCook(adults,children)} style={{background:recipe.accent,fontSize:15,borderRadius:13}}>
-            👨‍🍳 Jetzt kochen — {adults} Erw.{children>0?` + ${children} Kinder`:""}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+function toggleFav(id) {
+  const r = getRecipe(id);
+  if (!r) return;
+  r.fav = !r.fav;
+  saveData();
+  renderList();
 }
 
-/* ── Cook ── */
-function Cook({recipe,adults,children,onBack}){
-  const [step,setStep]=useState(0);
-  const sc=(adults+children*0.5)/recipe.basePortions;
-  const total=recipe.steps.length;
-  return(
-    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",background:"var(--bg)"}}>
-      <div className="pt-safe" style={{background:"var(--bg2)",borderBottom:"1.5px solid var(--border)"}}>
-        <div style={{padding:"14px 20px 18px"}}>
-          <button className="btn btn-outline" onClick={onBack} style={{marginBottom:16,fontSize:13,padding:"8px 14px"}}>← Rezept</button>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-            <div style={{flex:1,paddingRight:12}}>
-              <div className="lbl" style={{marginBottom:4}}>Koch-Modus</div>
-              <div className="serif" style={{fontSize:19,fontWeight:700,lineHeight:1.2}}>{recipe.title}</div>
-              <div style={{fontSize:12,color:"var(--text3)",marginTop:3}}>👥 {adults} Erw.{children>0?` + ${children} Kinder`:""}</div>
-            </div>
-            <div className="serif" style={{fontSize:40,fontWeight:700,color:recipe.accent,lineHeight:1,whiteSpace:"nowrap"}}>
-              {step+1}<span style={{fontSize:16,color:"var(--text3)",fontWeight:400}}>/{total}</span>
-            </div>
-          </div>
-          <div className="prog-bar" style={{marginTop:14}}>
-            <div className="prog-fill" style={{width:`${((step+1)/total)*100}%`,background:recipe.accent}}/>
-          </div>
-          <div style={{display:"flex",gap:4,marginTop:10,justifyContent:"center"}}>
-            {recipe.steps.map((_,i)=>(
-              <div key={i} onClick={()=>setStep(i)} style={{width:i===step?20:7,height:7,borderRadius:4,background:i<=step?recipe.accent:"var(--border)",transition:"all .3s",cursor:"pointer"}}/>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div key={step} className="fade" style={{flex:1,padding:"32px 22px 16px"}}>
-        <div style={{width:54,height:54,borderRadius:14,border:`2px solid ${recipe.accent}`,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:20}}>
-          <span className="serif" style={{fontSize:26,fontWeight:700,color:recipe.accent}}>{step+1}</span>
-        </div>
-        <div className="serif" style={{fontSize:28,fontWeight:700,marginBottom:16,lineHeight:1.2}}>{recipe.steps[step].title}</div>
-        <div style={{fontSize:16,color:"var(--text2)",lineHeight:1.9}}>{recipe.steps[step].desc}</div>
-        {step===0&&(
-          <div style={{marginTop:30,background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:14,padding:16}}>
-            <div className="lbl" style={{marginBottom:12}}>Alle Zutaten für diese Portion</div>
-            {recipe.ingredients.flatMap(g=>g.items.filter(i=>i.a>0).map((item,ii)=>(
-              <div key={ii} style={{fontSize:13,color:"var(--text2)",padding:"5px 0",borderBottom:"1px solid var(--border)",display:"flex",gap:8}}>
-                <span className="serif" style={{color:recipe.accent,fontWeight:700,fontSize:15,whiteSpace:"nowrap"}}>{scaleAmt(item.a,sc)}{item.u?" "+item.u:""}</span>
-                <span>{item.n}</span>
-              </div>
-            )))}
-          </div>
-        )}
-      </div>
-      <div style={{padding:"16px 20px"}} className="pb-safe">
-        <div style={{display:"flex",gap:10}}>
-          <button className="btn btn-outline" onClick={()=>setStep(s=>Math.max(0,s-1))} disabled={step===0} style={{flex:1,padding:"14px",opacity:step===0?.3:1}}>← Zurück</button>
-          {step<total-1
-            ?<button className="btn" onClick={()=>setStep(s=>s+1)} style={{flex:2,padding:"14px",background:recipe.accent,color:"#fff",borderRadius:11,fontWeight:700,fontSize:15}}>Weiter →</button>
-            :<button className="btn" onClick={onBack} style={{flex:2,padding:"14px",background:"var(--accent)",color:"var(--bg)",borderRadius:11,fontWeight:700,fontSize:15}}>🎉 Guten Appetit!</button>
-          }
-        </div>
-      </div>
-    </div>
-  );
+/* ══════════════════════════════════════
+   DETAIL
+══════════════════════════════════════ */
+function openDetail(id) {
+  selectedId = id;
+  const r = getRecipe(id);
+  if (!r) return;
+  detailAdults = Math.max(1, Math.ceil(r.basePortions / 2));
+  detailChildren = r.basePortions >= 4 ? 2 : 0;
+  renderDetail();
+  goTo("view-detail", true);
 }
 
-/* ── Add ── */
-function Add({onBack,onSave}){
-  const [f,setF]=useState({title:"",subtitle:"",emoji:"🍽",time:"",portions:"2",difficulty:"Einfach",meal:"Abendessen",diet:"",description:"",ingRaw:"",stepsRaw:"",tip:"",ai:0});
-  const [saved,setSaved]=useState(false);
-  const s=(k,v)=>setF(x=>({...x,[k]:v}));
-  const inp={background:"var(--bg2)",border:"1.5px solid var(--border)",borderRadius:10,color:"var(--text)",fontFamily:"'Source Sans 3',sans-serif",fontSize:14,padding:"11px 14px",width:"100%",outline:"none"};
-  const lbl={fontSize:10,color:"var(--text3)",letterSpacing:2,textTransform:"uppercase",marginBottom:7,fontWeight:600,display:"block"};
-  const save=()=>{
-    if(!f.title.trim())return;
-    onSave({
-      id:Date.now(),fav:false,
-      title:f.title.trim(),subtitle:f.subtitle.trim(),
-      emoji:f.emoji||"🍽",time:f.time,
-      basePortions:parseInt(f.portions)||2,
-      difficulty:f.difficulty,meal:f.meal,diet:f.diet,
-      description:f.description,accent:PALETTE[f.ai],
-      ingredients:f.ingRaw?[{group:"Zutaten",items:f.ingRaw.split("\n").filter(Boolean).map(l=>{
-        const m=l.match(/^([\d½¼¾,.]+)\s*([a-zA-ZäöüÄÖÜß]+)?\s+(.+)$/);
-        if(m)return{a:parseFloat(m[1].replace(",",".").replace("½",".5").replace("¼",".25")),u:(m[2]||"").trim(),n:m[3].trim()};
-        return{a:0,u:"",n:l.trim()};
-      })}]:[],
-      steps:f.stepsRaw?f.stepsRaw.split("\n").filter(Boolean).map((t,i)=>({title:`Schritt ${i+1}`,desc:t})):[],
-      nutrition:{kcal:"–",kh:"–",ew:"–",fett:"–",bs:"–"},
-      tip:f.tip,
+function goHome() { goTo("view-home"); renderList(); }
+
+function renderDetail() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+
+  // Fav button
+  const favBtn = document.getElementById("detail-fav-btn");
+  favBtn.textContent = r.fav ? "★" : "☆";
+  favBtn.style.color = r.fav ? "var(--star)" : "var(--border2)";
+
+  // Hero
+  const hero = document.getElementById("detail-hero");
+  hero.style.borderLeft = `4px solid ${r.accent}`;
+  hero.innerHTML = `
+    <div style="font-size:54px;margin-bottom:14px;line-height:1">${r.emoji}</div>
+    <div class="f-serif" style="font-size:30px;font-weight:700;line-height:1.15">${r.title}</div>
+    ${r.subtitle ? `<div class="f-italic" style="font-size:16px;color:var(--text2);margin-top:4px">${r.subtitle}</div>` : ""}
+    <div style="margin-top:12px;font-size:14px;color:var(--text2);line-height:1.75">${r.description}</div>
+    <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:7px">
+      <span class="pill">⏱ ${r.time}</span>
+      <span class="pill">✓ ${r.difficulty}</span>
+      <span class="pill">🍽 ${r.meal}</span>
+      <span class="pill">🌿 ${r.diet}</span>
+      ${r.fav ? `<span class="pill" style="color:var(--star);border-color:rgba(200,144,10,.3)">★ Favorit</span>` : ""}
+    </div>`;
+
+  renderDetailContent();
+}
+
+function renderDetailContent() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  const total = detailAdults + detailChildren * 0.5;
+  const sc = total / r.basePortions;
+  const content = document.getElementById("detail-content");
+
+  // Portion picker
+  let portHTML = `
+    <div style="margin:22px 20px 0;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:18px">
+      <div class="f-label" style="margin-bottom:14px">👥 Für wie viele wird gekocht?</div>
+      <div style="display:flex;gap:14px;margin-bottom:16px">
+        <div class="stepper-wrap">
+          <div class="stepper-lbl">Erwachsene</div>
+          <div class="stepper">
+            <button class="st-btn" onclick="adjPortion('a',-1)">−</button>
+            <div class="st-val" id="adults-val">${detailAdults}</div>
+            <button class="st-btn" onclick="adjPortion('a',1)">+</button>
+          </div>
+          <div class="stepper-sub">je 1 Portion</div>
+        </div>
+        <div class="stepper-wrap">
+          <div class="stepper-lbl">Kinder</div>
+          <div class="stepper">
+            <button class="st-btn" onclick="adjPortion('c',-1)">−</button>
+            <div class="st-val" id="children-val">${detailChildren}</div>
+            <button class="st-btn" onclick="adjPortion('c',1)">+</button>
+          </div>
+          <div class="stepper-sub">je ½ Portion</div>
+        </div>
+      </div>
+      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:1px">Gesamtportionen</div>
+          <div style="font-size:11px;color:var(--text3)">${detailAdults > 0 ? detailAdults+" Erw." : ""}${detailAdults>0&&detailChildren>0?" + ":""}${detailChildren>0?detailChildren+" Kinder":""}</div>
+        </div>
+        <div class="f-serif" style="font-size:28px;font-weight:700;color:${r.accent}">${total%1===0?total:total.toFixed(1)}</div>
+      </div>
+      ${Math.abs(sc-1)>0.06 ? `<div style="margin-top:7px;font-size:11px;color:var(--text3);text-align:center">Mengen angepasst · Faktor ×${Math.round(sc*100)/100}</div>` : ""}
+    </div>`;
+
+  // Ingredients
+  let ingHTML = `<div style="padding:24px 20px 0"><div class="f-label" style="margin-bottom:14px">🛒 Zutaten</div>`;
+  r.ingredients.forEach(g => {
+    ingHTML += `<div style="margin-bottom:22px">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:600;border-bottom:1.5px solid var(--border);padding-bottom:6px">${g.group}</div>`;
+    g.items.forEach(item => {
+      const s = scaleAmt(item.a, sc);
+      ingHTML += `<div style="display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="width:4px;height:4px;border-radius:50%;background:${r.accent};margin-top:9px;flex-shrink:0"></div>
+        <div style="flex:1;font-size:14px;line-height:1.45">
+          ${item.a > 0 ? `<span class="f-serif" style="font-size:17px;font-weight:700;color:${r.accent};margin-right:4px">${s}${item.u?" "+item.u:""}</span>` : ""}
+          <span style="color:${item.a>0?"var(--text2)":"var(--text3)"}">${item.n}</span>
+        </div></div>`;
     });
-    setSaved(true);
-    setTimeout(()=>{setSaved(false);onBack();},1000);
-  };
-  return(
-    <div className="slide">
-      <div className="pt-safe" style={{background:"var(--bg)",borderBottom:"1.5px solid var(--border)",padding:"0 20px 20px"}}>
-        <div style={{paddingTop:20}}>
-          <button className="btn btn-outline" onClick={onBack} style={{marginBottom:18,fontSize:13,padding:"8px 14px"}}>← Zurück</button>
-          <div className="serif" style={{fontSize:34,fontWeight:700,lineHeight:1.1}}>Neues Rezept<br/><span className="serif-i" style={{color:"var(--accent)"}}>hinzufügen</span></div>
-        </div>
-      </div>
-      <div style={{padding:"24px 20px 100px",display:"flex",flexDirection:"column",gap:18}}>
-        <div><label style={lbl}>Rezeptname *</label><input style={inp} value={f.title} onChange={e=>s("title",e.target.value)} placeholder="z. B. Griechischer Salat"/></div>
-        <div><label style={lbl}>Untertitel</label><input style={inp} value={f.subtitle} onChange={e=>s("subtitle",e.target.value)} placeholder="z. B. mit Feta & Oliven"/></div>
-        <div style={{display:"flex",gap:10}}>
-          <div style={{flex:1}}><label style={lbl}>Emoji</label><input style={{...inp,textAlign:"center",fontSize:26}} value={f.emoji} onChange={e=>s("emoji",e.target.value)}/></div>
-          <div style={{flex:2}}><label style={lbl}>Zeit</label><input style={inp} value={f.time} onChange={e=>s("time",e.target.value)} placeholder="30 Min"/></div>
-          <div style={{flex:1}}><label style={lbl}>Port.</label><input style={inp} value={f.portions} onChange={e=>s("portions",e.target.value)} type="number" min="1"/></div>
-        </div>
-        <div style={{display:"flex",gap:10}}>
-          <div style={{flex:1}}><label style={lbl}>Schwierigkeit</label><select style={inp} value={f.difficulty} onChange={e=>s("difficulty",e.target.value)}>{["Einfach","Mittel","Anspruchsvoll"].map(o=><option key={o}>{o}</option>)}</select></div>
-          <div style={{flex:1}}><label style={lbl}>Mahlzeit</label><select style={inp} value={f.meal} onChange={e=>s("meal",e.target.value)}>{["Frühstück","Mittagessen","Abendessen","Snack"].map(o=><option key={o}>{o}</option>)}</select></div>
-        </div>
-        <div><label style={lbl}>Diät / Zielgruppe</label><input style={inp} value={f.diet} onChange={e=>s("diet",e.target.value)} placeholder="z. B. Vegetarisch, Familie"/></div>
-        <div><label style={lbl}>Beschreibung</label><textarea style={{...inp,resize:"vertical"}} value={f.description} onChange={e=>s("description",e.target.value)} rows={3} placeholder="Kurze Beschreibung..."/></div>
-        <div>
-          <label style={lbl}>Zutaten (eine pro Zeile)</label>
-          <div style={{fontSize:11,color:"var(--text3)",marginBottom:7}}>Format: Menge Einheit Name · z. B. „300 g Tomaten"</div>
-          <textarea style={{...inp,resize:"vertical",fontFamily:"monospace",fontSize:13}} value={f.ingRaw} onChange={e=>s("ingRaw",e.target.value)} rows={6} placeholder={"300 g Cherrytomaten\n3 EL Olivenöl\n1 TL Oregano\nSalz & Pfeffer"}/>
-        </div>
-        <div>
-          <label style={lbl}>Zubereitungsschritte (ein Schritt pro Zeile)</label>
-          <textarea style={{...inp,resize:"vertical",fontFamily:"monospace",fontSize:13}} value={f.stepsRaw} onChange={e=>s("stepsRaw",e.target.value)} rows={5} placeholder={"Ofen auf 200°C vorheizen.\nGemüse schneiden.\nAuf Blech 20 Min backen."}/>
-        </div>
-        <div><label style={lbl}>Tipp (optional)</label><textarea style={{...inp,resize:"vertical"}} value={f.tip} onChange={e=>s("tip",e.target.value)} rows={2} placeholder="Variation, Aufbewahrung..."/></div>
-        <div>
-          <label style={lbl}>Akzentfarbe</label>
-          <div style={{display:"flex",gap:10,flexWrap:"wrap",marginTop:4}}>
-            {PALETTE.map((col,i)=>(
-              <div key={col} onClick={()=>s("ai",i)} style={{width:40,height:40,borderRadius:10,background:col,cursor:"pointer",border:f.ai===i?"3px solid var(--text)":"2.5px solid transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"border .15s"}}>
-                {f.ai===i&&<span style={{color:"#fff",fontSize:16,fontWeight:700,textShadow:"0 1px 3px rgba(0,0,0,.4)"}}>✓</span>}
-              </div>
-            ))}
-          </div>
-        </div>
-        <button className="btn btn-primary" onClick={save} style={{background:saved?"var(--accent)":"var(--text)",transition:"background .3s",marginTop:4}}>
-          {saved?"✓ Gespeichert!":"Rezept speichern"}
-        </button>
-      </div>
-    </div>
-  );
+    ingHTML += `</div>`;
+  });
+  ingHTML += `</div>`;
+
+  // Nutrition
+  let nutrHTML = `<div style="padding:0 20px"><hr class="divider"/><div class="f-label" style="margin-bottom:14px">🥗 Nährwerte pro Portion</div><div class="nutr-grid">`;
+  [["Kalorien",r.nutrition.kcal],["Kohlenhydrate",r.nutrition.kh],["Eiweiß",r.nutrition.ew],["Fett",r.nutrition.fett],["Ballaststoffe",r.nutrition.bs]].forEach(([k,v]) => {
+    nutrHTML += `<div class="nutr-cell">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase">${k}</div>
+      <div class="f-serif" style="font-size:20px;font-weight:700;color:${r.accent}">${v}</div></div>`;
+  });
+  nutrHTML += `</div></div>`;
+
+  // Tip
+  let tipHTML = "";
+  if (r.tip) {
+    tipHTML = `<div style="padding:20px 20px 0">
+      <div class="tip-block" style="border-left:3px solid ${r.accent}">
+        <div class="f-label" style="margin-bottom:6px;color:${r.accent}">💡 Tipp</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.75">${r.tip}</div>
+      </div></div>`;
+  }
+
+  // CTA
+  const ctaLabel = `👨‍🍳 Jetzt kochen — ${detailAdults} Erw.${detailChildren > 0 ? " + "+detailChildren+" Kinder" : ""}`;
+  let ctaHTML = `<div style="padding:24px 20px 0">
+    <button class="btn btn-primary" id="cook-btn"
+      style="background:${r.accent};border-radius:13px;font-size:15px"
+      onclick="startCook()">${ctaLabel}</button></div>`;
+
+  content.innerHTML = portHTML + ingHTML + nutrHTML + tipHTML + ctaHTML;
 }
 
-/* ── App Root ── */
-function App(){
-  const [recipes,setRecipes]=useState(DEFAULT_RECIPES);
-  const [view,setView]=useState("home");
-  const [selected,setSelected]=useState(null);
-  const [cookP,setCookP]=useState({adults:2,children:0});
-  const [tab,setTab]=useState("alle");
-  const [dark,setDark]=useState(false);
-  const [toast,setToast]=useState({msg:"",show:false});
-
-  useEffect(()=>{
-    try{
-      const d=localStorage.getItem("lacucina_v4");
-      if(d){const p=JSON.parse(d);if(p?.length)setRecipes(p);}
-      if(localStorage.getItem("lacucina_theme")==="dark")setDark(true);
-    }catch{}
-  },[]);
-
-  useEffect(()=>{
-    document.documentElement.setAttribute("data-theme",dark?"dark":"light");
-    try{localStorage.setItem("lacucina_theme",dark?"dark":"light");}catch{}
-  },[dark]);
-
-  const persist=r=>{try{localStorage.setItem("lacucina_v4",JSON.stringify(r));}catch{}setRecipes(r);};
-  const showToast=msg=>{setToast({msg,show:true});setTimeout(()=>setToast(t=>({...t,show:false})),2500);};
-  const go=v=>{setView(v);window.scrollTo(0,0);};
-  const toggleFav=id=>{
-    const up=recipes.map(r=>r.id===id?{...r,fav:!r.fav}:r);
-    persist(up);
-    if(selected?.id===id)setSelected(s=>({...s,fav:!s.fav}));
-  };
-  const currentRecipe=selected?recipes.find(r=>r.id===selected.id)||selected:null;
-
-  return(
-    <div>
-      <div className={`toast${toast.show?" show":""}`}>{toast.msg}</div>
-      {view==="home"&&<Home recipes={recipes} tab={tab} setTab={setTab} onOpen={r=>{setSelected(r);go("detail");}} onAdd={()=>go("add")} onToggleFav={toggleFav} dark={dark} toggleDark={()=>setDark(d=>!d)}/>}
-      {view==="detail"&&currentRecipe&&<Detail recipe={currentRecipe} onBack={()=>go("home")} onCook={(a,c)=>{setCookP({adults:a,children:c});go("cook");}} onDelete={()=>{persist(recipes.filter(r=>r.id!==selected.id));go("home");}} onToggleFav={toggleFav} toast={showToast}/>}
-      {view==="cook"&&currentRecipe&&<Cook recipe={currentRecipe} adults={cookP.adults} children={cookP.children} onBack={()=>go("detail")}/>}
-      {view==="add"&&<Add onBack={()=>go("home")} onSave={r=>{persist([...recipes,r]);go("home");}}/>}
-    </div>
-  );
+function adjPortion(type, delta) {
+  if (type === "a") detailAdults = Math.max(0, Math.min(20, detailAdults + delta));
+  else detailChildren = Math.max(0, Math.min(20, detailChildren + delta));
+  renderDetailContent();
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+function toggleFavDetail() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  r.fav = !r.fav;
+  saveData();
+  renderDetail();
+}
+
+/* ══════════════════════════════════════
+   SHARE
+══════════════════════════════════════ */
+function shareRecipe() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  const sc = (detailAdults + detailChildren * 0.5) / r.basePortions;
+  let text = `🫒 ${r.title}${r.subtitle?" "+r.subtitle:""}\n`;
+  text += `⏱ ${r.time}  ·  👥 ${detailAdults} Erw.${detailChildren>0?" + "+detailChildren+" Kinder":""}\n`;
+  text += `\nZUTATEN:\n`;
+  r.ingredients.forEach(g => {
+    text += `\n${g.group}:\n`;
+    g.items.forEach(i => { text += `· ${fmtIng(i,sc)}\n`; });
+  });
+  text += `\nZUBEREITUNG:\n`;
+  r.steps.forEach((s,i) => { text += `\n${i+1}. ${s.title}\n${s.desc}\n`; });
+  if (r.tip) text += `\n💡 ${r.tip}`;
+
+  if (navigator.share) {
+    navigator.share({title: r.title, text}).catch(() => copyText(text));
+  } else {
+    copyText(text);
+  }
+}
+function copyText(t) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(t).then(() => showToast("📋 Rezept kopiert!")).catch(() => showToast("Teilen nicht verfügbar"));
+  } else showToast("Teilen nicht verfügbar");
+}
+
+/* ══════════════════════════════════════
+   DELETE
+══════════════════════════════════════ */
+function openDelModal() {
+  const r = getRecipe(selectedId);
+  document.getElementById("del-msg").textContent = `„${r ? r.title : ""}" wird dauerhaft entfernt.`;
+  document.getElementById("del-modal").classList.add("open");
+}
+function closeDelModal() { document.getElementById("del-modal").classList.remove("open"); }
+function confirmDelete() {
+  recipes = recipes.filter(r => r.id !== selectedId);
+  saveData();
+  closeDelModal();
+  goHome();
+  showToast("Rezept gelöscht");
+}
+
+/* ══════════════════════════════════════
+   COOK MODE
+══════════════════════════════════════ */
+function startCook() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  cookAdults = detailAdults;
+  cookChildren = detailChildren;
+  cookStep = 0;
+  renderCook();
+  goTo("view-cook", true);
+}
+
+function renderCook() {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  const total = r.steps.length;
+  const sc = (cookAdults + cookChildren * 0.5) / r.basePortions;
+
+  // Header
+  const pct = ((cookStep + 1) / total * 100).toFixed(1);
+  let dots = "";
+  for (let i = 0; i < total; i++) {
+    dots += `<div class="step-dot" onclick="jumpStep(${i})"
+      style="width:${i===cookStep?20:7}px;background:${i<=cookStep?r.accent:"var(--border)"}"></div>`;
+  }
+  document.getElementById("cook-header").style.background = "var(--bg2)";
+  document.getElementById("cook-header").innerHTML = `
+    <div style="padding:14px 20px 18px">
+      <button class="btn btn-outline" onclick="goTo('view-detail');renderDetail()" style="margin-bottom:16px;font-size:13px;padding:8px 14px">← Rezept</button>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="flex:1;padding-right:12px">
+          <div class="f-label" style="margin-bottom:4px">Koch-Modus</div>
+          <div class="f-serif" style="font-size:19px;font-weight:700;line-height:1.2">${r.title}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:3px">👥 ${cookAdults} Erw.${cookChildren>0?" + "+cookChildren+" Kinder":""}</div>
+        </div>
+        <div class="f-serif" style="font-size:40px;font-weight:700;color:${r.accent};line-height:1;white-space:nowrap">
+          ${cookStep+1}<span style="font-size:16px;color:var(--text3);font-weight:400">/${total}</span>
+        </div>
+      </div>
+      <div class="prog-track" style="margin-top:14px">
+        <div class="prog-fill" style="width:${pct}%;background:${r.accent}"></div>
+      </div>
+      <div class="step-dots">${dots}</div>
+    </div>`;
+
+  // Step
+  const step = r.steps[cookStep];
+  let allIng = "";
+  if (cookStep === 0) {
+    const scaledItems = r.ingredients.flatMap(g => g.items.filter(i => i.a > 0));
+    allIng = `<div style="margin-top:30px;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px">
+      <div class="f-label" style="margin-bottom:12px">Alle Zutaten für diese Portion</div>
+      ${scaledItems.map(item => `
+        <div style="font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px">
+          <span class="f-serif" style="color:${r.accent};font-weight:700;font-size:15px;white-space:nowrap">
+            ${scaleAmt(item.a,sc)}${item.u?" "+item.u:""}
+          </span>
+          <span>${item.n}</span>
+        </div>`).join("")}
+    </div>`;
+  }
+
+  document.getElementById("cook-step").innerHTML = `
+    <div style="width:54px;height:54px;border-radius:14px;border:2px solid ${r.accent};display:flex;align-items:center;justify-content:center;margin-bottom:20px">
+      <span class="f-serif" style="font-size:26px;font-weight:700;color:${r.accent}">${cookStep+1}</span>
+    </div>
+    <div class="f-serif" style="font-size:28px;font-weight:700;margin-bottom:16px;line-height:1.2">${step.title}</div>
+    <div style="font-size:16px;color:var(--text2);line-height:1.9">${step.desc}</div>
+    ${allIng}`;
+
+  // Nav buttons
+  const prev = document.getElementById("cook-prev");
+  const next = document.getElementById("cook-next");
+  prev.style.opacity = cookStep === 0 ? "0.3" : "1";
+  prev.disabled = cookStep === 0;
+  if (cookStep < total - 1) {
+    next.textContent = "Weiter →";
+    next.style.background = r.accent;
+    next.style.color = "#fff";
+  } else {
+    next.textContent = "🎉 Guten Appetit!";
+    next.style.background = "var(--accent)";
+    next.style.color = "var(--bg)";
+  }
+}
+
+function cookNav(dir) {
+  const r = getRecipe(selectedId);
+  if (!r) return;
+  if (dir === -1 && cookStep > 0) { cookStep--; renderCook(); }
+  else if (dir === 1 && cookStep < r.steps.length - 1) { cookStep++; renderCook(); }
+  else if (dir === 1) { goTo("view-detail"); renderDetail(); }
+}
+function jumpStep(i) { cookStep = i; renderCook(); }
+
+/* ══════════════════════════════════════
+   ADD RECIPE
+══════════════════════════════════════ */
+function openAdd() {
+  addAccentIdx = 0;
+  document.getElementById("add-title").value = "";
+  document.getElementById("add-subtitle").value = "";
+  document.getElementById("add-emoji").value = "🍽";
+  document.getElementById("add-time").value = "";
+  document.getElementById("add-portions").value = "2";
+  document.getElementById("add-difficulty").value = "Einfach";
+  document.getElementById("add-meal").value = "Abendessen";
+  document.getElementById("add-diet").value = "";
+  document.getElementById("add-desc").value = "";
+  document.getElementById("add-ing").value = "";
+  document.getElementById("add-steps").value = "";
+  document.getElementById("add-tip").value = "";
+  document.getElementById("save-btn").textContent = "Rezept speichern";
+  renderPalette();
+  goTo("view-add", true);
+}
+
+function renderPalette() {
+  const picker = document.getElementById("palette-picker");
+  picker.innerHTML = "";
+  PALETTE.forEach((col, i) => {
+    const d = document.createElement("div");
+    d.style.cssText = `width:40px;height:40px;border-radius:10px;background:${col};cursor:pointer;
+      display:flex;align-items:center;justify-content:center;transition:border .15s;
+      border:${addAccentIdx===i?"3px solid var(--text)":"2.5px solid transparent"}`;
+    if (addAccentIdx === i) d.innerHTML = `<span style="color:#fff;font-size:16px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4)">✓</span>`;
+    d.addEventListener("click", () => { addAccentIdx = i; renderPalette(); });
+    picker.appendChild(d);
+  });
+}
+
+function parseIngLine(line) {
+  const m = line.match(/^([\d½¼¾,.]+)\s*([a-zA-ZäöüÄÖÜß]+)?\s+(.+)$/);
+  if (m) {
+    const a = parseFloat(m[1].replace(",",".").replace("½",".5").replace("¼",".25").replace("¾",".75"));
+    return {a, u:(m[2]||"").trim(), n:m[3].trim()};
+  }
+  return {a:0, u:"", n:line.trim()};
+}
+
+function saveRecipe() {
+  const title = document.getElementById("add-title").value.trim();
+  if (!title) { showToast("Bitte Rezeptname eingeben"); return; }
+
+  const ingRaw = document.getElementById("add-ing").value;
+  const stepsRaw = document.getElementById("add-steps").value;
+
+  const newRecipe = {
+    id: Date.now(),
+    fav: false,
+    title,
+    subtitle: document.getElementById("add-subtitle").value.trim(),
+    emoji: document.getElementById("add-emoji").value || "🍽",
+    time: document.getElementById("add-time").value,
+    basePortions: parseInt(document.getElementById("add-portions").value) || 2,
+    difficulty: document.getElementById("add-difficulty").value,
+    meal: document.getElementById("add-meal").value,
+    diet: document.getElementById("add-diet").value,
+    description: document.getElementById("add-desc").value,
+    accent: PALETTE[addAccentIdx],
+    ingredients: ingRaw.trim() ? [{
+      group:"Zutaten",
+      items: ingRaw.split("\n").filter(l => l.trim()).map(parseIngLine)
+    }] : [],
+    steps: stepsRaw.trim() ? stepsRaw.split("\n").filter(l => l.trim()).map((t,i) => ({
+      title:`Schritt ${i+1}`, desc:t.trim()
+    })) : [],
+    nutrition:{kcal:"–",kh:"–",ew:"–",fett:"–",bs:"–"},
+    tip: document.getElementById("add-tip").value,
+  };
+
+  recipes.push(newRecipe);
+  saveData();
+
+  const btn = document.getElementById("save-btn");
+  btn.textContent = "✓ Gespeichert!";
+  btn.style.background = "var(--accent)";
+  setTimeout(() => { goHome(); }, 900);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+loadData();
+loadTheme();
+renderList();
 </script>
 
 </body>
