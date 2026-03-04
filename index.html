@@ -9,19 +9,16 @@
   <meta name="apple-mobile-web-app-title" content="La Cucina"/>
   <title>La Cucina 🫒</title>
   <!--
-    Schrift: Fira Code Variable (OFL open source, Nikita Prokopov)
-    → FiraCode-VF.woff2 muss neben dieser Datei im Repository liegen.
+    Schrift: SF Pro (iOS-Systemschrift, kein Download nötig)
     Kein externes CDN · Kein Tracking · Kein Google / Meta / Amazon
     Alle Daten lokal im Browser (localStorage) · DSGVO-konform
   -->
   <style>
-@font-face {
-  font-family:'Fira Code';
-  src:url('./FiraCode-VF.woff2') format('woff2-variations');
-  font-weight:300 700;
-  font-style:normal;
-  font-display:swap;
-}
+/*
+  Schrift: SF Pro (iOS-Systemschrift, auf jedem iPhone eingebaut)
+  Kein Download, kein externer Server, keine Datenweitergabe.
+  Fällt auf Helvetica Neue / Arial auf anderen Geräten zurück.
+*/
 
 /* ── Themes ── */
 :root {
@@ -61,15 +58,15 @@
 
 /* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{min-height:100vh;background:var(–bg);color:var(–text);}
-body{display:flex;justify-content:center;font-family:‘Fira Code’,monospace;}
+html,body{min-height:100vh;background:var(–bg);color:var(–text);font-size:17px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;}
+body{display:flex;justify-content:center;font-family:-apple-system, ‘SF Pro Text’, ‘SF Pro Display’, ‘Helvetica Neue’, Arial, sans-serif;}
 #app{width:100%;max-width:430px;min-height:100vh;background:var(–bg);position:relative;overflow-x:hidden;}
 ::-webkit-scrollbar{width:0;}
 button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;font-size:inherit;}
-input,textarea,select{font-family:‘Fira Code’,monospace;}
+input,textarea,select{font-family:-apple-system, ‘SF Pro Text’, ‘SF Pro Display’, ‘Helvetica Neue’, Arial, sans-serif;}
 
 /* ── Helpers ── */
-.f-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–text3);font-weight:600;}
+.f-label{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(–text3);font-weight:600;}
 .pt-safe{padding-top:max(44px,env(safe-area-inset-top,44px));}
 .pb-safe{padding-bottom:max(32px,env(safe-area-inset-bottom,32px));}
 
@@ -93,16 +90,16 @@ input,textarea,select{font-family:‘Fira Code’,monospace;}
 
 /* ── Tab bar ── */
 .tabbar{display:flex;background:var(–bg2);border-top:1.5px solid var(–border);position:sticky;bottom:0;z-index:40;}
-.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 14px;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(–text3);transition:color .2s;border:none;background:none;cursor:pointer;font-family:‘Fira Code’,monospace;}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 4px 16px;font-size:11px;font-weight:600;letter-spacing:.5px;color:var(–text3);transition:color .2s;border:none;background:none;cursor:pointer;font-family:-apple-system, ‘SF Pro Text’, ‘SF Pro Display’, ‘Helvetica Neue’, Arial, sans-serif;}
 .tab-btn.active{color:var(–text);}
-.tab-icon{font-size:20px;line-height:1.2;}
+.tab-icon{font-size:22px;line-height:1.2;}
 
 /* ══════════════════════════════════════
 APPLE WALLET KARTEN
 ══════════════════════════════════════ */
 .wallet-card{
 background:var(–bg);
-border-radius:22px;
+border-radius:24px;
 overflow:hidden;
 box-shadow:var(–card-shadow);
 cursor:pointer;
@@ -136,7 +133,7 @@ background:rgba(255,255,255,.22);
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:42px;
+font-size:46px;
 line-height:1;
 flex-shrink:0;
 box-shadow:0 2px 12px rgba(0,0,0,.15);
@@ -194,15 +191,15 @@ gap:3px;
 .wallet-stat-val{font-size:13px;font-weight:700;color:var(–text);}
 
 /* ── Buttons ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:‘Fira Code’,monospace;font-weight:500;transition:opacity .15s,transform .15s;border-radius:11px;cursor:pointer;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:-apple-system, ‘SF Pro Text’, ‘SF Pro Display’, ‘Helvetica Neue’, Arial, sans-serif;font-weight:500;transition:opacity .15s,transform .15s;border-radius:11px;cursor:pointer;}
 .btn:active{transform:scale(.96);opacity:.8;}
 .btn-primary{background:var(–acc);color:#fff;width:100%;padding:14px;font-size:14px;font-weight:700;border:none;letter-spacing:.5px;border-radius:13px;}
 .btn-outline{border:1.5px solid var(–border2);color:var(–text2);padding:8px 15px;font-size:13px;background:none;}
-.btn-icon{width:40px;height:40px;border-radius:9px;border:1.5px solid var(–border);color:var(–text2);font-size:17px;background:none;display:inline-flex;align-items:center;justify-content:center;}
+.btn-icon{width:44px;height:44px;border-radius:11px;border:1.5px solid var(–border);color:var(–text2);font-size:17px;background:none;display:inline-flex;align-items:center;justify-content:center;}
 .btn-dashed{border:1.5px dashed var(–border2);color:var(–text2);background:none;width:100%;padding:16px;font-size:13px;border-radius:16px;letter-spacing:.5px;}
 
 /* ── Inputs ── */
-input,textarea,select{background:var(–bg2);border:1.5px solid var(–border);border-radius:10px;color:var(–text);font-size:13px;padding:11px 14px;width:100%;outline:none;transition:border-color .2s;}
+input,textarea,select{background:var(–bg2);border:1.5px solid var(–border);border-radius:10px;color:var(–text);font-size:16px;padding:13px 15px;width:100%;outline:none;transition:border-color .2s;}
 input:focus,textarea:focus,select:focus{border-color:var(–acc);}
 select option{background:var(–bg2);}
 ::placeholder{color:var(–text3);}
@@ -211,7 +208,7 @@ select option{background:var(–bg2);}
 .stepper{display:flex;align-items:center;background:var(–bg2);border:1.5px solid var(–border);border-radius:11px;overflow:hidden;}
 .st-btn{width:46px;height:48px;font-size:24px;font-weight:300;color:var(–acc);display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;transition:background .15s;}
 .st-btn:active{background:var(–border);}
-.st-val{flex:1;text-align:center;font-size:22px;font-weight:700;color:var(–text);}
+.st-val{flex:1;text-align:center;font-size:24px;font-weight:700;color:var(–text);}
 
 /* ── Pill ── */
 .pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(–border);color:var(–text3);letter-spacing:.4px;}
@@ -222,7 +219,7 @@ select option{background:var(–bg2);}
 .modal{background:var(–bg);border:1.5px solid var(–border);border-radius:18px;padding:28px;max-width:340px;width:100%;}
 
 /* ── Toast ── */
-#toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(12px);background:var(–text);color:var(–bg);padding:10px 22px;border-radius:20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;letter-spacing:.5px;}
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(12px);background:var(–text);color:var(–bg);padding:12px 24px;border-radius:22px;font-size:14px;font-weight:600;z-index:300;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;letter-spacing:.5px;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ── Divider ── */
@@ -610,7 +607,7 @@ function renderList(){
   /* Sort row */
   const sortRow=document.createElement('div');
   sortRow.style.cssText='display:flex;justify-content:flex-end;';
-  sortRow.innerHTML=`<button style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text3);font-size:11px;font-weight:600;letter-spacing:.5px;font-family:'Fira Code',monospace;" onclick="openSortOverlay()">
+  sortRow.innerHTML=`<button style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text3);font-size:11px;font-weight:600;letter-spacing:normal;font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;" onclick="openSortOverlay()">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect y="1" width="14" height="2" rx="1" fill="currentColor"/><rect y="6" width="10" height="2" rx="1" fill="currentColor"/><rect y="11" width="6" height="2" rx="1" fill="currentColor"/></svg>
     Sortieren
   </button>`;
