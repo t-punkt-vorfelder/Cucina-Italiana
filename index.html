@@ -9,282 +9,345 @@
   <meta name="apple-mobile-web-app-title" content="La Cucina"/>
   <title>La Cucina 🫒</title>
   <!--
-    Schrift: Fira Code Variable — OFL open source (Nikita Prokopov)
-    Selbst gehostet im GitHub-Repo, kein externer Server, 100% DSGVO-konform.
-    Datei: FiraCode-VF.woff2 — liegt neben dieser index.html im Repository.
+    Schrift: Fira Code Variable (OFL open source, Nikita Prokopov)
+    → FiraCode-VF.woff2 muss neben dieser Datei im Repository liegen.
+    Kein externes CDN · Kein Tracking · Kein Google / Meta / Amazon
+    Alle Daten lokal im Browser (localStorage) · DSGVO-konform
   -->
   <style>
-    @font-face {
-      font-family: 'Fira Code';
-      src: url('./FiraCode-VF.woff2') format('woff2-variations');
-      font-weight: 300 700;
-      font-style: normal;
-      font-display: swap;
-    }
-  </style>
+@font-face {
+  font-family:'Fira Code';
+  src:url('./FiraCode-VF.woff2') format('woff2-variations');
+  font-weight:300 700;
+  font-style:normal;
+  font-display:swap;
+}
 
-  <style>
 /* ── Themes ── */
 :root {
-  --bg:#fafaf8; --bg2:#f2f0ea; --bg3:#e8e5de;
-  --text:#0f0f0e; --text2:#52504a; --text3:#9a9890;
-  --border:#dedad2; --border2:#c0bdb4;
-  --accent:#3a6e2a; --star:#c8900a; --red:#b02818;
-  --shadow:0 2px 16px rgba(0,0,0,.06);
-  --shadow2:0 6px 28px rgba(0,0,0,.10);
+–bg:      #f5f0e6;
+–bg2:     #ede6d6;
+–bg3:     #e4dbc8;
+–text:    #1a1410;
+–text2:   #5a5040;
+–text3:   #a09070;
+–border:  #d8d0bc;
+–border2: #bfb69e;
+–acc:     #d4620a;
+–acc2:    #e8821a;
+–star:    #c89010;
+–red:     #b02818;
+–green:   #2a7a3a;
+–card-shadow: 0 4px 20px rgba(80,40,0,.10);
+–card-hover:  0 8px 32px rgba(80,40,0,.16);
 }
 [data-dark] {
-  --bg:#0d0d0c; --bg2:#171714; --bg3:#201f1c;
-  --text:#f0ead8; --text2:#9a9280; --text3:#504e44;
-  --border:#282620; --border2:#38362e;
-  --accent:#8fc93a; --star:#d4a820; --red:#c83020;
-  --shadow:0 2px 16px rgba(0,0,0,.4);
-  --shadow2:0 6px 28px rgba(0,0,0,.55);
+–bg:      #14110c;
+–bg2:     #1e1a14;
+–bg3:     #28231a;
+–text:    #f0e8d4;
+–text2:   #a09070;
+–text3:   #60584a;
+–border:  #302820;
+–border2: #40362a;
+–acc:     #f07830;
+–acc2:    #e8a040;
+–star:    #d4a820;
+–red:     #c83020;
+–green:   #3ac850;
+–card-shadow: 0 4px 20px rgba(0,0,0,.35);
+–card-hover:  0 8px 32px rgba(0,0,0,.5);
 }
 
 /* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{min-height:100vh;background:var(--bg);color:var(--text);}
-body{display:flex;justify-content:center;font-family:'Fira Code',monospace;}
-#app{width:100%;max-width:430px;min-height:100vh;background:var(--bg);position:relative;}
+html,body{min-height:100vh;background:var(–bg);color:var(–text);}
+body{display:flex;justify-content:center;font-family:‘Fira Code’,monospace;}
+#app{width:100%;max-width:430px;min-height:100vh;background:var(–bg);position:relative;overflow-x:hidden;}
 ::-webkit-scrollbar{width:0;}
 button{cursor:pointer;border:none;background:none;color:inherit;font-family:inherit;font-size:inherit;}
-input,textarea,select{font-family:'Fira Code',monospace;}
+input,textarea,select{font-family:‘Fira Code’,monospace;}
 
-/* ── Typography ── */
-.f-display{font-family:'Fira Code',monospace;}
-.f-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600;font-family:'Fira Code',monospace;}
-
-/* ── Safe areas ── */
+/* ── Helpers ── */
+.f-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–text3);font-weight:600;}
 .pt-safe{padding-top:max(44px,env(safe-area-inset-top,44px));}
 .pb-safe{padding-bottom:max(32px,env(safe-area-inset-bottom,32px));}
 
 /* ── Views ── */
 .view{display:none;min-height:100vh;flex-direction:column;}
 .view.active{display:flex;animation:fadeUp .35s cubic-bezier(.16,1,.3,1);}
-.view.slide-in{animation:slideIn .3s cubic-bezier(.16,1,.3,1);}
+.view.slide{animation:slideIn .3s cubic-bezier(.16,1,.3,1);}
+.view.slide-left{animation:slideLeft .3s cubic-bezier(.16,1,.3,1);}
 @keyframes fadeUp  {from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-@keyframes slideIn {from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideIn {from{opacity:0;transform:translateX(18px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideLeft{from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:translateX(0);}}
 
 /* ── Page header ── */
-.page-header{background:var(--bg);border-bottom:1.5px solid var(--border);padding:0 22px;}
-.page-header-inner{display:flex;justify-content:space-between;align-items:flex-end;padding:24px 0 20px;}
+.page-header{background:var(–bg);border-bottom:1.5px solid var(–border);padding:0 22px;}
+.page-header-inner{display:flex;justify-content:space-between;align-items:flex-end;padding:22px 0 18px;}
 
 /* ── Theme toggle ── */
-.theme-toggle{width:50px;height:27px;border-radius:14px;border:1.5px solid var(--border2);background:var(--bg3);position:relative;cursor:pointer;flex-shrink:0;transition:background .3s;}
-.theme-knob{position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:var(--text);transition:left .3s;}
+.theme-toggle{width:50px;height:27px;border-radius:14px;border:1.5px solid var(–border2);background:var(–bg3);position:relative;cursor:pointer;flex-shrink:0;}
+.theme-knob{position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:var(–text);transition:left .3s;}
 [data-dark] .theme-knob{left:24px;}
 
 /* ── Tab bar ── */
-.tabbar{display:flex;background:var(--bg2);border-top:1.5px solid var(--border);position:sticky;bottom:0;z-index:40;}
-.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 14px;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--text3);transition:color .2s;font-family:'Fira Code',monospace;}
-.tab-btn.active{color:var(--text);}
-.tab-btn .tab-icon{font-size:19px;line-height:1.2;}
+.tabbar{display:flex;background:var(–bg2);border-top:1.5px solid var(–border);position:sticky;bottom:0;z-index:40;}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 14px;font-size:10px;font-weight:600;letter-spacing:.5px;color:var(–text3);transition:color .2s;border:none;background:none;cursor:pointer;font-family:‘Fira Code’,monospace;}
+.tab-btn.active{color:var(–text);}
+.tab-icon{font-size:20px;line-height:1.2;}
 
-/* ── Cards ── */
-.card{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:box-shadow .2s;cursor:pointer;}
-.card:active{opacity:.88;}
-.card-accent{height:3px;}
-.card-body{padding:20px 20px 16px;}
-.card-footer{padding:11px 20px;border-top:1.5px solid var(--border);background:var(--bg2);display:flex;justify-content:space-between;align-items:center;}
+/* ══════════════════════════════════════
+APPLE WALLET KARTEN
+══════════════════════════════════════ */
+.wallet-card{
+background:var(–bg);
+border-radius:22px;
+overflow:hidden;
+box-shadow:var(–card-shadow);
+cursor:pointer;
+transition:transform .2s, box-shadow .2s;
+position:relative;
+}
+.wallet-card:active{transform:scale(.97);}
+
+/* Großer farbiger Header-Bereich */
+.wallet-header{
+position:relative;
+padding:28px 24px 20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+min-height:160px;
+}
+.wallet-header-bg{
+position:absolute;
+inset:0;
+opacity:.15;
+background:radial-gradient(ellipse at 80% 20%, #fff 0%, transparent 70%);
+}
+
+/* Großes Emoji — Apple-Wallet-Icon-Stil */
+.wallet-emoji-wrap{
+width:72px;
+height:72px;
+border-radius:18px;
+background:rgba(255,255,255,.22);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+line-height:1;
+flex-shrink:0;
+box-shadow:0 2px 12px rgba(0,0,0,.15);
+}
+.wallet-title-row{
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+margin-top:4px;
+}
+.wallet-title{
+font-size:20px;
+font-weight:700;
+color:#fff;
+line-height:1.2;
+flex:1;
+padding-right:12px;
+text-shadow:0 1px 4px rgba(0,0,0,.2);
+}
+.wallet-subtitle{
+font-size:12px;
+color:rgba(255,255,255,.75);
+margin-top:2px;
+letter-spacing:.3px;
+}
+.wallet-star{
+font-size:22px;
+color:rgba(255,255,255,.5);
+background:none;
+border:none;
+cursor:pointer;
+transition:color .2s, transform .15s;
+flex-shrink:0;
+padding:2px;
+}
+.wallet-star.on{color:#ffd060;}
+.wallet-star:active{transform:scale(1.3);}
+
+/* Info-Streifen unten auf der Karte */
+.wallet-footer{
+display:flex;
+gap:0;
+border-top:1.5px solid var(–border);
+}
+.wallet-stat{
+flex:1;
+padding:12px 16px;
+border-right:1.5px solid var(–border);
+display:flex;
+flex-direction:column;
+gap:3px;
+}
+.wallet-stat:last-child{border-right:none;}
+.wallet-stat-label{font-size:9px;color:var(–text3);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.wallet-stat-val{font-size:13px;font-weight:700;color:var(–text);}
 
 /* ── Buttons ── */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:'Fira Code',monospace;font-weight:500;transition:opacity .15s,transform .15s;border-radius:11px;cursor:pointer;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:‘Fira Code’,monospace;font-weight:500;transition:opacity .15s,transform .15s;border-radius:11px;cursor:pointer;}
 .btn:active{transform:scale(.96);opacity:.8;}
-.btn-primary{background:var(--text);color:var(--bg);width:100%;padding:14px;font-size:15px;font-weight:600;border:none;}
-.btn-outline{border:1.5px solid var(--border2);color:var(--text2);padding:8px 15px;font-size:13px;background:none;}
-.btn-icon{width:40px;height:40px;border-radius:9px;border:1.5px solid var(--border);color:var(--text2);font-size:17px;background:none;display:inline-flex;align-items:center;justify-content:center;}
-.btn-dashed{border:1.5px dashed var(--border2);color:var(--text2);background:none;width:100%;padding:14px;font-size:14px;border-radius:12px;}
-.star-btn{font-size:22px;background:none;border:none;transition:transform .15s;}
-.star-btn:active{transform:scale(1.3);}
-
-/* ── Sort button ── */
-.sort-btn{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text3);font-size:12px;font-weight:600;letter-spacing:.5px;font-family:'Fira Code',monospace;transition:border-color .2s,color .2s;}
-.sort-btn:active{color:var(--text);border-color:var(--border2);}
-
-/* ── Pill tags ── */
-.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(--border);color:var(--text3);letter-spacing:.4px;font-family:'Epilogue',sans-serif;}
-
-/* ── Stepper ── */
-.stepper-wrap{flex:1;}
-.stepper-lbl{font-size:11px;color:var(--text3);font-weight:600;text-align:center;letter-spacing:1px;margin-bottom:7px;}
-.stepper-sub{font-size:10px;color:var(--text3);text-align:center;margin-top:5px;}
-.stepper{display:flex;align-items:center;background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;overflow:hidden;}
-.st-btn{width:44px;height:46px;font-size:24px;font-weight:300;color:var(--accent);display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;transition:background .15s;}
-.st-btn:active{background:var(--border);}
-.st-val{flex:1;text-align:center;font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);}
+.btn-primary{background:var(–acc);color:#fff;width:100%;padding:14px;font-size:14px;font-weight:700;border:none;letter-spacing:.5px;border-radius:13px;}
+.btn-outline{border:1.5px solid var(–border2);color:var(–text2);padding:8px 15px;font-size:13px;background:none;}
+.btn-icon{width:40px;height:40px;border-radius:9px;border:1.5px solid var(–border);color:var(–text2);font-size:17px;background:none;display:inline-flex;align-items:center;justify-content:center;}
+.btn-dashed{border:1.5px dashed var(–border2);color:var(–text2);background:none;width:100%;padding:16px;font-size:13px;border-radius:16px;letter-spacing:.5px;}
 
 /* ── Inputs ── */
-input,textarea,select{background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;padding:11px 14px;width:100%;outline:none;transition:border-color .2s;}
-input:focus,textarea:focus,select:focus{border-color:var(--text);}
-select option{background:var(--bg2);}
-::placeholder{color:var(--text3);}
+input,textarea,select{background:var(–bg2);border:1.5px solid var(–border);border-radius:10px;color:var(–text);font-size:13px;padding:11px 14px;width:100%;outline:none;transition:border-color .2s;}
+input:focus,textarea:focus,select:focus{border-color:var(–acc);}
+select option{background:var(–bg2);}
+::placeholder{color:var(–text3);}
+
+/* ── Stepper ── */
+.stepper{display:flex;align-items:center;background:var(–bg2);border:1.5px solid var(–border);border-radius:11px;overflow:hidden;}
+.st-btn{width:46px;height:48px;font-size:24px;font-weight:300;color:var(–acc);display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;transition:background .15s;}
+.st-btn:active{background:var(–border);}
+.st-val{flex:1;text-align:center;font-size:22px;font-weight:700;color:var(–text);}
+
+/* ── Pill ── */
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;border:1.5px solid var(–border);color:var(–text3);letter-spacing:.4px;}
 
 /* ── Modal ── */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:center;justify-content:center;padding:24px;}
 .modal-bg.open{display:flex;animation:fadeUp .2s ease;}
-.modal{background:var(--bg);border:1.5px solid var(--border);border-radius:18px;padding:28px;max-width:320px;width:100%;}
+.modal{background:var(–bg);border:1.5px solid var(–border);border-radius:18px;padding:28px;max-width:340px;width:100%;}
 
 /* ── Toast ── */
-#toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:var(--bg);padding:10px 22px;border-radius:20px;font-size:13px;font-weight:600;z-index:300;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;}
+#toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(12px);background:var(–text);color:var(–bg);padding:10px 22px;border-radius:20px;font-size:12px;font-weight:600;z-index:300;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;letter-spacing:.5px;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ── Divider ── */
-.divider{border:none;border-top:1.5px solid var(--border);margin:20px 0;}
+.divider{border:none;border-top:1.5px solid var(–border);margin:18px 0;}
 
 /* ── Progress ── */
-.prog-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-track{height:3px;background:var(–border);border-radius:2px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:2px;transition:width .4s cubic-bezier(.16,1,.3,1);}
-
-/* ── Step dots ── */
 .step-dots{display:flex;gap:5px;justify-content:center;margin-top:10px;}
 .step-dot{height:7px;border-radius:4px;cursor:pointer;transition:all .3s;}
 
-/* ── Nutrition ── */
-.nutr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.nutr-cell{background:var(--bg2);border:1.5px solid var(--border);border-radius:11px;padding:12px 14px;}
+/* ── Empty ── */
+.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:14px;color:var(–text3);text-align:center;}
 
-/* ── Empty state ── */
-.empty{display:flex;flex-direction:column;align-items:center;padding:60px 24px;gap:12px;color:var(--text3);text-align:center;}
-.empty-icon{font-size:48px;opacity:.3;}
+/* ── Sort overlay ── */
+#sort-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);align-items:flex-end;}
+#sort-overlay.open{display:flex;animation:fadeUp .25s ease;}
+#sort-sheet{background:var(–bg);border-radius:24px 24px 0 0;width:100%;max-width:430px;margin:0 auto;max-height:85vh;display:flex;flex-direction:column;animation:sheetUp .32s cubic-bezier(.16,1,.3,1);}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+#sort-sheet-hdr{padding:20px 20px 14px;border-bottom:1.5px solid var(–border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+#sort-list{overflow-y:auto;flex:1;padding:8px 0 16px;}
+.sort-item{display:flex;align-items:center;gap:12px;padding:13px 20px;background:var(–bg);border-bottom:1px solid var(–border);user-select:none;touch-action:none;}
+.sort-item.dragging{background:var(–bg3);border-radius:12px;}
+.sort-handle{display:flex;flex-direction:column;gap:4px;padding:6px 4px;cursor:grab;flex-shrink:0;}
+.sort-handle span{display:block;width:20px;height:2px;background:var(–border2);border-radius:1px;}
+.sort-emoji-sm{font-size:24px;flex-shrink:0;}
+.sort-text{flex:1;min-width:0;}
+.sort-title{font-size:14px;font-weight:600;color:var(–text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sort-sub{font-size:11px;color:var(–text3);margin-top:2px;}
 
 /* ══════════════════════════════════════
-   SORT OVERLAY (Apple Weather Style)
+PASTE EDITOR
 ══════════════════════════════════════ */
-#sort-overlay{
-  display:none;
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,.6);
-  align-items:flex-end;
-  animation:fadeUp .25s ease;
+.editor-area{
+background:var(–bg2);
+border:2px dashed var(–border2);
+border-radius:16px;
+padding:18px;
+position:relative;
+transition:border-color .2s;
 }
-#sort-overlay.open{display:flex;}
-#sort-sheet{
-  background:var(--bg);
-  border-radius:24px 24px 0 0;
-  width:100%;
-  max-width:430px;
-  margin:0 auto;
-  max-height:88vh;
-  display:flex;
-  flex-direction:column;
-  box-shadow:0 -8px 40px rgba(0,0,0,.2);
-  animation:sheetUp .32s cubic-bezier(.16,1,.3,1);
+.editor-area:focus-within{border-color:var(–acc);border-style:solid;}
+.editor-area textarea{
+background:transparent;
+border:none;
+padding:0;
+font-size:13px;
+line-height:1.8;
+resize:none;
+min-height:200px;
+color:var(–text2);
 }
-@keyframes sheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.editor-area textarea:focus{border-color:transparent;}
 
-#sort-sheet-header{
-  padding:20px 20px 16px;
-  border-bottom:1.5px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-  flex-shrink:0;
+/* Preview-Karte im Editor */
+.preview-card{
+background:var(–bg3);
+border:1.5px solid var(–border);
+border-radius:14px;
+overflow:hidden;
 }
-#sort-list{
-  overflow-y:auto;
-  flex:1;
-  padding:8px 0 16px;
-}
+.preview-section{padding:14px 16px;border-bottom:1.5px solid var(–border);}
+.preview-section:last-child{border-bottom:none;}
+.preview-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:700;color:#fff;margin-bottom:8px;letter-spacing:.5px;}
 
-.sort-item{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 20px;
-  background:var(--bg);
-  transition:background .15s, box-shadow .15s, transform .1s;
-  user-select:none;
-  touch-action:none;
-  border-bottom:1px solid var(--border);
-}
-.sort-item.dragging{
-  background:var(--bg3);
-  box-shadow:var(--shadow2);
-  z-index:10;
-  border-radius:12px;
-  opacity:.95;
-}
-.sort-item.drag-over{
-  border-top:2px solid var(--accent);
-}
+/* Nutr grid */
+.nutr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.nutr-cell{background:var(–bg2);border:1.5px solid var(–border);border-radius:11px;padding:12px 14px;}
 
-.sort-handle{
-  display:flex;flex-direction:column;gap:4px;padding:6px 4px;cursor:grab;flex-shrink:0;
-}
-.sort-handle:active{cursor:grabbing;}
-.sort-handle span{
-  display:block;width:20px;height:2px;background:var(--border2);border-radius:1px;
-}
-
-.sort-item-emoji{font-size:24px;flex-shrink:0;}
-.sort-item-text{flex:1;min-width:0;}
-.sort-item-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sort-item-sub{font-size:11px;color:var(--text3);margin-top:2px;}
-.sort-accent-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  </style>
+/* Color palette */
+.color-dot{width:38px;height:38px;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border .15s;}
+</style>
 
 </head>
 <body>
 <div id="app">
 
-  <!-- ════════════════
-       HOME VIEW
-  ════════════════ -->
+  <!-- ═══════════════ HOME ═══════════════ -->
 
   <div id="view-home" class="view active">
     <div class="page-header pt-safe">
       <div class="page-header-inner">
         <div>
           <div class="f-label" style="margin-bottom:8px">La Cucina · Mediterran</div>
-          <div class="f-display" style="font-size:38px;font-weight:800;line-height:1.0">
-            Meine<br/><span id="home-accent" style="color:var(--accent)">Rezepte</span>
+          <div style="font-size:34px;font-weight:700;line-height:1.0">
+            Meine<br/><span style="color:var(--acc)">Rezepte</span>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-bottom:4px">
-          <div class="theme-toggle" onclick="toggleTheme()">
-            <div class="theme-knob"></div>
-          </div>
-          <div style="font-size:12px;color:var(--text3)" id="recipe-count"></div>
+          <div class="theme-toggle" onclick="toggleTheme()"><div class="theme-knob"></div></div>
+          <div style="font-size:11px;color:var(--text3);letter-spacing:.5px" id="recipe-count"></div>
         </div>
       </div>
     </div>
-
-```
-<div id="recipe-list" style="flex:1;padding:18px 16px 20px;display:flex;flex-direction:column;gap:14px"></div>
-
-<div class="tabbar pb-safe">
-  <button class="tab-btn" id="tab-fav" onclick="setTab('fav')"><span class="tab-icon">★</span><span>Favoriten</span></button>
-  <button class="tab-btn" id="tab-fru" onclick="setTab('fru')"><span class="tab-icon">🌅</span><span>Frühstück</span></button>
-  <button class="tab-btn" id="tab-mit" onclick="setTab('mit')"><span class="tab-icon">☀️</span><span>Mittagessen</span></button>
-  <button class="tab-btn active" id="tab-alle" onclick="setTab('alle')"><span class="tab-icon">🍽</span><span>Alle</span></button>
-</div>
-```
-
+    <div id="recipe-list" style="flex:1;padding:16px 16px 20px;display:flex;flex-direction:column;gap:16px"></div>
+    <div class="tabbar pb-safe" id="tabbar">
+      <button class="tab-btn" id="tab-fav" onclick="setTab('fav')"><span class="tab-icon">★</span><span>Favoriten</span></button>
+      <button class="tab-btn" id="tab-fru" onclick="setTab('fru')"><span class="tab-icon">🌅</span><span>Frühstück</span></button>
+      <button class="tab-btn" id="tab-mit" onclick="setTab('mit')"><span class="tab-icon">☀️</span><span>Mittagessen</span></button>
+      <button class="tab-btn active" id="tab-alle" onclick="setTab('alle')"><span class="tab-icon">🍽</span><span>Alle</span></button>
+    </div>
   </div>
 
-  <!-- ════════════════
-       DETAIL VIEW
-  ════════════════ -->
+  <!-- ═══════════════ DETAIL ═══════════════ -->
 
   <div id="view-detail" class="view" style="flex-direction:column">
     <div class="pt-safe" style="background:var(--bg);border-bottom:1.5px solid var(--border);padding:0 20px">
       <div style="padding:14px 0 16px;display:flex;justify-content:space-between;align-items:center">
         <button class="btn btn-outline" onclick="goHome()">← Zurück</button>
         <div style="display:flex;gap:8px;align-items:center">
-          <button class="star-btn" id="detail-fav-btn" onclick="toggleFavDetail()">☆</button>
+          <button class="wallet-star" id="detail-star" onclick="toggleFavDetail()">☆</button>
           <button class="btn-icon" onclick="shareRecipe()">🔗</button>
-          <button class="btn-icon" id="del-btn" onclick="openDelModal()" style="color:var(--red);border-color:rgba(180,40,24,.2)">🗑</button>
+          <button class="btn-icon" onclick="openDelModal()" style="color:var(--red);border-color:rgba(180,40,24,.2)">🗑</button>
         </div>
       </div>
     </div>
-    <div id="detail-hero" style="padding:24px 22px 22px;border-bottom:1.5px solid var(--border)"></div>
-    <div id="detail-content" style="padding-bottom:120px;overflow-y:auto;flex:1"></div>
+    <div id="detail-hero"></div>
+    <div id="detail-content" style="flex:1;overflow-y:auto;padding-bottom:100px"></div>
   </div>
 
-  <!-- ════════════════
-       COOK VIEW
-  ════════════════ -->
+  <!-- ═══════════════ COOK ═══════════════ -->
 
   <div id="view-cook" class="view" style="flex-direction:column">
     <div class="pt-safe" id="cook-header" style="border-bottom:1.5px solid var(--border)"></div>
-    <div id="cook-step" style="flex:1;padding:32px 22px 16px;overflow-y:auto"></div>
+    <div id="cook-step" style="flex:1;padding:28px 22px 16px;overflow-y:auto"></div>
     <div style="padding:16px 20px" class="pb-safe">
       <div style="display:flex;gap:12px">
         <button class="btn btn-outline" id="cook-prev" onclick="cookNav(-1)" style="flex:1;padding:14px">← Zurück</button>
@@ -293,75 +356,139 @@ select option{background:var(--bg2);}
     </div>
   </div>
 
-  <!-- ════════════════
-       ADD VIEW
-  ════════════════ -->
+  <!-- ═══════════════ PASTE EDITOR ═══════════════ -->
 
   <div id="view-add" class="view" style="flex-direction:column">
     <div class="pt-safe" style="background:var(--bg);border-bottom:1.5px solid var(--border);padding:0 20px 20px">
       <div style="padding-top:20px">
         <button class="btn btn-outline" onclick="goHome()" style="margin-bottom:18px">← Zurück</button>
-        <div class="f-display" style="font-size:34px;font-weight:800;line-height:1.05">
-          Neues Rezept<br/><span style="color:var(--accent)">hinzufügen</span>
+        <div style="font-size:28px;font-weight:700;line-height:1.1">
+          Rezept<br/><span style="color:var(--acc)">hinzufügen</span>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-top:6px;line-height:1.6;letter-spacing:.3px">
+          Rezept aus dem Web oder einer App kopieren<br/>und unten einfügen — der Rest passiert automatisch.
         </div>
       </div>
     </div>
-    <div style="padding:24px 20px 100px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;flex:1">
-      <div><div class="f-label" style="margin-bottom:7px">Rezeptname *</div>
-        <input type="text" id="add-title" placeholder="z. B. Griechischer Salat"/></div>
-      <div><div class="f-label" style="margin-bottom:7px">Untertitel</div>
-        <input type="text" id="add-subtitle" placeholder="z. B. mit Feta & Oliven"/></div>
-      <div style="display:flex;gap:12px">
-        <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Emoji</div>
-          <input type="text" id="add-emoji" value="🍽" style="text-align:center;font-size:24px"/></div>
-        <div style="flex:2"><div class="f-label" style="margin-bottom:7px">Zeit</div>
-          <input type="text" id="add-time" placeholder="30 Min"/></div>
-        <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Port.</div>
-          <input type="number" id="add-portions" value="2" min="1"/></div>
-      </div>
-      <div style="display:flex;gap:12px">
-        <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Schwierigkeit</div>
-          <select id="add-difficulty"><option>Einfach</option><option>Mittel</option><option>Anspruchsvoll</option></select></div>
-        <div style="flex:1"><div class="f-label" style="margin-bottom:7px">Mahlzeit</div>
-          <select id="add-meal"><option>Frühstück</option><option>Mittagessen</option><option selected>Abendessen</option><option>Snack</option></select></div>
-      </div>
-      <div><div class="f-label" style="margin-bottom:7px">Diät / Zielgruppe</div>
-        <input type="text" id="add-diet" placeholder="z. B. Vegetarisch, Familie"/></div>
-      <div><div class="f-label" style="margin-bottom:7px">Beschreibung</div>
-        <textarea id="add-desc" rows="3" placeholder="Kurze Beschreibung..."></textarea></div>
-      <div>
-        <div class="f-label" style="margin-bottom:4px">Zutaten (eine pro Zeile)</div>
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Format: Menge Einheit Name · z. B. „300 g Tomaten"</div>
-        <textarea id="add-ing" rows="6" style="font-family:monospace;font-size:13px"
-          placeholder="300 g Cherrytomaten&#10;3 EL Olivenöl&#10;1 TL Oregano&#10;Salz &amp; Pfeffer"></textarea></div>
-      <div>
-        <div class="f-label" style="margin-bottom:4px">Zubereitungsschritte (ein Schritt pro Zeile)</div>
-        <textarea id="add-steps" rows="5" style="font-family:monospace;font-size:13px"
-          placeholder="Ofen auf 200°C vorheizen.&#10;Gemüse schneiden.&#10;Auf Blech 20 Min backen."></textarea></div>
-      <div><div class="f-label" style="margin-bottom:7px">Tipp (optional)</div>
-        <textarea id="add-tip" rows="2" placeholder="Variation, Aufbewahrung..."></textarea></div>
-      <div>
-        <div class="f-label" style="margin-bottom:10px">Akzentfarbe</div>
-        <div id="palette-picker" style="display:flex;gap:12px;flex-wrap:wrap"></div>
-      </div>
-      <button class="btn btn-primary" id="save-btn" onclick="saveRecipe()" style="border-radius:12px;margin-top:4px">Rezept speichern</button>
+    <div style="flex:1;overflow-y:auto;padding:20px 16px 100px;display:flex;flex-direction:column;gap:20px">
+
+```
+  <!-- Paste-Bereich -->
+  <div>
+    <div class="f-label" style="margin-bottom:10px">① Text einfügen</div>
+    <div class="editor-area">
+      <textarea id="paste-input" placeholder="Rezept hier einfügen…&#10;&#10;Beispiel:&#10;Tomaten-Kichererbsen-Salat&#10;&#10;Für 2 Personen · 15 Min&#10;&#10;Zutaten:&#10;300 g Cherrytomaten&#10;1 Dose Kichererbsen&#10;125 g Mozzarella&#10;&#10;Zubereitung:&#10;1. Tomaten halbieren.&#10;2. Kichererbsen abgießen und anbraten.&#10;3. Alles anrichten und mit Olivenöl beträufeln."
+        oninput="livePreview()" rows="10"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn btn-outline" onclick="clearPaste()" style="flex:1;padding:10px;font-size:12px">✕ Leeren</button>
+      <button class="btn btn-primary" onclick="parseAndPreview()" style="flex:2;padding:10px;font-size:13px">🔍 Analysieren</button>
     </div>
   </div>
 
-  <!-- ════════════════
-       SORT OVERLAY
-  ════════════════ -->
+  <!-- Live-Vorschau -->
+  <div id="preview-area" style="display:none">
+    <div class="f-label" style="margin-bottom:10px">② Vorschau & Anpassen</div>
 
-  <div id="sort-overlay" onclick="closeSortIfBg(event)">
+    <!-- Emoji + Farbe -->
+    <div style="display:flex;gap:12px;margin-bottom:16px">
+      <div style="flex:1">
+        <div class="f-label" style="margin-bottom:7px">Symbol</div>
+        <input type="text" id="p-emoji" value="🍽" style="text-align:center;font-size:28px;padding:10px;"/>
+      </div>
+      <div style="flex:1">
+        <div class="f-label" style="margin-bottom:7px">Mahlzeit</div>
+        <select id="p-meal">
+          <option>Frühstück</option><option>Mittagessen</option>
+          <option selected>Abendessen</option><option>Snack</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Erkannte Felder -->
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div>
+        <div class="f-label" style="margin-bottom:7px">Titel</div>
+        <input type="text" id="p-title" placeholder="Rezepttitel"/>
+      </div>
+      <div>
+        <div class="f-label" style="margin-bottom:7px">Untertitel</div>
+        <input type="text" id="p-subtitle" placeholder="z. B. mit Feta & Oliven"/>
+      </div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1">
+          <div class="f-label" style="margin-bottom:7px">Zeit</div>
+          <input type="text" id="p-time" placeholder="30 Min"/>
+        </div>
+        <div style="flex:1">
+          <div class="f-label" style="margin-bottom:7px">Port.</div>
+          <input type="number" id="p-portions" value="2" min="1"/>
+        </div>
+        <div style="flex:1">
+          <div class="f-label" style="margin-bottom:7px">Schwierigkeit</div>
+          <select id="p-diff">
+            <option selected>Einfach</option><option>Mittel</option><option>Anspruchsvoll</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <div class="f-label" style="margin-bottom:7px">Beschreibung</div>
+        <textarea id="p-desc" rows="3" placeholder="Kurze Beschreibung…" style="resize:vertical"></textarea>
+      </div>
+    </div>
+
+    <!-- Kartenfarbe -->
+    <div style="margin-top:16px">
+      <div class="f-label" style="margin-bottom:10px">Kartenfarbe</div>
+      <div id="color-picker" style="display:flex;gap:10px;flex-wrap:wrap"></div>
+    </div>
+
+    <!-- Erkannte Zutaten -->
+    <div style="margin-top:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="f-label">Erkannte Zutaten</div>
+        <div id="ing-count" style="font-size:11px;color:var(--acc);font-weight:600;letter-spacing:.5px"></div>
+      </div>
+      <div id="ing-preview" class="preview-card"></div>
+    </div>
+
+    <!-- Erkannte Schritte -->
+    <div style="margin-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="f-label">Erkannte Schritte</div>
+        <div id="step-count" style="font-size:11px;color:var(--acc);font-weight:600;letter-spacing:.5px"></div>
+      </div>
+      <div id="step-preview" class="preview-card"></div>
+    </div>
+
+    <!-- Tipp -->
+    <div style="margin-top:16px">
+      <div class="f-label" style="margin-bottom:7px">Tipp (optional)</div>
+      <textarea id="p-tip" rows="2" placeholder="Variation, Aufbewahrung…" style="resize:vertical"></textarea>
+    </div>
+
+    <!-- Speichern -->
+    <button class="btn btn-primary" id="save-btn" onclick="saveRecipe()" style="margin-top:20px">
+      Rezept speichern
+    </button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- Sort overlay -->
+
+  <div id="sort-overlay" onclick="closeSortBg(event)">
     <div id="sort-sheet">
-      <div id="sort-sheet-header">
+      <div id="sort-sheet-hdr">
         <div>
-          <div class="f-display" style="font-size:20px;font-weight:800">Reihenfolge</div>
-          <div style="font-size:12px;color:var(--text3);margin-top:2px">Halten und ziehen zum Sortieren</div>
+          <div style="font-size:18px;font-weight:700">Reihenfolge</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;letter-spacing:.5px">Halten & ziehen</div>
         </div>
         <div style="display:flex;gap:10px;align-items:center">
-          <button class="btn btn-outline" onclick="sortNewest()" style="font-size:12px;padding:7px 12px">Neueste zuerst</button>
-          <button class="btn btn-primary" onclick="closeSortOverlay()" style="width:auto;padding:9px 18px;font-size:14px">Fertig</button>
+          <button class="btn btn-outline" onclick="sortNewest()" style="font-size:11px;padding:7px 12px">Neueste zuerst</button>
+          <button class="btn btn-primary" onclick="closeSortOverlay()" style="width:auto;padding:9px 18px;font-size:13px">Fertig</button>
         </div>
       </div>
       <div id="sort-list"></div>
@@ -372,11 +499,11 @@ select option{background:var(--bg2);}
 
   <div class="modal-bg" id="del-modal">
     <div class="modal">
-      <div class="f-display" style="font-size:22px;font-weight:800;margin-bottom:10px">Rezept löschen?</div>
-      <div style="font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:24px" id="del-msg"></div>
-      <div style="display:flex;gap:12px">
+      <div style="font-size:20px;font-weight:700;margin-bottom:10px">Rezept löschen?</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:22px" id="del-msg"></div>
+      <div style="display:flex;gap:10px">
         <button class="btn btn-outline" onclick="closeDelModal()" style="flex:1;padding:13px">Abbrechen</button>
-        <button class="btn btn-primary" onclick="confirmDelete()" style="flex:1;padding:13px;background:var(--red);border-radius:10px">Löschen</button>
+        <button class="btn btn-primary" onclick="confirmDelete()" style="flex:1;padding:13px;background:var(--red)">Löschen</button>
       </div>
     </div>
   </div>
@@ -386,747 +513,710 @@ select option{background:var(--bg2);}
 
 <script>
 /* ══════════════════════════════════════
-   DATA
+   STANDARD-REZEPTE
 ══════════════════════════════════════ */
 const DEFAULT_RECIPES = [
-  {
-    id:1, fav:false, sortOrder:2,
-    title:"Warmer Tomaten-Kichererbsen-Salat", subtitle:"mit Mozzarella",
-    emoji:"🥗", time:"15 Min", basePortions:2,
-    difficulty:"Einfach", meal:"Abendessen", diet:"Vegetarisch", accent:"#5a8a30",
-    description:"Saftige Tomaten, cremiger Mozzarella und knackige Kichererbsen – vereint mit bestem Olivenöl. Mediterran, unkompliziert, unwiderstehlich.",
+  {id:1,fav:false,sortOrder:2,emoji:"🥗",title:"Warmer Tomaten-Kichererbsen-Salat",subtitle:"mit Mozzarella",time:"15 Min",basePortions:2,difficulty:"Einfach",meal:"Abendessen",diet:"Vegetarisch",accent:"#c07010",
+    description:"Saftige Tomaten, cremiger Mozzarella und knackige Kichererbsen – vereint mit bestem Olivenöl.",
     ingredients:[
-      {group:"Salat",items:[
-        {a:1,u:"Dose",n:"Kichererbsen (400 g), abgetropft"},
-        {a:300,u:"g",n:"Cherrytomaten, halbiert"},
-        {a:1,u:"",n:"Zucchini, in dünne Scheiben"},
-        {a:125,u:"g",n:"Mozzarella, gezupft"},
-        {a:1,u:"Handvoll",n:"frisches Basilikum"},
-        {a:2,u:"",n:"Knoblauchzehen, fein gehackt"},
-      ]},
-      {group:"Dressing",items:[
-        {a:4,u:"EL",n:"Olivenöl extra vergine"},
-        {a:1,u:"EL",n:"Zitronensaft"},
-        {a:1,u:"TL",n:"getrockneter Oregano"},
-        {a:0,u:"",n:"Salz & schwarzer Pfeffer"},
-        {a:0,u:"",n:"Optional: Chiliflocken"},
-      ]},
+      {group:"Salat",items:[{a:1,u:"Dose",n:"Kichererbsen (400 g), abgetropft"},{a:300,u:"g",n:"Cherrytomaten, halbiert"},{a:1,u:"",n:"Zucchini, in Scheiben"},{a:125,u:"g",n:"Mozzarella, gezupft"},{a:1,u:"Handvoll",n:"frisches Basilikum"},{a:2,u:"",n:"Knoblauchzehen, gehackt"}]},
+      {group:"Dressing",items:[{a:4,u:"EL",n:"Olivenöl extra vergine"},{a:1,u:"EL",n:"Zitronensaft"},{a:1,u:"TL",n:"Oregano"},{a:0,u:"",n:"Salz & Pfeffer"}]},
     ],
     steps:[
-      {title:"Kichererbsen anrösten",desc:"Eine Pfanne bei mittlerer Hitze erhitzen. 2 EL Olivenöl hineingeben, Kichererbsen und Knoblauch ca. 5 Minuten knusprig anbraten. Mit Salz, Pfeffer und Oregano würzen."},
-      {title:"Zucchini grillen",desc:"Zucchinischeiben in die gleiche Pfanne geben und 2–3 Minuten pro Seite braten, bis sie goldbraun sind. Beiseitestellen."},
-      {title:"Dressing anrühren",desc:"Olivenöl, Zitronensaft, Salz, Pfeffer und ggf. Chiliflocken in einer kleinen Schüssel verrühren."},
-      {title:"Alles kombinieren",desc:"Kichererbsen, Zucchini und Cherrytomaten auf Tellern anrichten. Mozzarella darüber zupfen, Basilikumblätter verteilen."},
-      {title:"Dressing drübergießen",desc:"Das Olivenöl-Dressing großzügig darübergießen – sofort genießen!"},
+      {title:"Anrösten",desc:"Olivenöl erhitzen, Kichererbsen und Knoblauch 5 Min knusprig anbraten. Mit Salz, Pfeffer, Oregano würzen."},
+      {title:"Zucchini",desc:"Zucchinischeiben 2–3 Min pro Seite goldbraun braten. Beiseitestellen."},
+      {title:"Dressing",desc:"Olivenöl, Zitronensaft, Salz, Pfeffer verrühren."},
+      {title:"Anrichten",desc:"Alles auf Tellern anrichten, Mozzarella zupfen, Basilikum und Dressing drüber."},
     ],
-    nutrition:{kcal:"480 kcal",kh:"32 g",ew:"22 g",fett:"28 g",bs:"9 g"},
-    tip:"Schwarze Oliven oder sonnengetrocknete Tomaten machen es noch aromatischer. Ohne Mozzarella bis zu 2 Tage im Kühlschrank haltbar.",
-  },
-  {
-    id:2, fav:false, sortOrder:1,
-    title:"Mediterranes Ofengemüse mit Lachsfilet", subtitle:"& Vollkornnudeln",
-    emoji:"🐟", time:"40 Min", basePortions:4,
-    difficulty:"Mittel", meal:"Abendessen", diet:"Familie", accent:"#b05820",
-    description:"Zartes Lachsfilet auf aromatischem Ofengemüse – bunt, nahrhaft und perfekt für die ganze Familie. Der Ofen macht die meiste Arbeit.",
+    nutrition:{kcal:"480 kcal",kh:"32 g",ew:"22 g",fett:"28 g",bs:"9 g"},tip:"Schwarze Oliven oder sonnengetrocknete Tomaten machen es noch aromatischer."},
+  {id:2,fav:false,sortOrder:1,emoji:"🐟",title:"Ofengemüse mit Lachsfilet",subtitle:"& Vollkornnudeln",time:"40 Min",basePortions:4,difficulty:"Mittel",meal:"Abendessen",diet:"Familie",accent:"#d4620a",
+    description:"Zartes Lachsfilet auf aromatischem Ofengemüse – perfekt für die ganze Familie.",
     ingredients:[
-      {group:"Gemüse & Lachs",items:[
-        {a:4,u:"Stück",n:"Lachsfilets (à 150 g)"},
-        {a:2,u:"",n:"Paprika (rot & gelb), in Streifen"},
-        {a:2,u:"",n:"Zucchini, in Halbmonde"},
-        {a:250,u:"g",n:"Cherrytomaten, ganz"},
-        {a:1,u:"",n:"rote Zwiebel, in Spalten"},
-        {a:5,u:"EL",n:"Olivenöl extra vergine"},
-        {a:3,u:"",n:"Knoblauchzehen, fein gehackt"},
-        {a:0.5,u:"",n:"Zitrone, Saft"},
-        {a:1,u:"TL",n:"Oregano"},
-        {a:1,u:"TL",n:"Thymian"},
-        {a:0,u:"",n:"Salz & Pfeffer"},
-      ]},
-      {group:"Nudeln",items:[
-        {a:320,u:"g",n:"Vollkornnudeln (Penne)"},
-        {a:1,u:"EL",n:"Olivenöl extra vergine"},
-        {a:0,u:"",n:"Frisches Basilikum"},
-        {a:0,u:"",n:"Parmesan (optional)"},
-      ]},
+      {group:"Gemüse & Lachs",items:[{a:4,u:"Stück",n:"Lachsfilets (à 150 g)"},{a:2,u:"",n:"Paprika, in Streifen"},{a:2,u:"",n:"Zucchini, in Halbmonde"},{a:250,u:"g",n:"Cherrytomaten"},{a:5,u:"EL",n:"Olivenöl"},{a:1,u:"TL",n:"Oregano"},{a:0,u:"",n:"Salz & Pfeffer"}]},
+      {group:"Nudeln",items:[{a:320,u:"g",n:"Vollkornnudeln (Penne)"},{a:0,u:"",n:"Parmesan (optional)"}]},
     ],
     steps:[
-      {title:"Ofen vorheizen",desc:"Backofen auf 200 °C Ober-/Unterhitze vorheizen. Backblech mit Backpapier auslegen."},
-      {title:"Gemüse marinieren",desc:"Paprika, Zucchini, Cherrytomaten und Zwiebel auf dem Blech verteilen. Mit Olivenöl, Knoblauch, Oregano, Thymian, Salz und Pfeffer vermengen. 20 Min rösten."},
-      {title:"Lachs vorbereiten",desc:"Lachsfilets mit Olivenöl, Zitronensaft, Salz und Pfeffer einreiben."},
-      {title:"Lachs dazulegen",desc:"Nach 20 Min die Lachsfilets auf das Gemüse legen und weitere 12–15 Min backen."},
-      {title:"Nudeln kochen",desc:"Vollkornnudeln al dente kochen, abgießen und mit 1 EL Olivenöl schwenken."},
-      {title:"Anrichten",desc:"Nudeln auf Teller verteilen, Ofengemüse und Lachs darauflegen, mit Basilikum und Parmesan garnieren."},
+      {title:"Ofen vorheizen",desc:"200 °C Ober-/Unterhitze. Backblech mit Backpapier."},
+      {title:"Gemüse rösten",desc:"Gemüse mit Olivenöl und Gewürzen 20 Min rösten."},
+      {title:"Lachs dazu",desc:"Lachsfilets auf das Gemüse legen, 12–15 Min backen."},
+      {title:"Nudeln",desc:"Vollkornnudeln al dente kochen, mit Olivenöl schwenken."},
+      {title:"Anrichten",desc:"Nudeln, Gemüse und Lachs anrichten, mit Parmesan garnieren."},
     ],
-    nutrition:{kcal:"550 kcal",kh:"45 g",ew:"38 g",fett:"22 g",bs:"8 g"},
-    tip:"Lachs auf Gräten prüfen – besonders wenn Kinder mitessen! Alternativ: Hähnchenbrust (5 Min länger backen).",
-  },
-  {
-    id:3, fav:true, sortOrder:0,
-    title:"Mediterrane Ofenpizza", subtitle:"auf Fladenbrot",
-    emoji:"🍕", time:"35 Min", basePortions:4,
-    difficulty:"Einfach", meal:"Abendessen", diet:"Vegetarisch · Kinder ♥", accent:"#9a7010",
-    description:"Knusprige Fladenbrote, selbst gemachte Tomatensauce, buntes Gemüse und zerlaufener Mozzarella. Kinder lieben es, den Belag selbst aufzulegen!",
+    nutrition:{kcal:"550 kcal",kh:"45 g",ew:"38 g",fett:"22 g",bs:"8 g"},tip:"Lachs auf Gräten prüfen – besonders wenn Kinder mitessen!"},
+  {id:3,fav:true,sortOrder:0,emoji:"🍕",title:"Mediterrane Ofenpizza",subtitle:"auf Fladenbrot",time:"35 Min",basePortions:4,difficulty:"Einfach",meal:"Abendessen",diet:"Vegetarisch · Kinder ♥",accent:"#a05818",
+    description:"Knusprige Fladenbrote, selbst gemachte Sauce, buntes Gemüse und zerlaufener Mozzarella.",
     ingredients:[
-      {group:"Belag",items:[
-        {a:4,u:"Stück",n:"Fladenbrote (Pide oder Naan)"},
-        {a:2,u:"",n:"Paprika (rot & gelb), in Streifen"},
-        {a:1,u:"",n:"Zucchini, in dünne Scheiben"},
-        {a:200,u:"g",n:"Cherrytomaten, halbiert"},
-        {a:1,u:"",n:"rote Zwiebel, in Ringe"},
-        {a:250,u:"g",n:"Mozzarella, in Scheiben"},
-        {a:50,u:"g",n:"schwarze Oliven (optional)"},
-        {a:1,u:"Handvoll",n:"frisches Basilikum"},
-      ]},
-      {group:"Tomatensauce",items:[
-        {a:1,u:"Dose",n:"gehackte Tomaten (400 g)"},
-        {a:2,u:"",n:"Knoblauchzehen, fein gehackt"},
-        {a:1,u:"TL",n:"Oregano"},
-        {a:1,u:"TL",n:"Zucker"},
-        {a:5,u:"EL",n:"Olivenöl extra vergine"},
-        {a:0,u:"",n:"Salz & Pfeffer"},
-      ]},
+      {group:"Belag",items:[{a:4,u:"Stück",n:"Fladenbrote"},{a:2,u:"",n:"Paprika, in Streifen"},{a:250,u:"g",n:"Mozzarella"},{a:200,u:"g",n:"Cherrytomaten"},{a:1,u:"Handvoll",n:"Basilikum"}]},
+      {group:"Tomatensauce",items:[{a:1,u:"Dose",n:"gehackte Tomaten"},{a:2,u:"",n:"Knoblauchzehen"},{a:1,u:"TL",n:"Oregano"},{a:5,u:"EL",n:"Olivenöl"},{a:0,u:"",n:"Salz & Pfeffer"}]},
     ],
     steps:[
-      {title:"Ofen vorheizen",desc:"Backofen auf 220 °C Ober-/Unterhitze vorheizen."},
-      {title:"Sauce kochen",desc:"2 EL Olivenöl erhitzen, Knoblauch andünsten. Tomaten, Oregano, Zucker, Salz und Pfeffer dazugeben, 8 Min einkochen lassen."},
-      {title:"Gemüse vorbereiten",desc:"Paprika, Zucchini und Zwiebel mit 2 EL Olivenöl, Salz und Pfeffer vermengen."},
-      {title:"Belegen",desc:"Tomatensauce auf die Fladenbrote streichen, Gemüse und Cherrytomaten verteilen, Mozzarella darauflegen."},
-      {title:"Backen",desc:"12–15 Min backen, bis der Käse goldbraun blubbert."},
-      {title:"Fertigstellen",desc:"Mit 1 EL Olivenöl beträufeln, Basilikum darüber – sofort servieren!"},
+      {title:"Ofen vorheizen",desc:"220 °C Ober-/Unterhitze."},
+      {title:"Sauce kochen",desc:"Olivenöl, Knoblauch, Tomaten 8 Min einkochen."},
+      {title:"Belegen",desc:"Sauce auf Fladen, Gemüse und Mozzarella drauf."},
+      {title:"Backen",desc:"12–15 Min backen bis Käse goldbraun ist."},
+      {title:"Servieren",desc:"Mit Olivenöl und Basilikum – sofort genießen!"},
     ],
-    nutrition:{kcal:"520 kcal",kh:"52 g",ew:"20 g",fett:"24 g",bs:"6 g"},
-    tip:"Kinder den Belag selbst auflegen lassen – das macht riesigen Spaß! Mit Feta statt Mozzarella schmeckt es noch würziger.",
-  },
+    nutrition:{kcal:"520 kcal",kh:"52 g",ew:"20 g",fett:"24 g",bs:"6 g"},tip:"Kinder den Belag selbst auflegen lassen!"},
 ];
 
-const PALETTE = ["#5a8a30","#b05820","#9a7010","#20608a","#7a3090","#8a2020"];
+const PALETTE = ["#d4620a","#c07010","#a05818","#1a6a8a","#6a2a88","#8a2020","#2a7a4a","#404840"];
 
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
-let recipes = [];
-let currentTab = "alle";
-let selectedId = null;
-let cookStep = 0;
-let cookAdults = 2;
-let cookChildren = 0;
-let detailAdults = 2;
-let detailChildren = 0;
-let addAccentIdx = 0;
-let isDark = false;
+let recipes=[], currentTab='alle', selectedId=null, isDark=false;
+let cookStep=0, cookAdults=2, cookChildren=0, detailAdults=2, detailChildren=0;
+let parsedIng=[], parsedSteps=[], addAccentIdx=0;
+let dragEl=null, dragStartY=0;
 
 /* ══════════════════════════════════════
    PERSISTENCE
 ══════════════════════════════════════ */
-function loadData() {
-  try {
-    const d = localStorage.getItem("lacucina_v6");
-    if (d) { const p = JSON.parse(d); if (p && p.length) { recipes = p; return; } }
-  } catch(e) {}
-  recipes = JSON.parse(JSON.stringify(DEFAULT_RECIPES));
+function loadData(){
+  try{const d=localStorage.getItem('lacucina_v7');if(d){const p=JSON.parse(d);if(p?.length){recipes=p;return;}}}catch(e){}
+  recipes=JSON.parse(JSON.stringify(DEFAULT_RECIPES));
 }
-function saveData() {
-  try { localStorage.setItem("lacucina_v6", JSON.stringify(recipes)); } catch(e) {}
-}
-function loadTheme() {
-  try { isDark = localStorage.getItem("lacucina_theme") === "dark"; } catch(e) {}
-  applyTheme();
-}
-function applyTheme() {
-  isDark ? document.documentElement.setAttribute("data-dark","") : document.documentElement.removeAttribute("data-dark");
-}
-function toggleTheme() {
-  isDark = !isDark; applyTheme();
-  try { localStorage.setItem("lacucina_theme", isDark ? "dark" : "light"); } catch(e) {}
-}
+function saveData(){try{localStorage.setItem('lacucina_v7',JSON.stringify(recipes));}catch(e){}}
+function loadTheme(){try{isDark=localStorage.getItem('lacucina_theme7')==='dark';}catch(e){}applyTheme();}
+function applyTheme(){isDark?document.documentElement.setAttribute('data-dark',''):document.documentElement.removeAttribute('data-dark');}
+function toggleTheme(){isDark=!isDark;applyTheme();try{localStorage.setItem('lacucina_theme7',isDark?'dark':'light');}catch(e){}}
 
 /* ══════════════════════════════════════
    HELPERS
 ══════════════════════════════════════ */
-function scaleAmt(a, s) {
-  if (!a || a === 0) return null;
-  const v = a * s;
-  if (v <= 0.2) return "⅛";
-  if (v <= 0.35) return "¼";
-  if (v <= 0.6) return "½";
-  if (v <= 0.85) return "¾";
-  if (v <= 1.15) return "1";
-  if (v <= 1.65) return "1½";
-  if (v <= 2.15) return "2";
-  if (v <= 2.65) return "2½";
-  if (v <= 10) { const r = Math.round(v*2)/2; return r%1===0 ? String(r) : String(r).replace(".5","½"); }
-  return String(Math.round(v));
-}
-function fmtIng(item, sc) {
-  const s = scaleAmt(item.a, sc);
-  if (!s) return item.n;
-  return [s, item.u, item.n].filter(Boolean).join(" ");
-}
-function getRecipe(id) { return recipes.find(r => r.id === id); }
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2400);
-}
-function goTo(viewId, slide) {
-  document.querySelectorAll(".view").forEach(v => v.classList.remove("active","slide-in"));
-  const v = document.getElementById(viewId);
-  v.classList.add("active");
-  if (slide) v.classList.add("slide-in");
-  window.scrollTo(0,0);
-}
-function getSortedRecipes(filter) {
-  let list = [...recipes];
-  if (filter === "fav") list = list.filter(r => r.fav);
-  else if (filter === "fru") list = list.filter(r => r.meal === "Frühstück");
-  else if (filter === "mit") list = list.filter(r => r.meal === "Mittagessen");
-  return list.sort((a,b) => (a.sortOrder||0) - (b.sortOrder||0));
-}
+function getR(id){return recipes.find(r=>r.id===id);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function goTo(viewId,anim){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active','slide','slide-left'));const v=document.getElementById(viewId);v.classList.add('active');if(anim)v.classList.add(anim);window.scrollTo(0,0);}
+function getSorted(filter){let l=[...recipes];if(filter==='fav')l=l.filter(r=>r.fav);else if(filter==='fru')l=l.filter(r=>r.meal==='Frühstück');else if(filter==='mit')l=l.filter(r=>r.meal==='Mittagessen');return l.sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0));}
+function scaleAmt(a,s){if(!a||a===0)return null;const v=a*s;if(v<=0.2)return'⅛';if(v<=0.35)return'¼';if(v<=0.6)return'½';if(v<=0.85)return'¾';if(v<=1.15)return'1';if(v<=1.65)return'1½';if(v<=2.15)return'2';if(v<=2.65)return'2½';if(v<=10){const r=Math.round(v*2)/2;return r%1===0?String(r):String(r).replace('.5','½');}return String(Math.round(v));}
+function fmtIng(item,sc){const s=scaleAmt(item.a,sc);if(!s)return item.n;return[s,item.u,item.n].filter(Boolean).join(' ');}
 
 /* ══════════════════════════════════════
    HOME
 ══════════════════════════════════════ */
-function setTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  document.getElementById("tab-"+tab).classList.add("active");
+function setTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
   renderList();
 }
 
-function renderList() {
-  const list = document.getElementById("recipe-list");
-  list.innerHTML = "";
-  document.getElementById("recipe-count").textContent = recipes.length + " Rezepte";
+function renderList(){
+  const list=document.getElementById('recipe-list');
+  list.innerHTML='';
+  document.getElementById('recipe-count').textContent=recipes.length+' Rezepte';
+  const filtered=getSorted(currentTab);
 
-  const filtered = getSortedRecipes(currentTab);
-
-  // Sort button row
-  const sortRow = document.createElement("div");
-  sortRow.style.cssText = "display:flex;justify-content:flex-end;margin-bottom:2px;";
-  sortRow.innerHTML = `<button class="sort-btn" onclick="openSortOverlay()">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0">
-      <rect y="1" width="14" height="2" rx="1" fill="currentColor"/>
-      <rect y="6" width="10" height="2" rx="1" fill="currentColor"/>
-      <rect y="11" width="6" height="2" rx="1" fill="currentColor"/>
-    </svg>
+  /* Sort row */
+  const sortRow=document.createElement('div');
+  sortRow.style.cssText='display:flex;justify-content:flex-end;';
+  sortRow.innerHTML=`<button style="display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:none;color:var(--text3);font-size:11px;font-weight:600;letter-spacing:.5px;font-family:'Fira Code',monospace;" onclick="openSortOverlay()">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect y="1" width="14" height="2" rx="1" fill="currentColor"/><rect y="6" width="10" height="2" rx="1" fill="currentColor"/><rect y="11" width="6" height="2" rx="1" fill="currentColor"/></svg>
     Sortieren
   </button>`;
   list.appendChild(sortRow);
 
-  if (filtered.length === 0) {
-    const em = document.createElement("div");
-    em.className = "empty";
-    const icons = {fav:"★",fru:"🌅",mit:"☀️",alle:"🍽"};
-    em.innerHTML = `<div class="empty-icon">${icons[currentTab]}</div>
-      <div class="f-display" style="font-size:20px;font-weight:700;color:var(--text3)">${currentTab==="fav"?"Noch keine Favoriten":"Keine Rezepte hier"}</div>
-      <div style="font-size:13px;color:var(--text3);line-height:1.6">${currentTab==="fav"?"Tippe auf ☆ in einem Rezept,<br>um es hier zu speichern.":"Füge neue Rezepte über den Button unten hinzu."}</div>`;
+  if(filtered.length===0){
+    const em=document.createElement('div');em.className='empty';
+    const icons={fav:'★',fru:'🌅',mit:'☀️',alle:'🍽'};
+    em.innerHTML=`<div style="font-size:56px;opacity:.25">${icons[currentTab]}</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text3)">${currentTab==='fav'?'Noch keine Favoriten':'Keine Rezepte'}</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.7">${currentTab==='fav'?'Tippe auf ☆ um ein Rezept<br>als Favorit zu markieren.':'Füge Rezepte über den Button unten hinzu.'}</div>`;
     list.appendChild(em);
   }
 
-  filtered.forEach((r, i) => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.style.animationDelay = (i * 0.06) + "s";
+  filtered.forEach((r,i)=>{list.appendChild(buildWalletCard(r,i));});
 
-    const strip = document.createElement("div");
-    strip.className = "card-accent";
-    strip.style.background = r.accent;
-    card.appendChild(strip);
-
-    const body = document.createElement("div");
-    body.className = "card-body";
-    body.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
-        <div style="font-size:38px;line-height:1">${r.emoji}</div>
-        <button class="star-btn" onclick="event.stopPropagation();toggleFav(${r.id})"
-          style="color:${r.fav?"var(--star)":"var(--border2)"}">${r.fav?"★":"☆"}</button>
-      </div>
-      <div class="f-display" style="font-size:19px;font-weight:700;line-height:1.2">${r.title}</div>
-      ${r.subtitle ? `<div style="font-size:13px;color:var(--text2);margin-top:2px">${r.subtitle}</div>` : ""}
-      <div style="margin-top:10px;font-size:13px;color:var(--text2);line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${r.description}</div>
-      <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-        <span style="font-size:12px;color:var(--text3)">⏱ ${r.time}</span>
-        <span style="font-size:12px;color:var(--text3)">👥 ${r.basePortions} Port.</span>
-        <span style="font-size:12px;color:var(--text3)">✓ ${r.difficulty}</span>
-        ${r.fav ? `<span style="font-size:11px;color:var(--star);font-weight:700;margin-left:auto">★ Favorit</span>` : ""}
-      </div>`;
-    card.appendChild(body);
-
-    const foot = document.createElement("div");
-    foot.className = "card-footer";
-    foot.innerHTML = `
-      <span style="font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.4px">${r.diet}</span>
-      <span class="f-display" style="font-size:13px;font-weight:700;color:${r.accent}">Öffnen →</span>`;
-    card.appendChild(foot);
-
-    card.addEventListener("click", () => openDetail(r.id));
-    list.appendChild(card);
-  });
-
-  const addBtn = document.createElement("button");
-  addBtn.className = "btn btn-dashed";
-  addBtn.textContent = "+ Neues Rezept hinzufügen";
-  addBtn.style.marginTop = "4px";
-  addBtn.addEventListener("click", openAdd);
+  const addBtn=document.createElement('button');
+  addBtn.className='btn btn-dashed';
+  addBtn.style.marginTop='4px';
+  addBtn.innerHTML='+ Rezept hinzufügen';
+  addBtn.onclick=openAdd;
   list.appendChild(addBtn);
 }
 
-function toggleFav(id) {
-  const r = getRecipe(id); if (!r) return;
-  r.fav = !r.fav; saveData(); renderList();
-}
+function buildWalletCard(r,idx){
+  const card=document.createElement('div');
+  card.className='wallet-card';
+  card.style.animationDelay=(idx*.05)+'s';
 
-/* ══════════════════════════════════════
-   SORT OVERLAY — Apple Weather Style
-══════════════════════════════════════ */
-let dragSrc = null;
-let dragItems = [];
+  /* Farbiger Header */
+  const hdr=document.createElement('div');
+  hdr.className='wallet-header';
+  hdr.style.background=`linear-gradient(135deg, ${r.accent} 0%, ${shiftColor(r.accent,20)} 100%)`;
 
-function openSortOverlay() {
-  renderSortList();
-  document.getElementById("sort-overlay").classList.add("open");
-}
-function closeSortOverlay() {
-  document.getElementById("sort-overlay").classList.remove("open");
-  saveData(); renderList();
-}
-function closeSortIfBg(e) {
-  if (e.target === document.getElementById("sort-overlay")) closeSortOverlay();
-}
-function sortNewest() {
-  // Sort by id descending (newest = highest id)
-  const sorted = [...recipes].sort((a,b) => b.id - a.id);
-  sorted.forEach((r, i) => { const orig = getRecipe(r.id); if (orig) orig.sortOrder = i; });
-  saveData(); renderSortList();
-}
-
-function renderSortList() {
-  const list = document.getElementById("sort-list");
-  list.innerHTML = "";
-  const sorted = [...recipes].sort((a,b) => (a.sortOrder||0) - (b.sortOrder||0));
-
-  sorted.forEach(r => {
-    const item = document.createElement("div");
-    item.className = "sort-item";
-    item.dataset.id = r.id;
-    item.innerHTML = `
-      <div class="sort-handle">
-        <span></span><span></span><span></span>
+  hdr.innerHTML=`
+    <div class="wallet-header-bg"></div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div class="wallet-emoji-wrap">${r.emoji}</div>
+      <button class="wallet-star${r.fav?' on':''}" onclick="event.stopPropagation();toggleFav(${r.id})">${r.fav?'★':'☆'}</button>
+    </div>
+    <div class="wallet-title-row">
+      <div>
+        <div class="wallet-title">${r.title}</div>
+        ${r.subtitle?`<div class="wallet-subtitle">${r.subtitle}</div>`:''}
       </div>
-      <div class="sort-accent-dot" style="background:${r.accent}"></div>
-      <div class="sort-item-emoji">${r.emoji}</div>
-      <div class="sort-item-text">
-        <div class="sort-item-title">${r.title}</div>
-        <div class="sort-item-sub">${r.time} · ${r.meal}</div>
-      </div>`;
+    </div>`;
+  card.appendChild(hdr);
 
-    // Touch events for drag
-    const handle = item.querySelector(".sort-handle");
-    handle.addEventListener("touchstart", onDragStart, {passive:false});
-    list.appendChild(item);
+  /* Stats footer */
+  const foot=document.createElement('div');
+  foot.className='wallet-footer';
+  const stats=[
+    {label:'Zeit',val:r.time||'–'},
+    {label:'Portionen',val:r.basePortions+' Port.'},
+    {label:'Level',val:r.difficulty||'–'},
+  ];
+  stats.forEach(s=>{
+    const st=document.createElement('div');
+    st.className='wallet-stat';
+    st.innerHTML=`<div class="wallet-stat-label">${s.label}</div><div class="wallet-stat-val">${s.val}</div>`;
+    foot.appendChild(st);
   });
+  card.appendChild(foot);
+
+  card.onclick=()=>openDetail(r.id);
+  return card;
 }
 
-/* Touch drag logic */
-let touchStartY = 0;
-let touchCurrentY = 0;
-let dragEl = null;
-let dragClone = null;
-let dragOrigIndex = 0;
-let itemHeight = 0;
-
-function onDragStart(e) {
-  e.preventDefault();
-  const item = e.currentTarget.closest(".sort-item");
-  const list = document.getElementById("sort-list");
-  const items = [...list.querySelectorAll(".sort-item")];
-  dragOrigIndex = items.indexOf(item);
-  itemHeight = item.offsetHeight;
-  touchStartY = e.touches[0].clientY;
-
-  dragEl = item;
-  dragEl.classList.add("dragging");
-
-  document.addEventListener("touchmove", onDragMove, {passive:false});
-  document.addEventListener("touchend", onDragEnd, {passive:false});
+/* Hellt eine Farbe leicht auf */
+function shiftColor(hex,amount){
+  const n=parseInt(hex.slice(1),16);
+  const r=Math.min(255,((n>>16)&0xff)+amount);
+  const g=Math.min(255,((n>>8)&0xff)+amount);
+  const b=Math.min(255,(n&0xff)+amount);
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
 
-function onDragMove(e) {
-  e.preventDefault();
-  if (!dragEl) return;
-  touchCurrentY = e.touches[0].clientY;
-  const dy = touchCurrentY - touchStartY;
-  dragEl.style.transform = `translateY(${dy}px)`;
-
-  const list = document.getElementById("sort-list");
-  const items = [...list.querySelectorAll(".sort-item:not(.dragging)")];
-  const dragRect = dragEl.getBoundingClientRect();
-  const dragCenter = dragRect.top + dragRect.height / 2;
-
-  let targetIdx = dragOrigIndex;
-  items.forEach((item, i) => {
-    const rect = item.getBoundingClientRect();
-    const itemCenter = rect.top + rect.height / 2;
-    const allItems = [...list.querySelectorAll(".sort-item")];
-    const realIdx = allItems.indexOf(item);
-    if (dragCenter < itemCenter && i === 0 && realIdx < dragOrigIndex) targetIdx = 0;
-    else if (dragCenter > itemCenter) targetIdx = realIdx + (realIdx > dragOrigIndex ? 0 : 1);
-  });
-
-  // Visual feedback: show insertion line
-  items.forEach(item => item.style.borderTop = "");
-  if (targetIdx !== dragOrigIndex && items[targetIdx - (targetIdx > dragOrigIndex ? 1 : 0)]) {
-    // highlight nearest
-  }
-
-  // Actually move in DOM for live preview
-  const allItems = [...list.querySelectorAll(".sort-item")];
-  const currentIdx = allItems.indexOf(dragEl);
-  if (currentIdx !== targetIdx && targetIdx >= 0 && targetIdx < allItems.length) {
-    if (targetIdx > currentIdx) {
-      list.insertBefore(dragEl, allItems[targetIdx].nextSibling);
-    } else {
-      list.insertBefore(dragEl, allItems[targetIdx]);
-    }
-    dragEl.style.transform = "";
-    touchStartY = touchCurrentY;
-    dragOrigIndex = [...list.querySelectorAll(".sort-item")].indexOf(dragEl);
-  }
-}
-
-function onDragEnd(e) {
-  document.removeEventListener("touchmove", onDragMove);
-  document.removeEventListener("touchend", onDragEnd);
-  if (!dragEl) return;
-  dragEl.classList.remove("dragging");
-  dragEl.style.transform = "";
-  dragEl = null;
-
-  // Save new order
-  const list = document.getElementById("sort-list");
-  const items = [...list.querySelectorAll(".sort-item")];
-  items.forEach((item, i) => {
-    const r = getRecipe(parseInt(item.dataset.id));
-    if (r) r.sortOrder = i;
-  });
-}
+function toggleFav(id){const r=getR(id);if(!r)return;r.fav=!r.fav;saveData();renderList();}
 
 /* ══════════════════════════════════════
    DETAIL
 ══════════════════════════════════════ */
-function openDetail(id) {
-  selectedId = id;
-  const r = getRecipe(id); if (!r) return;
-  detailAdults = Math.max(1, Math.ceil(r.basePortions / 2));
-  detailChildren = r.basePortions >= 4 ? 2 : 0;
+function goHome(){goTo('view-home');renderList();}
+
+function openDetail(id){
+  selectedId=id;
+  const r=getR(id);if(!r)return;
+  detailAdults=Math.max(1,Math.ceil(r.basePortions/2));
+  detailChildren=r.basePortions>=4?2:0;
   renderDetail();
-  goTo("view-detail", true);
+  goTo('view-detail','slide');
 }
-function goHome() { goTo("view-home"); renderList(); }
 
-function renderDetail() {
-  const r = getRecipe(selectedId); if (!r) return;
-  const favBtn = document.getElementById("detail-fav-btn");
-  favBtn.textContent = r.fav ? "★" : "☆";
-  favBtn.style.color = r.fav ? "var(--star)" : "var(--border2)";
+function renderDetail(){
+  const r=getR(selectedId);if(!r)return;
+  const star=document.getElementById('detail-star');
+  star.textContent=r.fav?'★':'☆';
+  star.className='wallet-star'+(r.fav?' on':'');
 
-  const hero = document.getElementById("detail-hero");
-  hero.style.borderLeft = `4px solid ${r.accent}`;
-  hero.innerHTML = `
-    <div style="font-size:54px;margin-bottom:14px;line-height:1">${r.emoji}</div>
-    <div class="f-display" style="font-size:30px;font-weight:800;line-height:1.1">${r.title}</div>
-    ${r.subtitle ? `<div style="font-size:16px;color:var(--text2);margin-top:4px">${r.subtitle}</div>` : ""}
-    <div style="margin-top:12px;font-size:14px;color:var(--text2);line-height:1.75">${r.description}</div>
-    <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:7px">
-      <span class="pill">⏱ ${r.time}</span>
-      <span class="pill">✓ ${r.difficulty}</span>
-      <span class="pill">🍽 ${r.meal}</span>
-      <span class="pill">🌿 ${r.diet}</span>
-      ${r.fav ? `<span class="pill" style="color:var(--star);border-color:rgba(200,144,10,.3)">★ Favorit</span>` : ""}
+  /* Hero — Wallet-Stil groß */
+  const hero=document.getElementById('detail-hero');
+  hero.style.cssText=`background:linear-gradient(135deg,${r.accent} 0%,${shiftColor(r.accent,25)} 100%);padding:28px 24px 24px;`;
+  hero.innerHTML=`
+    <div style="display:flex;align-items:flex-end;gap:18px;margin-bottom:16px">
+      <div style="width:88px;height:88px;border-radius:22px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:52px;line-height:1;box-shadow:0 4px 16px rgba(0,0,0,.2);flex-shrink:0">${r.emoji}</div>
+      <div>
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:6px">${r.diet||'Mediterran'}</div>
+        <div style="font-size:24px;font-weight:700;color:#fff;line-height:1.15;text-shadow:0 1px 4px rgba(0,0,0,.2)">${r.title}</div>
+        ${r.subtitle?`<div style="font-size:13px;color:rgba(255,255,255,.75);margin-top:4px">${r.subtitle}</div>`:''}
+      </div>
+    </div>
+    <div style="display:flex;gap:0;background:rgba(0,0,0,.15);border-radius:12px;overflow:hidden">
+      ${[['⏱',r.time||'–'],['👥',r.basePortions+' Port.'],['✓',r.difficulty||'–'],['🍽',r.meal||'–']].map(([ic,v])=>`
+        <div style="flex:1;padding:10px 8px;text-align:center;border-right:1px solid rgba(255,255,255,.15)">
+          <div style="font-size:15px;margin-bottom:2px">${ic}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.75);letter-spacing:.5px;font-weight:600">${v}</div>
+        </div>`).join('')}
     </div>`;
+
   renderDetailContent();
 }
 
-function renderDetailContent() {
-  const r = getRecipe(selectedId); if (!r) return;
-  const total = detailAdults + detailChildren * 0.5;
-  const sc = total / r.basePortions;
-  const content = document.getElementById("detail-content");
+function renderDetailContent(){
+  const r=getR(selectedId);if(!r)return;
+  const total=detailAdults+detailChildren*.5;
+  const sc=total/r.basePortions;
+  const content=document.getElementById('detail-content');
 
-  let html = `
-    <div style="margin:22px 20px 0;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:18px">
-      <div class="f-label" style="margin-bottom:14px">👥 Für wie viele wird gekocht?</div>
-      <div style="display:flex;gap:14px;margin-bottom:16px">
-        <div class="stepper-wrap">
-          <div class="stepper-lbl">Erwachsene</div>
-          <div class="stepper">
-            <button class="st-btn" onclick="adjPortion('a',-1)">−</button>
-            <div class="st-val" id="adults-val">${detailAdults}</div>
-            <button class="st-btn" onclick="adjPortion('a',1)">+</button>
-          </div>
-          <div class="stepper-sub">je 1 Portion</div>
+  let html=`
+  <!-- Portionen -->
+  <div style="margin:20px 18px 0;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px">
+    <div class="f-label" style="margin-bottom:14px">👥 Für wie viele wird gekocht?</div>
+    <div style="display:flex;gap:14px;margin-bottom:14px">
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text3);font-weight:600;text-align:center;letter-spacing:1px;margin-bottom:7px">Erwachsene</div>
+        <div class="stepper">
+          <button class="st-btn" onclick="adjP('a',-1)">−</button>
+          <div class="st-val" id="adults-val">${detailAdults}</div>
+          <button class="st-btn" onclick="adjP('a',1)">+</button>
         </div>
-        <div class="stepper-wrap">
-          <div class="stepper-lbl">Kinder</div>
-          <div class="stepper">
-            <button class="st-btn" onclick="adjPortion('c',-1)">−</button>
-            <div class="st-val" id="children-val">${detailChildren}</div>
-            <button class="st-btn" onclick="adjPortion('c',1)">+</button>
-          </div>
-          <div class="stepper-sub">je ½ Portion</div>
-        </div>
+        <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:5px">je 1 Portion</div>
       </div>
-      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-size:12px;color:var(--text3);margin-bottom:1px">Gesamtportionen</div>
-          <div style="font-size:11px;color:var(--text3)">${detailAdults>0?detailAdults+" Erw.":""}${detailAdults>0&&detailChildren>0?" + ":""}${detailChildren>0?detailChildren+" Kinder":""}</div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:var(--text3);font-weight:600;text-align:center;letter-spacing:1px;margin-bottom:7px">Kinder</div>
+        <div class="stepper">
+          <button class="st-btn" onclick="adjP('c',-1)">−</button>
+          <div class="st-val" id="children-val">${detailChildren}</div>
+          <button class="st-btn" onclick="adjP('c',1)">+</button>
         </div>
-        <div class="f-display" style="font-size:28px;font-weight:800;color:${r.accent}">${total%1===0?total:total.toFixed(1)}</div>
+        <div style="font-size:10px;color:var(--text3);text-align:center;margin-top:5px">je ½ Portion</div>
       </div>
-      ${Math.abs(sc-1)>0.06?`<div style="margin-top:7px;font-size:11px;color:var(--text3);text-align:center">Mengen angepasst · Faktor ×${Math.round(sc*100)/100}</div>`:""}
-    </div>`;
+    </div>
+    <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:12px;color:var(--text3)">${detailAdults>0?detailAdults+' Erw.':''}${detailAdults>0&&detailChildren>0?' + ':''}${detailChildren>0?detailChildren+' Kinder':''}</div>
+      <div style="font-size:26px;font-weight:700;color:${r.accent}">${total%1===0?total:total.toFixed(1)}</div>
+    </div>
+    ${Math.abs(sc-1)>.06?`<div style="margin-top:7px;font-size:11px;color:var(--text3);text-align:center;letter-spacing:.3px">Mengen angepasst · Faktor ×${Math.round(sc*100)/100}</div>`:''}
+  </div>
 
-  // Ingredients
-  html += `<div style="padding:24px 20px 0"><div class="f-label" style="margin-bottom:14px">🛒 Zutaten</div>`;
-  r.ingredients.forEach(g => {
-    html += `<div style="margin-bottom:22px">
+  <!-- Zutaten -->
+  <div style="padding:22px 18px 0">
+    <div class="f-label" style="margin-bottom:14px">🛒 Zutaten</div>`;
+
+  r.ingredients.forEach(g=>{
+    html+=`<div style="margin-bottom:20px">
       <div style="font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;font-weight:700;border-bottom:1.5px solid var(--border);padding-bottom:6px">${g.group}</div>`;
-    g.items.forEach(item => {
-      const s = scaleAmt(item.a, sc);
-      html += `<div style="display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)">
-        <div style="width:4px;height:4px;border-radius:50%;background:${r.accent};margin-top:9px;flex-shrink:0"></div>
+    g.items.forEach(item=>{
+      const s=scaleAmt(item.a,sc);
+      html+=`<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+        <div style="width:5px;height:5px;border-radius:50%;background:${r.accent};margin-top:8px;flex-shrink:0"></div>
         <div style="flex:1;font-size:14px;line-height:1.45">
-          ${item.a>0?`<span class="f-display" style="font-size:16px;font-weight:700;color:${r.accent};margin-right:4px">${s}${item.u?" "+item.u:""}</span>`:""}
-          <span style="color:${item.a>0?"var(--text2)":"var(--text3)"}">${item.n}</span>
+          ${item.a>0?`<span style="font-size:16px;font-weight:700;color:${r.accent};margin-right:4px">${s}${item.u?' '+item.u:''}</span>`:''}
+          <span style="color:${item.a>0?'var(--text2)':'var(--text3)'}">${item.n}</span>
         </div></div>`;
     });
-    html += `</div>`;
+    html+=`</div>`;
   });
-  html += `</div>`;
+  html+=`</div>`;
 
-  // Nutrition
-  html += `<div style="padding:0 20px"><hr class="divider"/><div class="f-label" style="margin-bottom:14px">🥗 Nährwerte pro Portion</div><div class="nutr-grid">`;
-  [["Kalorien",r.nutrition.kcal],["Kohlenhydrate",r.nutrition.kh],["Eiweiß",r.nutrition.ew],["Fett",r.nutrition.fett],["Ballaststoffe",r.nutrition.bs]].forEach(([k,v]) => {
-    html += `<div class="nutr-cell">
-      <div style="font-size:10px;color:var(--text3);margin-bottom:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase">${k}</div>
-      <div class="f-display" style="font-size:20px;font-weight:800;color:${r.accent}">${v}</div></div>`;
+  /* Nährwerte */
+  html+=`<div style="padding:0 18px"><hr class="divider"/>
+    <div class="f-label" style="margin-bottom:14px">🥗 Nährwerte pro Portion</div>
+    <div class="nutr-grid">`;
+  [['Kalorien',r.nutrition.kcal],['Kohlenhydrate',r.nutrition.kh],['Eiweiß',r.nutrition.ew],['Fett',r.nutrition.fett],['Ballaststoffe',r.nutrition.bs]].forEach(([k,v])=>{
+    html+=`<div class="nutr-cell"><div style="font-size:9px;color:var(--text3);margin-bottom:4px;font-weight:600;letter-spacing:1px;text-transform:uppercase">${k}</div>
+      <div style="font-size:18px;font-weight:700;color:${r.accent}">${v}</div></div>`;
   });
-  html += `</div></div>`;
+  html+=`</div></div>`;
 
-  if (r.tip) {
-    html += `<div style="padding:20px 20px 0">
-      <div style="background:var(--bg2);border-left:3px solid ${r.accent};padding:14px 16px;border-radius:0 12px 12px 0">
-        <div class="f-label" style="margin-bottom:6px;color:${r.accent}">💡 Tipp</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.75">${r.tip}</div>
-      </div></div>`;
-  }
+  /* Tipp */
+  if(r.tip) html+=`<div style="padding:18px 18px 0">
+    <div style="background:var(--bg2);border-left:3px solid ${r.accent};padding:14px 16px;border-radius:0 12px 12px 0">
+      <div class="f-label" style="margin-bottom:6px;color:${r.accent}">💡 Tipp</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.75">${r.tip}</div>
+    </div></div>`;
 
-  html += `<div style="padding:24px 20px 0">
-    <button class="btn btn-primary" id="cook-cta" onclick="startCook()"
-      style="background:${r.accent};border-radius:13px;font-size:15px">
-      👨‍🍳 Jetzt kochen — ${detailAdults} Erw.${detailChildren>0?" + "+detailChildren+" Kinder":""}
+  /* CTA */
+  html+=`<div style="padding:22px 18px 0">
+    <button class="btn btn-primary" onclick="startCook()" style="background:${r.accent};font-size:14px">
+      👨‍🍳 Jetzt kochen — ${detailAdults} Erw.${detailChildren>0?' + '+detailChildren+' Kinder':''}
     </button></div>`;
 
-  content.innerHTML = html;
+  content.innerHTML=html;
 }
 
-function adjPortion(type, delta) {
-  if (type === "a") detailAdults = Math.max(0, Math.min(20, detailAdults+delta));
-  else detailChildren = Math.max(0, Math.min(20, detailChildren+delta));
+function adjP(type,delta){
+  if(type==='a')detailAdults=Math.max(0,Math.min(20,detailAdults+delta));
+  else detailChildren=Math.max(0,Math.min(20,detailChildren+delta));
   renderDetailContent();
 }
-function toggleFavDetail() {
-  const r = getRecipe(selectedId); if (!r) return;
-  r.fav = !r.fav; saveData(); renderDetail();
-}
+function toggleFavDetail(){const r=getR(selectedId);if(!r)return;r.fav=!r.fav;saveData();renderDetail();}
 
 /* ══════════════════════════════════════
    SHARE
 ══════════════════════════════════════ */
-function shareRecipe() {
-  const r = getRecipe(selectedId); if (!r) return;
-  const sc = (detailAdults + detailChildren*0.5) / r.basePortions;
-  let text = `🫒 ${r.title}${r.subtitle?" "+r.subtitle:""}\n⏱ ${r.time}  ·  👥 ${detailAdults} Erw.${detailChildren>0?" + "+detailChildren+" Kinder":""}\n\nZUTATEN:\n`;
-  r.ingredients.forEach(g => { text += `\n${g.group}:\n`; g.items.forEach(i => { text += `· ${fmtIng(i,sc)}\n`; }); });
-  text += `\nZUBEREITUNG:\n`;
-  r.steps.forEach((s,i) => { text += `\n${i+1}. ${s.title}\n${s.desc}\n`; });
-  if (r.tip) text += `\n💡 ${r.tip}`;
-  if (navigator.share) navigator.share({title:r.title, text}).catch(() => copyText(text));
+function shareRecipe(){
+  const r=getR(selectedId);if(!r)return;
+  const sc=(detailAdults+detailChildren*.5)/r.basePortions;
+  let text=`🫒 ${r.title}${r.subtitle?' '+r.subtitle:''}\n⏱ ${r.time}  ·  👥 ${detailAdults} Erw.\n\nZUTATEN:\n`;
+  r.ingredients.forEach(g=>{text+=`\n${g.group}:\n`;g.items.forEach(i=>{text+=`· ${fmtIng(i,sc)}\n`;});});
+  text+=`\nZUBEREITUNG:\n`;
+  r.steps.forEach((s,i)=>{text+=`\n${i+1}. ${s.title}\n${s.desc}\n`;});
+  if(r.tip)text+=`\n💡 ${r.tip}`;
+  if(navigator.share)navigator.share({title:r.title,text}).catch(()=>copyText(text));
   else copyText(text);
 }
-function copyText(t) {
-  if (navigator.clipboard) navigator.clipboard.writeText(t).then(() => showToast("📋 Rezept kopiert!")).catch(() => showToast("Teilen nicht verfügbar"));
-  else showToast("Teilen nicht verfügbar");
+function copyText(t){
+  if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>showToast('📋 Kopiert!')).catch(()=>showToast('Teilen nicht verfügbar'));
+  else showToast('Teilen nicht verfügbar');
 }
 
 /* ══════════════════════════════════════
    DELETE
 ══════════════════════════════════════ */
-function openDelModal() {
-  const r = getRecipe(selectedId);
-  document.getElementById("del-msg").textContent = `„${r?r.title:""}" wird dauerhaft entfernt.`;
-  document.getElementById("del-modal").classList.add("open");
-}
-function closeDelModal() { document.getElementById("del-modal").classList.remove("open"); }
-function confirmDelete() {
-  recipes = recipes.filter(r => r.id !== selectedId);
-  saveData(); closeDelModal(); goHome(); showToast("Rezept gelöscht");
-}
+function openDelModal(){const r=getR(selectedId);document.getElementById('del-msg').textContent=`„${r?r.title:''}" wird dauerhaft entfernt.`;document.getElementById('del-modal').classList.add('open');}
+function closeDelModal(){document.getElementById('del-modal').classList.remove('open');}
+function confirmDelete(){recipes=recipes.filter(r=>r.id!==selectedId);saveData();closeDelModal();goHome();showToast('Rezept gelöscht');}
 
 /* ══════════════════════════════════════
    COOK MODE
 ══════════════════════════════════════ */
-function startCook() {
-  const r = getRecipe(selectedId); if (!r) return;
-  cookAdults = detailAdults; cookChildren = detailChildren; cookStep = 0;
-  renderCook(); goTo("view-cook", true);
+function startCook(){
+  const r=getR(selectedId);if(!r)return;
+  cookAdults=detailAdults;cookChildren=detailChildren;cookStep=0;
+  renderCook();goTo('view-cook','slide');
 }
+function renderCook(){
+  const r=getR(selectedId);if(!r)return;
+  const total=r.steps.length;
+  const sc=(cookAdults+cookChildren*.5)/r.basePortions;
+  const pct=((cookStep+1)/total*100).toFixed(1);
+  let dots='';
+  for(let i=0;i<total;i++)dots+=`<div class="step-dot" onclick="jumpStep(${i})" style="width:${i===cookStep?20:7}px;background:${i<=cookStep?r.accent:'var(--border)'}"></div>`;
 
-function renderCook() {
-  const r = getRecipe(selectedId); if (!r) return;
-  const total = r.steps.length;
-  const sc = (cookAdults + cookChildren * 0.5) / r.basePortions;
-  const pct = ((cookStep+1)/total*100).toFixed(1);
-
-  let dots = "";
-  for (let i=0; i<total; i++) {
-    dots += `<div class="step-dot" onclick="jumpStep(${i})" style="width:${i===cookStep?20:7}px;background:${i<=cookStep?r.accent:"var(--border)"}"></div>`;
-  }
-
-  document.getElementById("cook-header").style.background = "var(--bg2)";
-  document.getElementById("cook-header").innerHTML = `
+  document.getElementById('cook-header').style.background=`linear-gradient(135deg,${r.accent} 0%,${shiftColor(r.accent,20)} 100%)`;
+  document.getElementById('cook-header').innerHTML=`
     <div style="padding:14px 20px 18px">
-      <button class="btn btn-outline" onclick="goTo('view-detail');renderDetail()" style="margin-bottom:16px;font-size:13px;padding:8px 14px">← Rezept</button>
+      <button class="btn btn-outline" onclick="goTo('view-detail');renderDetail()" style="margin-bottom:14px;font-size:12px;padding:7px 14px;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff">← Rezept</button>
       <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div style="flex:1;padding-right:12px">
-          <div class="f-label" style="margin-bottom:4px">Koch-Modus</div>
-          <div class="f-display" style="font-size:19px;font-weight:800;line-height:1.2">${r.title}</div>
-          <div style="font-size:12px;color:var(--text3);margin-top:3px">👥 ${cookAdults} Erw.${cookChildren>0?" + "+cookChildren+" Kinder":""}</div>
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:4px">Koch-Modus</div>
+          <div style="font-size:18px;font-weight:700;color:#fff;line-height:1.2">${r.title}</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:3px">👥 ${cookAdults} Erw.${cookChildren>0?' + '+cookChildren+' Kinder':''}</div>
         </div>
-        <div class="f-display" style="font-size:40px;font-weight:800;color:${r.accent};line-height:1;white-space:nowrap">
-          ${cookStep+1}<span style="font-size:16px;color:var(--text3);font-weight:400">/${total}</span>
+        <div style="font-size:38px;font-weight:700;color:#fff;line-height:1;white-space:nowrap">
+          ${cookStep+1}<span style="font-size:15px;color:rgba(255,255,255,.5);font-weight:400">/${total}</span>
         </div>
       </div>
-      <div class="prog-track" style="margin-top:14px">
-        <div class="prog-fill" style="width:${pct}%;background:${r.accent}"></div>
+      <div class="prog-track" style="margin-top:14px;background:rgba(0,0,0,.2)">
+        <div class="prog-fill" style="width:${pct}%;background:rgba(255,255,255,.7)"></div>
       </div>
-      <div class="step-dots">${dots}</div>
+      <div class="step-dots" style="margin-top:10px">${dots}</div>
     </div>`;
 
-  const step = r.steps[cookStep];
-  let allIng = "";
-  if (cookStep === 0) {
-    const scaledItems = r.ingredients.flatMap(g => g.items.filter(i => i.a > 0));
-    allIng = `<div style="margin-top:30px;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px">
+  const step=r.steps[cookStep];
+  let allIng='';
+  if(cookStep===0){
+    const scaledItems=r.ingredients.flatMap(g=>g.items.filter(i=>i.a>0));
+    allIng=`<div style="margin-top:28px;background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:16px">
       <div class="f-label" style="margin-bottom:12px">Alle Zutaten für diese Portion</div>
-      ${scaledItems.map(item=>`
-        <div style="font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px">
-          <span class="f-display" style="color:${r.accent};font-weight:700;font-size:14px;white-space:nowrap">
-            ${scaleAmt(item.a,sc)}${item.u?" "+item.u:""}
-          </span>
-          <span>${item.n}</span>
-        </div>`).join("")}
+      ${scaledItems.map(item=>`<div style="font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:8px">
+        <span style="color:${r.accent};font-weight:700;font-size:14px;white-space:nowrap">${scaleAmt(item.a,sc)}${item.u?' '+item.u:''}</span>
+        <span>${item.n}</span></div>`).join('')}
     </div>`;
   }
 
-  document.getElementById("cook-step").innerHTML = `
-    <div style="width:54px;height:54px;border-radius:14px;border:2px solid ${r.accent};display:flex;align-items:center;justify-content:center;margin-bottom:20px">
-      <span class="f-display" style="font-size:26px;font-weight:800;color:${r.accent}">${cookStep+1}</span>
+  document.getElementById('cook-step').innerHTML=`
+    <div style="width:54px;height:54px;border-radius:14px;border:2px solid ${r.accent};display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+      <span style="font-size:24px;font-weight:700;color:${r.accent}">${cookStep+1}</span>
     </div>
-    <div class="f-display" style="font-size:28px;font-weight:800;margin-bottom:16px;line-height:1.15">${step.title}</div>
+    <div style="font-size:26px;font-weight:700;margin-bottom:14px;line-height:1.15">${step.title}</div>
     <div style="font-size:16px;color:var(--text2);line-height:1.9">${step.desc}</div>
     ${allIng}`;
 
-  const prev = document.getElementById("cook-prev");
-  const next = document.getElementById("cook-next");
-  prev.style.opacity = cookStep===0 ? "0.3" : "1";
-  prev.disabled = cookStep===0;
-  if (cookStep < total-1) { next.textContent="Weiter →"; next.style.background=r.accent; next.style.color="#fff"; }
-  else { next.textContent="🎉 Guten Appetit!"; next.style.background="var(--accent)"; next.style.color="var(--bg)"; }
+  const prev=document.getElementById('cook-prev');
+  const next=document.getElementById('cook-next');
+  prev.style.opacity=cookStep===0?'.3':'1';prev.disabled=cookStep===0;
+  if(cookStep<total-1){next.textContent='Weiter →';next.style.background=r.accent;}
+  else{next.textContent='🎉 Guten Appetit!';next.style.background='var(--acc)';}
 }
-
-function cookNav(dir) {
-  const r = getRecipe(selectedId); if (!r) return;
-  if (dir===-1 && cookStep>0) { cookStep--; renderCook(); }
-  else if (dir===1 && cookStep<r.steps.length-1) { cookStep++; renderCook(); }
-  else if (dir===1) { goTo("view-detail"); renderDetail(); }
+function cookNav(dir){
+  const r=getR(selectedId);if(!r)return;
+  if(dir===-1&&cookStep>0){cookStep--;renderCook();}
+  else if(dir===1&&cookStep<r.steps.length-1){cookStep++;renderCook();}
+  else if(dir===1){goTo('view-detail');renderDetail();}
 }
-function jumpStep(i) { cookStep=i; renderCook(); }
+function jumpStep(i){cookStep=i;renderCook();}
 
 /* ══════════════════════════════════════
-   ADD RECIPE
+   PASTE EDITOR — PARSER
 ══════════════════════════════════════ */
-function openAdd() {
-  addAccentIdx=0;
-  ["add-title","add-subtitle","add-time","add-diet","add-desc","add-ing","add-steps","add-tip"].forEach(id => { document.getElementById(id).value=""; });
-  document.getElementById("add-emoji").value="🍽";
-  document.getElementById("add-portions").value="2";
-  document.getElementById("add-difficulty").value="Einfach";
-  document.getElementById("add-meal").value="Abendessen";
-  const btn = document.getElementById("save-btn");
-  btn.textContent="Rezept speichern"; btn.style.background="var(--text)";
-  renderPalette();
-  goTo("view-add", true);
+const UNITS=/^([\d]+[,.]?\d*|½|¼|¾|⅓|⅔|⅛)\s*(g|kg|ml|l|cl|EL|TL|Stück|St\.|Prise|Msp|Bund|Zehe|Zehen|Scheibe|Scheiben|Dose|Dosen|Tasse|Becher|Päckchen|Pkg|cm|Tropfen|Handvoll|Pkg\.?)\s+(.+)$/i;
+const UNIT_ONLY=/^([\d]+[,.]?\d*|½|¼|¾)\s+(.+)$/;
+
+function parseIngredientLine(line){
+  let m=line.match(UNITS);
+  if(m){
+    const a=parseFloat(m[1].replace(',','.').replace('½','.5').replace('¼','.25').replace('¾','.75').replace('⅓','.33').replace('⅔','.67'));
+    return{a,u:m[2].trim(),n:m[3].trim()};
+  }
+  m=line.match(UNIT_ONLY);
+  if(m){
+    const a=parseFloat(m[1].replace(',','.').replace('½','.5').replace('¼','.25'));
+    return{a,u:'',n:m[2].trim()};
+  }
+  return{a:0,u:'',n:line.trim()};
 }
 
-function renderPalette() {
-  const picker = document.getElementById("palette-picker");
-  picker.innerHTML="";
-  PALETTE.forEach((col,i) => {
-    const d=document.createElement("div");
-    d.style.cssText=`width:40px;height:40px;border-radius:10px;background:${col};cursor:pointer;
-      display:flex;align-items:center;justify-content:center;transition:border .15s;
-      border:${addAccentIdx===i?"3px solid var(--text)":"2.5px solid transparent"}`;
-    if(addAccentIdx===i) d.innerHTML=`<span style="color:#fff;font-size:16px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4)">✓</span>`;
-    d.addEventListener("click",()=>{addAccentIdx=i;renderPalette();});
+function smartParse(text){
+  const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
+  let result={title:'',subtitle:'',description:'',time:'',portions:2,difficulty:'Einfach',
+    ingredients:[{group:'Zutaten',items:[]}],steps:[],tip:''};
+
+  const zutatenRx=/^(zutaten|ingredients|für\s+den\s+teig|für\s+die\s+sauce|für\s+das\s+dressing|für\s+die\s+marinade)/i;
+  const zuberRx=/^(zubereitung|zubereiten|so\s+geht|anleitung|preparation|so\s+wird|und\s+so\s+geht|zubereitung:|method|steps)/i;
+  const tipRx=/^(tipp|hinweis|note|tip|variante|aufbewahrung|pro\s+tipp)/i;
+  const portRx=/für\s+(\d+)\s*(personen|portionen|person)/i;
+  const timeRx=/(\d+)\s*(minuten|minute|min\.?|stunden?|std\.?)/i;
+  const stepNumRx=/^(\d+[\.\):])\s*/;
+  const stepWordRx=/^(schritt\s*\d+[:\.]?)\s*/i;
+
+  let section='header';
+  let currentGroup='Zutaten';
+  let headerLines=[];
+
+  lines.forEach((line,i)=>{
+    const lower=line.toLowerCase();
+
+    /* Abschnittserkennung */
+    if(zutatenRx.test(lower)){section='ingredients';currentGroup=line;return;}
+    if(zuberRx.test(lower)){section='steps';return;}
+    if(tipRx.test(lower)){section='tip';return;}
+
+    /* Neue Zutatengruppe (Zeile ohne Einheit, kurz) */
+    if(section==='ingredients'&&!line.match(UNITS)&&!line.match(UNIT_ONLY)&&line.length<40&&!/^\d/.test(line)&&line.endsWith(':')){
+      currentGroup=line.replace(':','').trim();
+      if(!result.ingredients.find(g=>g.group===currentGroup))result.ingredients.push({group:currentGroup,items:[]});
+      return;
+    }
+
+    /* Zeitangaben */
+    const tm=line.match(timeRx);
+    if(tm&&!result.time){
+      const num=parseInt(tm[1]);
+      const unit=tm[2].toLowerCase();
+      result.time=num+(unit.startsWith('st')||unit.startsWith('h')?' Std':' Min');
+    }
+
+    /* Portionen */
+    const pm=line.match(portRx);
+    if(pm)result.portions=parseInt(pm[1]);
+
+    /* Header — Titel & Untertitel */
+    if(section==='header'){
+      if(!result.title&&line.length>2&&line.length<120&&!tm&&!pm){
+        result.title=line;
+      } else if(result.title&&!result.subtitle&&line.length>2&&line.length<80&&!tm&&!pm&&headerLines.length<3){
+        result.subtitle=line;
+      }
+      headerLines.push(line);
+    }
+
+    /* Zutaten */
+    if(section==='ingredients'){
+      const grp=result.ingredients.find(g=>g.group===currentGroup)||result.ingredients[0];
+      if(line.match(UNITS)||line.match(UNIT_ONLY)||/^\d/.test(line)){
+        grp.items.push(parseIngredientLine(line));
+      } else if(line.length>2&&!zutatenRx.test(lower)&&!zuberRx.test(lower)){
+        grp.items.push({a:0,u:'',n:line});
+      }
+    }
+
+    /* Schritte */
+    if(section==='steps'){
+      let desc=line.replace(stepNumRx,'').replace(stepWordRx,'').trim();
+      if(desc.length>8)result.steps.push({title:'Schritt '+(result.steps.length+1),desc});
+    }
+
+    /* Tipp */
+    if(section==='tip'&&line.length>4&&!tipRx.test(lower))result.tip+=line+' ';
+  });
+
+  /* Fallback: wenn kein Abschnitt erkannt wurde, alle Zeilen durchsuchen */
+  if(result.ingredients[0].items.length===0&&result.steps.length===0){
+    lines.forEach(line=>{
+      if(line.match(UNITS)||line.match(UNIT_ONLY)){
+        result.ingredients[0].items.push(parseIngredientLine(line));
+      } else if(stepNumRx.test(line)){
+        result.steps.push({title:'Schritt '+(result.steps.length+1),desc:line.replace(stepNumRx,'').trim()});
+      }
+    });
+  }
+
+  /* Leere Gruppen entfernen */
+  result.ingredients=result.ingredients.filter(g=>g.items.length>0);
+  if(result.ingredients.length===0)result.ingredients=[{group:'Zutaten',items:[]}];
+
+  result.tip=result.tip.trim();
+  return result;
+}
+
+function livePreview(){/* leicht verzögert */clearTimeout(window._pt);window._pt=setTimeout(()=>{if(document.getElementById('paste-input').value.length>20)parseAndPreview();},800);}
+
+function parseAndPreview(){
+  const text=document.getElementById('paste-input').value.trim();
+  if(!text){showToast('Bitte zuerst Text einfügen');return;}
+
+  const p=smartParse(text);
+  parsedIng=p.ingredients;
+  parsedSteps=p.steps;
+
+  /* Felder befüllen */
+  document.getElementById('p-title').value=p.title||'';
+  document.getElementById('p-subtitle').value=p.subtitle||'';
+  document.getElementById('p-time').value=p.time||'';
+  document.getElementById('p-portions').value=p.portions||2;
+  document.getElementById('p-desc').value=p.description||'';
+  document.getElementById('p-tip').value=p.tip||'';
+
+  /* Vorschau: Zutaten */
+  const ingPrev=document.getElementById('ing-preview');
+  const ingCount=document.getElementById('ing-count');
+  const totalItems=p.ingredients.reduce((s,g)=>s+g.items.length,0);
+  ingCount.textContent=totalItems+' erkannt';
+
+  if(totalItems===0){
+    ingPrev.innerHTML=`<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Keine Zutaten erkannt – prüfe ob das Rezept einen „Zutaten:"-Abschnitt hat.</div>`;
+  } else {
+    ingPrev.innerHTML=p.ingredients.map(g=>`
+      <div class="preview-section">
+        <div class="preview-tag" style="background:${PALETTE[addAccentIdx]}">${g.group}</div>
+        ${g.items.map(item=>`<div style="font-size:13px;color:var(--text2);padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px">
+          ${item.a>0?`<span style="font-weight:700;color:${PALETTE[addAccentIdx]};white-space:nowrap">${item.a} ${item.u}</span>`:'<span style="color:var(--text3)">·</span>'}
+          <span>${item.n}</span></div>`).join('')}
+      </div>`).join('');
+  }
+
+  /* Vorschau: Schritte */
+  const stepPrev=document.getElementById('step-preview');
+  const stepCount=document.getElementById('step-count');
+  stepCount.textContent=p.steps.length+' erkannt';
+
+  if(p.steps.length===0){
+    stepPrev.innerHTML=`<div style="padding:14px 16px;font-size:12px;color:var(--text3)">Keine Schritte erkannt – prüfe ob das Rezept einen „Zubereitung:"-Abschnitt hat.</div>`;
+  } else {
+    stepPrev.innerHTML=p.steps.map((s,i)=>`
+      <div class="preview-section">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:26px;height:26px;border-radius:8px;background:${PALETTE[addAccentIdx]};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="font-size:12px;font-weight:700;color:#fff">${i+1}</span>
+          </div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.6;padding-top:3px">${s.desc}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  document.getElementById('preview-area').style.display='block';
+
+  /* Farbpalette */
+  renderAddPalette();
+}
+
+function renderAddPalette(){
+  const picker=document.getElementById('color-picker');
+  picker.innerHTML='';
+  PALETTE.forEach((col,i)=>{
+    const d=document.createElement('div');
+    d.className='color-dot';
+    d.style.cssText=`background:${col};border:${addAccentIdx===i?'3px solid var(--text)':'2.5px solid transparent'}`;
+    d.dataset.color=col;
+    if(addAccentIdx===i)d.innerHTML=`<span style="color:#fff;font-size:14px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.5)">✓</span>`;
+    d.onclick=()=>{addAccentIdx=i;renderAddPalette();if(document.getElementById('p-title').value)parseAndPreview();};
     picker.appendChild(d);
   });
 }
 
-function saveRecipe() {
-  const title=document.getElementById("add-title").value.trim();
-  if(!title){showToast("Bitte Rezeptname eingeben");return;}
-  const ingRaw=document.getElementById("add-ing").value;
-  const stepsRaw=document.getElementById("add-steps").value;
-  const maxOrder = recipes.reduce((m,r)=>Math.max(m,r.sortOrder||0),0);
-  const newR = {
-    id:Date.now(), fav:false, sortOrder:maxOrder+1,
-    title, subtitle:document.getElementById("add-subtitle").value.trim(),
-    emoji:document.getElementById("add-emoji").value||"🍽",
-    time:document.getElementById("add-time").value,
-    basePortions:parseInt(document.getElementById("add-portions").value)||2,
-    difficulty:document.getElementById("add-difficulty").value,
-    meal:document.getElementById("add-meal").value,
-    diet:document.getElementById("add-diet").value,
-    description:document.getElementById("add-desc").value,
+function clearPaste(){
+  document.getElementById('paste-input').value='';
+  document.getElementById('preview-area').style.display='none';
+  parsedIng=[];parsedSteps=[];
+}
+
+function openAdd(){
+  clearPaste();
+  addAccentIdx=0;
+  document.getElementById('p-emoji').value='🍽';
+  document.getElementById('p-meal').value='Abendessen';
+  document.getElementById('save-btn').textContent='Rezept speichern';
+  goTo('view-add','slide');
+}
+
+function saveRecipe(){
+  const title=document.getElementById('p-title').value.trim();
+  if(!title){showToast('Bitte Titel eingeben');return;}
+
+  const maxOrder=recipes.reduce((m,r)=>Math.max(m,r.sortOrder||0),0);
+  recipes.forEach(r=>r.sortOrder=(r.sortOrder||0)+1);
+
+  const newR={
+    id:Date.now(),fav:false,sortOrder:0,
+    emoji:document.getElementById('p-emoji').value||'🍽',
+    title,
+    subtitle:document.getElementById('p-subtitle').value.trim(),
+    time:document.getElementById('p-time').value.trim()||'–',
+    basePortions:parseInt(document.getElementById('p-portions').value)||2,
+    difficulty:document.getElementById('p-diff').value,
+    meal:document.getElementById('p-meal').value,
+    diet:'',
     accent:PALETTE[addAccentIdx],
-    ingredients:ingRaw.trim()?[{group:"Zutaten",items:ingRaw.split("\n").filter(l=>l.trim()).map(l=>{
-      const m=l.match(/^([\d½¼¾,.]+)\s*([a-zA-ZäöüÄÖÜß]+)?\s+(.+)$/);
-      if(m)return{a:parseFloat(m[1].replace(",",".").replace("½",".5").replace("¼",".25")),u:(m[2]||"").trim(),n:m[3].trim()};
-      return{a:0,u:"",n:l.trim()};
-    })}]:[],
-    steps:stepsRaw.trim()?stepsRaw.split("\n").filter(l=>l.trim()).map((t,i)=>({title:`Schritt ${i+1}`,desc:t.trim()})):[],
-    nutrition:{kcal:"–",kh:"–",ew:"–",fett:"–",bs:"–"},
-    tip:document.getElementById("add-tip").value,
+    description:document.getElementById('p-desc').value.trim(),
+    ingredients:parsedIng.length>0?parsedIng:[{group:'Zutaten',items:[]}],
+    steps:parsedSteps.length>0?parsedSteps:[{title:'Zubereitung',desc:'Bitte Schritte ergänzen.'}],
+    nutrition:{kcal:'–',kh:'–',ew:'–',fett:'–',bs:'–'},
+    tip:document.getElementById('p-tip').value.trim(),
   };
-  // New recipes go to the top (lowest sortOrder = first)
-  recipes.forEach(r => r.sortOrder = (r.sortOrder||0) + 1);
-  newR.sortOrder = 0;
-  recipes.push(newR);
-  saveData();
-  const btn=document.getElementById("save-btn");
-  btn.textContent="✓ Gespeichert!"; btn.style.background="var(--accent)";
-  setTimeout(()=>goHome(), 900);
+
+  recipes.push(newR);saveData();
+  const btn=document.getElementById('save-btn');
+  btn.textContent='✓ Gespeichert!';
+  btn.style.background='var(--green)';
+  setTimeout(()=>goHome(),900);
 }
 
 /* ══════════════════════════════════════
-   INIT
+   SORT OVERLAY
 ══════════════════════════════════════ */
-loadData();
-loadTheme();
-// Ensure sortOrder is set for all recipes (newest = first in list)
-recipes.forEach((r, i) => { if (r.sortOrder === undefined) r.sortOrder = recipes.length - i; });
+function openSortOverlay(){renderSortList();document.getElementById('sort-overlay').classList.add('open');}
+function closeSortBg(e){if(e.target===document.getElementById('sort-overlay'))closeSortOverlay();}
+function closeSortOverlay(){document.getElementById('sort-overlay').classList.remove('open');saveData();renderList();}
+function sortNewest(){[...recipes].sort((a,b)=>b.id-a.id).forEach((r,i)=>{const o=getR(r.id);if(o)o.sortOrder=i;});saveData();renderSortList();}
+
+function renderSortList(){
+  const list=document.getElementById('sort-list');list.innerHTML='';
+  [...recipes].sort((a,b)=>(a.sortOrder||0)-(b.sortOrder||0)).forEach(r=>{
+    const el=document.createElement('div');
+    el.className='sort-item';el.dataset.id=r.id;
+    el.innerHTML=`
+      <div class="sort-handle"><span></span><span></span><span></span></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:${r.accent};flex-shrink:0"></div>
+      <div class="sort-emoji-sm">${r.emoji}</div>
+      <div class="sort-text">
+        <div class="sort-title">${r.title}</div>
+        <div class="sort-sub">${r.time||''} · ${r.meal||''}</div>
+      </div>`;
+    el.querySelector('.sort-handle').addEventListener('touchstart',onDragStart,{passive:false});
+    list.appendChild(el);
+  });
+}
+
+function onDragStart(e){
+  e.preventDefault();
+  dragEl=e.currentTarget.closest('.sort-item');dragEl.classList.add('dragging');
+  dragStartY=e.touches[0].clientY;
+  document.addEventListener('touchmove',onDragMove,{passive:false});
+  document.addEventListener('touchend',onDragEnd,{passive:false});
+}
+function onDragMove(e){
+  e.preventDefault();if(!dragEl)return;
+  const dy=e.touches[0].clientY-dragStartY;
+  dragEl.style.transform=`translateY(${dy}px)`;
+  const list=dragEl.parentNode;
+  const others=[...list.querySelectorAll('.sort-item:not(.dragging)')];
+  const dragY=dragEl.getBoundingClientRect().top+dragEl.offsetHeight/2;
+  let target=null;
+  others.forEach(item=>{const rect=item.getBoundingClientRect();if(dragY>rect.top&&dragY<rect.bottom)target=item;});
+  if(target){
+    const all=[...list.querySelectorAll('.sort-item')];
+    if(all.indexOf(target)>all.indexOf(dragEl))list.insertBefore(dragEl,target.nextSibling);
+    else list.insertBefore(dragEl,target);
+    dragEl.style.transform='';dragStartY=e.touches[0].clientY;
+  }
+}
+function onDragEnd(){
+  document.removeEventListener('touchmove',onDragMove);
+  document.removeEventListener('touchend',onDragEnd);
+  if(!dragEl)return;
+  dragEl.classList.remove('dragging');dragEl.style.transform='';
+  [...dragEl.parentNode.querySelectorAll('.sort-item')].forEach((el,i)=>{const r=getR(parseInt(el.dataset.id));if(r)r.sortOrder=i;});
+  dragEl=null;
+}
+
+/* ══════════════════════════════════════
+   START
+══════════════════════════════════════ */
+loadData();loadTheme();
+recipes.forEach((r,i)=>{if(r.sortOrder===undefined)r.sortOrder=i;});
 renderList();
 </script>
 
